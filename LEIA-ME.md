@@ -105,16 +105,26 @@ mostram.
 
 | cartão | o que a cena mostra |
 |---|---|
-| Todos os canais numa lista só | cada canal chama por vez, o fio dele acende e a conversa cai na caixa de entrada |
+| Todos os canais numa lista só | cada canal acende por vez na fileira, e a conversa dele cai na caixa de entrada logo abaixo |
 | Funil em Kanban | a meta do mês enchendo, e um negócio fechando em verde |
 | ChatBot e Agente de IA | a pergunta, o robô digitando, a resposta, e a passagem para a Ana |
 | Campanhas | o funil do disparo: enviadas, entregues, lidas, responderam |
 | Dashboards | tempo de resposta, CSAT e as colunas por atendente subindo |
 
-### A caixa de entrada é a cena mais elaborada, e tem dois detalhes
+### A caixa de entrada: fileira em cima, caixa embaixo
 
-É a tese do cartão largo, e por isso ganhou o tratamento completo do site:
-canais à esquerda, fios curvos acendendo, e a caixa à direita recebendo.
+É a tese do cartão largo. Os quatro canais ficam numa fileira de pílulas em
+cima; cada um acende por vez, e a conversa dele entra na lista logo abaixo com
+o mesmo ícone. No fim, quatro aplicativos numa tela só.
+
+**Já foi três colunas com fios curvos entre elas, igual ao site, e quebrou duas
+vezes seguidas.** A coluna dos canais vazava por baixo do painel branco, e o
+`<svg>` dos fios caía na altura intrínseca de 150px. Os consertos foram feitos
+sem ver a página renderizada, e erraram de novo. A lição que ficou escrita no
+CSS: layout que depende de três larguras se acertarem quebra onde ninguém
+olhou. Uma fileira que quebra linha (`flex-wrap: wrap`) não colide com nada em
+largura nenhuma: no bento largo os quatro cabem numa linha, e no carrossel do
+celular viram duas. Há asserções impedindo que as colunas voltem.
 
 **A lista está escrita na ordem invertida**, a mais nova em cima. As quatro
 conversas já estão no HTML, no lugar final: cada passo só revela a sua. Nada é
@@ -122,13 +132,9 @@ inserido, nada empurra vizinho, o cartão não muda de altura. É o tipo de cois
 que alguém "arruma" numa edição distraída, então há uma asserção exigindo que
 os passos apareçam em ordem decrescente.
 
-**O fio é duas camadas, não uma que troca de cor.** Cor de traço não transita
-de graça: mudar `stroke` repinta. Há um fio apagado sempre no lugar e um aceso
-por cima, e o que transita é a opacidade do de cima.
-
-Abaixo de 600px os fios somem e os rótulos dos canais também: num cartão de
-330px o fio seria um risco de 20px sem leitura nenhuma. A coluna de azulejos
-continua, e é ela que diz de onde a conversa veio.
+O azulejo do canal é um círculo cheio na cor do aplicativo com o glifo em
+branco, na fileira e na lista: é o que deixa o olho ligar a conversa ao canal
+sem ler o nome.
 
 ### Uma cena é marcação, não JavaScript
 

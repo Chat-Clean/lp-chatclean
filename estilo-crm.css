@@ -848,64 +848,65 @@
 }
 
 /* ----- Cena: a caixa de entrada única -----------------------
-   A tese do cartão largo, e por isso a cena mais elaborada: os
-   quatro canais chamam por vez, o fio de cada um acende até a
-   caixa, e a conversa aparece na lista.
+   A tese do cartão largo: os quatro canais chamam por vez, e a
+   conversa de cada um cai na lista. No fim, quatro aplicativos
+   numa tela só.
+
+   ─── FILEIRA EM CIMA, CAIXA EMBAIXO ─────────────────────────
+
+   Já foi três colunas com fios curvos entre elas, igual ao site,
+   e quebrou duas vezes seguidas: a coluna dos canais vazava por
+   baixo do painel, e o <svg> caía na altura intrínseca. Cada
+   conserto foi feito sem ver a página renderizada, e errou de
+   novo. Layout que depende de três larguras se acertarem é
+   layout que quebra onde ninguém olhou.
+
+   Uma fileira que quebra linha não colide com nada em largura
+   nenhuma: no bento largo os quatro cabem numa linha, e no
+   carrossel do celular viram duas. A história continua contada:
+   o canal acende, e a conversa entra na lista com o ícone dele.
 
    As quatro conversas JÁ ESTÃO no HTML, na ordem invertida (a
    mais nova em cima). Cada passo só revela a sua: nada é
-   inserido, nada empurra vizinho, o cartão não muda de altura.
-
-   ─── O FIO É DUAS CAMADAS, NÃO UMA QUE TROCA DE COR ─────────
-
-   Cor de traço não transita de graça: mudar `stroke` repinta.
-   Há um fio apagado sempre lá e um aceso por cima, e o que
-   transita é a OPACIDADE do de cima. */
-
-/* O cartão vira contexto de container: esta cena responde à largura
-   DELE, e não à da janela. No carrossel do celular este mesmo cartão
-   tem 330px com a janela em 600px, e media query de viewport erra os
-   dois casos. Foi metade do bug. */
-.bento__largo {
-  container-type: inline-size;
-}
+   inserido, nada empurra vizinho, o cartão não muda de altura. */
 
 .palco--caixa {
   display: grid;
-  /* `max-content` e não `auto`: `auto` encolhe até min-content quando a
-     terceira coluna aperta, e aí o rótulo do canal vaza para debaixo do
-     painel branco, que é opaco. Foi a outra metade. */
-  grid-template-columns: max-content 4rem minmax(0, 1fr);
-  align-items: center;
-  gap: 0;
-  padding: 1.1rem 1.15rem;
-  min-height: 14rem;
+  gap: 0.85rem;
+  padding: 1rem 1.05rem;
 }
 
-/* ----- A coluna dos canais ----- */
+/* ----- A fileira dos canais ----- */
 
 .caixa__canais {
   list-style: none;
   margin: 0;
   padding: 0;
-  display: grid;
-  gap: 0.85rem;
+  display: flex;
+  /* A quebra de linha é a garantia: em cartão estreito viram duas
+     fileiras, e nunca um canal por cima do outro. */
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.45rem;
 }
 
 .canal {
   --cor: var(--verde);
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 0.6rem;
+  gap: 0.45rem;
+  padding: 0.28rem 0.7rem 0.28rem 0.28rem;
+  border-radius: var(--raio-pilula);
+  background: var(--branco);
+  box-shadow: 0 1px 3px rgba(20, 35, 27, 0.1);
   font-family: var(--fonte-util);
   font-size: 0.6875rem;
   font-weight: 700;
-  color: var(--cinza);
-  /* Quebrar em duas linhas desalinharia o azulejo da ponta do fio. */
   white-space: nowrap;
+  color: var(--tinta);
   /* Quem ainda não chamou fica apagado: é o que faz o canal da vez
      saltar sem precisar de seta nem rótulo dizendo "agora é este". */
-  opacity: 0.45;
+  opacity: 0.5;
   transition:
     opacity 0.35s ease,
     transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
@@ -916,44 +917,45 @@
 .canal--face { --cor: #1877f2; }
 .canal--tele { --cor: #229ed9; }
 
+/* O azulejo é um círculo cheio na cor do canal, com o glifo em
+   branco: dentro de uma pílula branca, azulejo branco sumiria. */
 .canal > span {
   position: relative;
   display: grid;
   place-items: center;
   flex: 0 0 auto;
-  width: 2.15rem;
-  height: 2.15rem;
-  border-radius: 10px;
-  background: var(--branco);
-  box-shadow: 0 1px 3px rgba(20, 35, 27, 0.12);
-  color: var(--cor);
+  width: 1.65rem;
+  height: 1.65rem;
+  border-radius: 50%;
+  background: var(--cor);
+  color: var(--branco);
 }
 
 .canal > span svg {
-  width: 1.1rem;
-  height: 1.1rem;
+  width: 0.9rem;
+  height: 0.9rem;
 }
 
-/* A onda do canal da vez. Mora num pseudoelemento para a pulsação
-   não mexer no azulejo, que precisa ficar parado por baixo. */
+/* A onda do canal da vez, num pseudoelemento para a pulsação não
+   mexer no azulejo, que fica parado por baixo. */
 .canal > span::after {
   content: "";
   position: absolute;
   inset: 0;
-  border-radius: 10px;
+  border-radius: 50%;
   box-shadow: 0 0 0 2px var(--cor);
   opacity: 0;
 }
 
-/* O canal da vez: cresce e solta a onda. Os quatro passos estão
-   escritos um a um porque CSS não compara número, e quatro linhas
-   explícitas leem melhor do que um truque que ninguém decifra. */
+/* O canal da vez: acende, sobe um fio e solta a onda. Os quatro
+   passos estão escritos um a um porque CSS não compara número, e
+   quatro linhas explícitas leem melhor do que um truque. */
 .palco--caixa[data-passo="1"] .canal--whats,
 .palco--caixa[data-passo="2"] .canal--insta,
 .palco--caixa[data-passo="3"] .canal--face,
 .palco--caixa[data-passo="4"] .canal--tele {
   opacity: 1;
-  transform: scale(1.06);
+  transform: translateY(-2px) scale(1.05);
 }
 
 .palco--caixa[data-passo="1"] .canal--whats > span::after,
@@ -963,15 +965,15 @@
   animation: caixa-onda 1.1s ease-out;
 }
 
-/* Quem já chamou não volta a apagar de todo: fica aceso, porque a
-   cena é de acúmulo, e no fim os quatro estão na mesma tela. */
+/* Quem já chamou não volta a apagar de todo: a cena é de acúmulo,
+   e no fim os quatro estão na mesma tela. */
 .palco--caixa[data-passo="2"] .canal--whats,
 .palco--caixa[data-passo="3"] .canal--whats,
 .palco--caixa[data-passo="3"] .canal--insta,
 .palco--caixa[data-passo="4"] .canal--whats,
 .palco--caixa[data-passo="4"] .canal--insta,
 .palco--caixa[data-passo="4"] .canal--face {
-  opacity: 0.85;
+  opacity: 0.9;
 }
 
 @keyframes caixa-onda {
@@ -981,52 +983,8 @@
   }
   100% {
     opacity: 0;
-    transform: scale(1.7);
+    transform: scale(1.8);
   }
-}
-
-/* ----- Os fios ----- */
-
-.caixa__fios {
-  /* `stretch` dá a altura da linha da grade, que é definida. Antes era
-     `height: 78%`, e porcentagem contra altura indefinida faz o <svg>
-     cair nos 150px intrínsecos dele, com a curva desenhada fora do
-     lugar. Era a curva solta que aparecia à esquerda. */
-  align-self: stretch;
-  width: 100%;
-  overflow: visible;
-}
-
-.fio {
-  fill: none;
-  stroke: rgba(20, 35, 27, 0.13);
-  stroke-width: 1;
-  vector-effect: non-scaling-stroke;
-}
-
-.fio--aceso {
-  stroke: var(--verde);
-  stroke-width: 1.6;
-  opacity: 0;
-  transition: opacity 0.45s ease;
-}
-
-.palco--caixa[data-passo="1"] .fio--1,
-.palco--caixa[data-passo="2"] .fio--2,
-.palco--caixa[data-passo="3"] .fio--3,
-.palco--caixa[data-passo="4"] .fio--4 {
-  opacity: 1;
-}
-
-/* Fio de quem já chegou: uma brasa, para a cena mostrar que os
-   canais continuam ligados e não que só o último existe. */
-.palco--caixa[data-passo="2"] .fio--1,
-.palco--caixa[data-passo="3"] .fio--1,
-.palco--caixa[data-passo="3"] .fio--2,
-.palco--caixa[data-passo="4"] .fio--1,
-.palco--caixa[data-passo="4"] .fio--2,
-.palco--caixa[data-passo="4"] .fio--3 {
-  opacity: 0.32;
 }
 
 /* ----- A caixa de entrada ----- */
@@ -1086,10 +1044,10 @@
   background: var(--creme);
 }
 
-/* Entra da esquerda, e não de baixo: a mensagem vem do canal, que
-   está à esquerda. A direção conta a história. */
+/* Entra de cima, de onde está a fileira dos canais: a direção
+   conta a história. */
 .palco--caixa .caixa__conversas li {
-  transform: translateX(-14px);
+  transform: translateY(-8px);
 }
 
 .palco--caixa .caixa__conversas li[data-visivel] {
@@ -1117,17 +1075,18 @@
   opacity: 1;
 }
 
+/* O mesmo círculo cheio da fileira, para o olho ligar a conversa
+   ao canal sem ler o nome. */
 .caixa__marca {
   position: relative;
   display: grid;
   place-items: center;
   flex: 0 0 auto;
-  width: 1.6rem;
-  height: 1.6rem;
-  border-radius: 8px;
-  background: var(--branco);
-  box-shadow: 0 1px 2px rgba(20, 35, 27, 0.1);
-  color: var(--cor);
+  width: 1.55rem;
+  height: 1.55rem;
+  border-radius: 50%;
+  background: var(--cor);
+  color: var(--branco);
 }
 
 .caixa__marca svg {
@@ -1175,37 +1134,6 @@
 .palco--caixa[data-passo="3"] li[data-surge-em="3"] .caixa__nova,
 .palco--caixa[data-passo="4"] li[data-surge-em="4"] .caixa__nova {
   opacity: 1;
-}
-
-/* ----- Estreito: o fio sai, o azulejo fica ----- */
-
-@container (max-width: 30rem) {
-  .palco--caixa {
-    grid-template-columns: max-content minmax(0, 1fr);
-    gap: 0.85rem;
-    min-height: 0;
-  }
-
-  /* O fio some porque em 330px de cartão ele seria um risco de 20px
-     sem leitura nenhuma. A coluna de azulejos continua, e é ela que
-     diz de onde a conversa veio. */
-  .caixa__fios {
-    display: none;
-  }
-
-  .canal {
-    font-size: 0;
-    gap: 0;
-  }
-
-  .canal > span {
-    width: 1.9rem;
-    height: 1.9rem;
-  }
-
-  .caixa__canais {
-    gap: 0.6rem;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {

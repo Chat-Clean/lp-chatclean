@@ -404,14 +404,20 @@
               <p>Sua equipe para de trocar de aplicativo no meio do atendimento</p>
 
               <!-- A caixa de entrada única, que é a tese deste cartão.
-                   Cada canal chama por vez, o fio dele acende até a caixa e a
-                   conversa aparece na lista. No fim, quatro aplicativos numa
-                   tela só.
+                   Cada canal chama por vez, acende, e a conversa dele
+                   aparece na lista. No fim, quatro aplicativos numa tela só.
 
-                   A LISTA JÁ TEM AS QUATRO LINHAS no lugar final, a mais nova
-                   em cima: cada chegada só revela a sua. Nada é inserido, e
-                   por isso nada empurra as outras nem muda a altura do
-                   cartão. Daí a ordem invertida na marcação. -->
+                   OS CANAIS SÃO UMA FILEIRA EM CIMA, e a caixa vem embaixo.
+                   Já foi três colunas com fios curvos entre elas, como no
+                   site, e quebrou duas vezes seguidas: a coluna dos canais
+                   vazava por baixo do painel e o <svg> caía na altura
+                   intrínseca. Fileira que quebra linha não colide com nada,
+                   em largura nenhuma.
+
+                   A LISTA JÁ TEM AS QUATRO LINHAS no lugar final, a mais
+                   nova em cima: cada chegada só revela a sua. Nada é
+                   inserido, e por isso nada empurra as outras nem muda a
+                   altura do cartão. Daí a ordem invertida na marcação. -->
               <div class="palco palco--caixa" aria-hidden="true" data-cena data-passos="900,900,900,900">
                 <ul class="caixa__canais">
                   <li class="canal canal--whats"><span><svg><use href="#i-whatsapp" /></svg></span>WhatsApp</li>
@@ -419,20 +425,6 @@
                   <li class="canal canal--face"><span><svg><use href="#i-facebook" /></svg></span>Facebook</li>
                   <li class="canal canal--tele"><span><svg><use href="#i-telegram" /></svg></span>Telegram</li>
                 </ul>
-
-                <!-- Os fios. `preserveAspectRatio="none"` deixa a curva
-                     esticar com o cartão, e `vector-effect` segura a
-                     espessura do traço, que senão esticaria junto. -->
-                <svg class="caixa__fios" viewBox="0 0 100 100" preserveAspectRatio="none">
-                  <path class="fio" d="M0 12 C 55 12, 45 50, 100 50" />
-                  <path class="fio" d="M0 38 C 55 38, 45 50, 100 50" />
-                  <path class="fio" d="M0 62 C 55 62, 45 50, 100 50" />
-                  <path class="fio" d="M0 88 C 55 88, 45 50, 100 50" />
-                  <path class="fio fio--aceso fio--1" d="M0 12 C 55 12, 45 50, 100 50" />
-                  <path class="fio fio--aceso fio--2" d="M0 38 C 55 38, 45 50, 100 50" />
-                  <path class="fio fio--aceso fio--3" d="M0 62 C 55 62, 45 50, 100 50" />
-                  <path class="fio fio--aceso fio--4" d="M0 88 C 55 88, 45 50, 100 50" />
-                </svg>
 
                 <div class="caixa__painel">
                   <div class="caixa__topo">
