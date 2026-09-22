@@ -53,6 +53,24 @@ const REMETENTE_PADRAO = "ChatClean <onboarding@resend.dev>";
 /** Prazo curto: o formulário está esperando esta chamada terminar. */
 const PRAZO_MS = 4000;
 
+/**
+ * De onde o e-mail busca o logotipo.
+ *
+ * Endereço absoluto e público, porque e-mail não tem "caminho relativo": o
+ * cliente de quem lê baixa a imagem do servidor, sem contexto de origem.
+ *
+ * ─── POR QUE PNG, E NÃO O SVG QUE AS PÁGINAS USAM ────────────────────────
+ *
+ * Gmail e Outlook descartam `<img>` apontando para SVG, e `data:` URI embutido
+ * no HTML também não passa nos dois. `ativos/chatclean-email.png` existe só
+ * para isto: é o logotipo latão recortado e reduzido, servido pelo mesmo
+ * domínio das landings.
+ */
+const BASE_DOS_ATIVOS = "https://lp.chatclean.com.br";
+
+/* Tamanho de exibição: o arquivo tem o dobro, para não borrar em tela retina. */
+const LOGO = { arquivo: "/ativos/chatclean-email.png", largura: 170, altura: 32 };
+
 /* ─── As cores, copiadas de base.css ─────────────────────────────────────── */
 
 const COR = {
@@ -244,14 +262,25 @@ function corpoEmHtml(lead, extras) {
     '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:560px;background:#ffffff;border-radius:18px;overflow:hidden;border:1px solid ' +
     COR.cremeFio +
     '">' +
-    // Faixa escura
+    // Faixa escura, com o logotipo
     '<tr><td style="background:' +
     COR.noite +
     ';padding:22px 28px">' +
-    '<p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:' +
+    /* O `alt` não é acessório: Gmail bloqueia imagem de remetente desconhecido
+       por padrão, e o primeiro aviso que o time receber vai chegar com o
+       logotipo desligado. A cor no `style` pinta o próprio texto do `alt`,
+       para ele não sair em preto sobre o verde-noite. */
+    '<img src="' +
+    escapar(dados.baseDosAtivos || BASE_DOS_ATIVOS) +
+    escapar(LOGO.arquivo) +
+    '" alt="ChatClean" width="' +
+    LOGO.largura +
+    '" height="' +
+    LOGO.altura +
+    '" style="display:block;border:0;outline:none;text-decoration:none;font-family:Arial,Helvetica,sans-serif;font-size:15px;font-weight:700;letter-spacing:.14em;color:' +
     COR.latao +
-    '">ChatClean</p>' +
-    '<p style="margin:6px 0 0;font-family:Georgia,\'Times New Roman\',serif;font-size:22px;color:#ffffff">Lead novo pela landing de ' +
+    '" />' +
+    '<p style="margin:14px 0 0;font-family:Georgia,\'Times New Roman\',serif;font-size:22px;color:#ffffff">Lead novo pela landing de ' +
     escapar(pagina) +
     "</p>" +
     "</td></tr>" +
@@ -348,6 +377,17 @@ async function avisarLeadNovo(lead, extras, ambiente, buscar) {
       ? env.RESEND_REMETENTE.trim()
       : REMETENTE_PADRAO;
 
+  /* O domínio que serve o logotipo. Sai daqui para o corpo do e-mail porque um
+     dia estas páginas podem mudar de endereço, e aí o aviso continuaria
+     apontando para um logotipo que não existe mais. */
+  const base =
+    typeof env.LANDINGS_BASE_PUBLICA === "string" &&
+    env.LANDINGS_BASE_PUBLICA.trim() !== ""
+      ? env.LANDINGS_BASE_PUBLICA.trim().replace(/\/+$/, "")
+      : BASE_DOS_ATIVOS;
+
+  const comBase = Object.assign({}, extras || {}, { baseDosAtivos: base });
+
   let sinal;
   try {
     sinal = AbortSignal.timeout(PRAZO_MS);
@@ -369,8 +409,8 @@ async function avisarLeadNovo(lead, extras, ambiente, buscar) {
         // Responder o aviso responde para o lead, sem copiar e colar endereço.
         reply_to: lead.email,
         subject: assuntoDoAviso(lead),
-        html: corpoEmHtml(lead, extras),
-        text: corpoEmTexto(lead, extras),
+        html: corpoEmHtml(lead, comBase),
+        text: corpoEmTexto(lead, comBase),
       }),
       signal: sinal,
     });
@@ -389,7 +429,9 @@ async function avisarLeadNovo(lead, extras, ambiente, buscar) {
 }
 
 module.exports = {
+  BASE_DOS_ATIVOS,
   ENDERECO_DO_RESEND,
+  LOGO,
   PRAZO_MS,
   REMETENTE_PADRAO,
   assuntoDoAviso,

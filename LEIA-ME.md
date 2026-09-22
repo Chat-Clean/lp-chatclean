@@ -17,6 +17,7 @@ estilo-api-oficial.css   só o que é da de API (os dois estados do WhatsApp)
 base.css                 identidade compartilhada pelas duas
 formulario.js            máscara, validação e envio, compartilhado pelas duas
 ativos/                  logotipos e as marcas dos clientes
+ativos/chatclean-email.png   o logotipo do e-mail, em PNG (ver abaixo)
 api/lead-landing.js      a função que grava o lead (o endpoint do formulário)
 api/_regras-do-lead.js   o que é um lead válido, sem rede
 api/_banco-de-leads.js   a gravação no Supabase com a chave de serviço
@@ -174,6 +175,7 @@ tradução:
 | `RESEND_API_KEY` | a chave do Resend, para o aviso de lead novo | *resend.com → API Keys* |
 | `RESEND_REMETENTE` | opcional: de quem o aviso vem | veja a seção do aviso |
 | `LANDINGS_EMAIL_DESTINO` | opcional: para onde o aviso vai | o padrão está no código |
+| `LANDINGS_BASE_PUBLICA` | opcional: o domínio que serve o logotipo do e-mail | o padrão é `lp.chatclean.com.br` |
 
 A chave de serviço **ignora RLS**: é por isso que ela funciona contra uma
 tabela que nega tudo, e é por isso que ela nunca pode levar prefixo `VITE_`,
@@ -208,6 +210,31 @@ Três detalhes que economizam tempo de quem recebe:
 - quando a resposta de bloqueio é *"Sim, já caiu"*, o assunto grita
   `JÁ FOI BLOQUEADO`: é o lead mais quente que estas páginas produzem;
 - **responder o e-mail responde para o lead** (`reply_to`), sem copiar endereço.
+
+### O logotipo do e-mail é um PNG, e existe só para isso
+
+`ativos/chatclean-email.png` é o logotipo latão, 340x68, exibido a 170x34 (o
+dobro é para não borrar em tela retina). Ele não é o mesmo que as páginas usam,
+e a diferença tem motivo:
+
+- **cliente de e-mail não renderiza SVG.** Gmail e Outlook descartam `<img>`
+  apontando para SVG, que é o formato dos ativos das páginas;
+- **`data:` URI embutido também não passa** nos dois, então não adianta colar a
+  imagem dentro do HTML: ela precisa ser baixada de um endereço público;
+- por isso o `src` é absoluto, apontando para este mesmo domínio.
+
+O `<img>` leva `alt="ChatClean"` pintado de latão, e isso **não é enfeite**:
+Gmail bloqueia imagem de remetente desconhecido por padrão, então o primeiro
+aviso que o time receber vai chegar com o logotipo desligado.
+
+Se o domínio das páginas mudar, `LANDINGS_BASE_PUBLICA` conserta o endereço sem
+mexer no código.
+
+> Para gerar de novo, a partir do PNG de origem da marca: o recorte descarta a
+> folga transparente em volta (eram 780px só na horizontal) e a redução usa
+> média por área com alfa pré-multiplicado, senão a borda do logotipo ganha
+> auréola. Não tente rasterizar `ativos/chatclean-white.svg`: ele é uma imagem
+> raster embutida com `feColorMatrix`, e sai em branco.
 
 ### Um aviso perdido não é um lead perdido
 
