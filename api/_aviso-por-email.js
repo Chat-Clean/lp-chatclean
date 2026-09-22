@@ -226,13 +226,13 @@ function corpoEmHtml(lead, extras) {
       COR.noite +
       ';text-decoration:none">Falar no WhatsApp &nbsp;&rarr;</a>' +
       "</td></tr></table>" +
+      // O número escrito, embaixo do botão: botão de e-mail não sobrevive a
+      // todo cliente, e daí o número ainda dá para copiar ou discar.
       '<p style="margin:14px 0 0;font-family:Arial,Helvetica,sans-serif;font-size:15px;color:' +
       COR.tinta +
       ';text-align:center">' +
       escapar(telefone) +
-      '<br /><span style="font-size:12px;color:' +
-      COR.cinza +
-      '">o botão abre a conversa com este número</span></p>'
+      "</p>"
     : '<p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:15px;color:' +
       COR.alerta +
       ';text-align:center">Telefone fora do formato esperado: ' +
@@ -280,7 +280,7 @@ function corpoEmHtml(lead, extras) {
     '" style="display:block;border:0;outline:none;text-decoration:none;font-family:Arial,Helvetica,sans-serif;font-size:15px;font-weight:700;letter-spacing:.14em;color:' +
     COR.latao +
     '" />' +
-    '<p style="margin:14px 0 0;font-family:Georgia,\'Times New Roman\',serif;font-size:22px;color:#ffffff">Lead novo pela landing de ' +
+    '<p style="margin:14px 0 0;font-family:Georgia,\'Times New Roman\',serif;font-size:22px;color:#ffffff">Lead novo - ' +
     escapar(pagina) +
     "</p>" +
     "</td></tr>" +
@@ -330,7 +330,7 @@ function corpoEmTexto(lead, extras) {
   const pagina = NOME_DA_LANDING[lead.landing] || lead.landing;
   const telefone = telefoneVisivel(lead.telefone);
   const linhas = [
-    "LEAD NOVO — landing de " + pagina,
+    "LEAD NOVO - " + pagina,
     "",
     limpar(lead.nome) + " · " + limpar(lead.empresa),
     "",
