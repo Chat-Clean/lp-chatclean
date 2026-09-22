@@ -43,12 +43,26 @@ const ENDERECO_DO_RESEND = "https://api.resend.com/emails";
 /**
  * O remetente.
  *
- * O padrão é o domínio de teste do Resend, que funciona sem configurar nada
- * MAS só entrega para o e-mail dono da conta. Para o aviso chegar em
- * `chatcleanatendimento@gmail.com` de verdade, verifique `chatclean.com.br` no
- * Resend e ponha `RESEND_REMETENTE` como `ChatClean <lead@chatclean.com.br>`.
+ * `chatclean.com.br` está verificado no Resend: DKIM em
+ * `resend._domainkey.chatclean.com.br` e caminho de retorno em
+ * `send.chatclean.com.br`. Por isso o padrão é um endereço do domínio, e não
+ * mais `onboarding@resend.dev`.
+ *
+ * ─── POR QUE O DOMÍNIO DE TESTE SAIU DAQUI ───────────────────────────────
+ *
+ * `resend.dev` entrega SÓ para o e-mail dono da conta no Resend. Como padrão
+ * ele era uma armadilha silenciosa: a API responde 200, o log não acusa nada,
+ * e o aviso simplesmente não chega em `chatcleanatendimento@gmail.com`. Um
+ * padrão que falha calado é pior do que um que falha alto.
+ *
+ * O SPF da raiz continua sendo o da caixa normal
+ * (`include:_spf.mail.hostinger.com`) e NÃO precisa do Resend: quem assina o
+ * envio é o DKIM, e o caminho de retorno vive no subdomínio `send.`. Foi para
+ * isso que o Resend pediu aquele subdomínio.
+ *
+ * `RESEND_REMETENTE` continua podendo trocar isto sem mexer no código.
  */
-const REMETENTE_PADRAO = "ChatClean <onboarding@resend.dev>";
+const REMETENTE_PADRAO = "ChatClean <lead@chatclean.com.br>";
 
 /** Prazo curto: o formulário está esperando esta chamada terminar. */
 const PRAZO_MS = 4000;

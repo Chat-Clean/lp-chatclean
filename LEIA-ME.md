@@ -216,7 +216,7 @@ tradução:
 | `SUPABASE_URL` | a URL do projeto Supabase | *Project Settings → Data API* |
 | `SUPABASE_CHAVE_DE_SERVICO` | a `service_role` | *Project Settings → API Keys* |
 | `RESEND_API_KEY` | a chave do Resend, para o aviso de lead novo | *resend.com → API Keys* |
-| `RESEND_REMETENTE` | opcional: de quem o aviso vem | veja a seção do aviso |
+| `RESEND_REMETENTE` | opcional: o padrão já é `lead@chatclean.com.br` | veja a seção do aviso |
 | `LANDINGS_EMAIL_DESTINO` | opcional: para onde o aviso vai | o padrão está no código |
 | `LANDINGS_BASE_PUBLICA` | opcional: o domínio que serve o logotipo do e-mail | o padrão é `lp.chatclean.com.br` |
 
@@ -292,19 +292,29 @@ serverless pode ser congelada assim que responde, e o que fica para trás às
 vezes simplesmente não acontece. O prazo é curto (4s) para o formulário não
 ficar pendurado.
 
-### O remetente precisa de domínio verificado
+### O remetente sai de `chatclean.com.br`, que está verificado
 
-Sem configurar nada, o aviso sai de `onboarding@resend.dev`, que é o domínio de
-teste do Resend — e ele **só entrega para o e-mail dono da conta**. Para o
-aviso chegar de verdade em `chatcleanatendimento@gmail.com`:
+O aviso sai de `ChatClean <lead@chatclean.com.br>`, e isso é o **padrão do
+código**: não precisa de variável para funcionar. `RESEND_REMETENTE` continua
+existindo para trocar o endereço sem mexer no código.
 
-1. no Resend, *Domains → Add Domain*, `chatclean.com.br`;
-2. publique os registros DNS que ele pedir (SPF, DKIM e o de retorno);
-3. ponha `RESEND_REMETENTE` como `ChatClean <lead@chatclean.com.br>`.
+O que sustenta esse envio, conferido no DNS:
 
-Enquanto o domínio não estiver verificado, o teste possível é abrir a conta do
-Resend com o próprio `chatcleanatendimento@gmail.com`: aí o domínio de teste
-entrega nele.
+| registro | para quê |
+|---|---|
+| `resend._domainkey.chatclean.com.br` TXT | o DKIM, que assina o e-mail |
+| `send.chatclean.com.br` MX e TXT | o caminho de retorno e o SPF dele |
+
+**O SPF da raiz não precisa incluir o Resend**, e não inclui: ele continua
+sendo o da caixa normal (`include:_spf.mail.hostinger.com`). Quem assina o
+envio é o DKIM, e o caminho de retorno vive no subdomínio `send.`. Foi para
+isso que o Resend pediu aquele subdomínio, e é o que protege a reputação do
+domínio principal.
+
+> **Nunca devolva `onboarding@resend.dev` para o padrão.** Aquele domínio
+> entrega SÓ para o e-mail dono da conta no Resend, e falha calado: a API
+> responde 200, o log não acusa nada e o aviso simplesmente não chega. Existe
+> uma asserção em `prova-email` só para impedir essa volta.
 
 ## A segurança do endpoint
 
