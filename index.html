@@ -33,6 +33,12 @@
         <symbol id="i-seta" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
         </symbol>
+        <!-- O único preenchido da família. Play de contorno lê como "próximo"
+             em miniatura, e este fica no meio de uma imagem: precisa de massa
+             para se separar do fundo. -->
+        <symbol id="i-play" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M8.4 5.2a1 1 0 0 1 1.54-.84l9.3 6.8a1 1 0 0 1 0 1.68l-9.3 6.8A1 1 0 0 1 8.4 18.8Z" />
+        </symbol>
         <symbol id="i-confere" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
           <path d="M20 6 9 17l-5-5" />
         </symbol>
@@ -240,6 +246,65 @@
             <li><img src="ativos/clientes/simplo.png" alt="Simplo" loading="lazy" /></li>
             <li><img src="ativos/clientes/bom-todo.png" alt="Bom Todo" loading="lazy" /></li>
           </ul>
+        </div>
+      </section>
+
+      <!-- =====================================================
+           A demonstração em vídeo, na pegada da VSL: rótulo,
+           promessa curta, o vídeo grande e a chamada embaixo.
+
+           A CAPA NÃO É O VÍDEO. O que carrega com a página é uma
+           imagem de 96 KB. O <iframe> do YouTube só nasce no
+           clique, montado por `video.js`: embutir de largada
+           traria mais de um mega de script de terceiro para
+           dentro de uma página de anúncio, e o tempo de carga de
+           landing de tráfego pago se paga em dinheiro.
+           ===================================================== -->
+      <section class="secao secao--noite" id="ver-rodando">
+        <div class="envelope video">
+          <div class="titulo-de-secao video__dizer">
+            <span class="etiqueta etiqueta--noite">
+              <svg aria-hidden="true" width="12" height="12"><use href="#i-play" /></svg>
+              Demonstração
+            </span>
+            <h2>A ferramenta por dentro, <span class="latao">sem slide</span></h2>
+            <p class="linha-de-apoio">
+              O atendimento, o funil e o histórico do mesmo cliente, na tela que
+              a sua equipe abre todo dia
+            </p>
+          </div>
+
+          <!-- `data-video` é o id no YouTube, e `data-titulo` vira o `title`
+               do <iframe>, que é o que leitor de tela anuncia. -->
+          <div class="video__quadro">
+            <button
+              class="video__capa"
+              type="button"
+              data-video="Odu25S1tcZc"
+              data-titulo="Conheça nossa ferramenta de CRM"
+              aria-label="Tocar o vídeo: conheça nossa ferramenta de CRM"
+            >
+              <img
+                src="ativos/video-crm.jpg"
+                alt=""
+                width="1280"
+                height="720"
+                loading="lazy"
+                decoding="async"
+              />
+              <span class="video__play" aria-hidden="true">
+                <svg width="30" height="30"><use href="#i-play" /></svg>
+              </span>
+            </button>
+          </div>
+
+          <div class="video__abaixo">
+            <p>Fez sentido para o seu atendimento?</p>
+            <a class="botao botao--claro" href="#quero-ver">
+              Quero ver com os meus números
+              <svg class="botao__seta" aria-hidden="true" width="17" height="17"><use href="#i-seta" /></svg>
+            </a>
+          </div>
         </div>
       </section>
 
@@ -714,5 +779,7 @@
 
     <!-- Máscara, validação e envio. Um arquivo só para as duas páginas. -->
     <script src="formulario.js" defer></script>
+    <!-- Só nesta página: a landing de API Oficial não tem vídeo. -->
+    <script src="video.js" defer></script>
   </body>
 </html>

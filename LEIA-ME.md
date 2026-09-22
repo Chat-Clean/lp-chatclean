@@ -16,8 +16,10 @@ estilo-crm.css           só o que é da página de CRM (o quadro do funil)
 estilo-api-oficial.css   só o que é da de API (os dois estados do WhatsApp)
 base.css                 identidade compartilhada pelas duas
 formulario.js            máscara, validação e envio, compartilhado pelas duas
+video.js                 troca a capa pelo player do YouTube, só na de CRM
 ativos/                  logotipos e as marcas dos clientes
 ativos/chatclean-email.png   o logotipo do e-mail, em PNG (ver abaixo)
+ativos/video-crm.jpg     a capa do vídeo da demonstração
 api/lead-landing.js      a função que grava o lead (o endpoint do formulário)
 api/_regras-do-lead.js   o que é um lead válido, sem rede
 api/_banco-de-leads.js   a gravação no Supabase com a chave de serviço
@@ -114,6 +116,33 @@ lado e aceso do outro, ao lado da marca da ChatClean. É referência ao produto 
 que a página fala, e o aviso de marca registrada da Meta está no rodapé. Nenhuma
 das duas cenas reproduz a interface do WhatsApp: são ilustrações da ChatClean,
 na paleta da ChatClean.
+
+## A demonstração em vídeo, só na landing de CRM
+
+A seção `#ver-rodando` fica logo depois da faixa de clientes, na pegada de VSL:
+rótulo curto, promessa de uma linha, o vídeo grande e **uma** saída embaixo,
+que leva para o formulário. O vídeo é "Conheça nossa FERRAMENTA de CRM", e é
+por isso que ele vive só nesta página: a de API Oficial fala de outra dor.
+
+### A página não carrega um player, carrega uma capa
+
+`ativos/video-crm.jpg` são 96 KB. O `<iframe>` do YouTube **não existe no HTML
+entregue**: `video.js` cria ele no clique, já tocando.
+
+Isso não é preciosismo. Um `<iframe>` do YouTube puxa mais de um mega de script
+de terceiro, abre conexão para três domínios e entra na conta do tempo de carga
+**mesmo de quem nunca dá play**. Aqui o clique já foi pago no anúncio, e página
+lenta perde a pessoa antes de ela ler o título.
+
+O player entra com `youtube-nocookie.com` (sem cookie para quem só assistiu),
+`rel=0` (sem vídeo de concorrente na tela final, dentro da nossa landing) e
+`playsinline=1` (sem sequestrar a tela no iPhone). Depois da troca, o foco vai
+para o player: quem chegou pelo teclado acabou de ter o botão arrancado debaixo
+do foco, e sem isso recomeçaria a navegação do topo da página.
+
+> Para trocar o vídeo, mude `data-video` no HTML e regere a capa a partir de
+> `https://i.ytimg.com/vi/<id>/maxresdefault.jpg`. A capa é servida daqui, e não
+> do YouTube, para não pendurar a primeira dobra num domínio de terceiro.
 
 ## O formulário: máscara, validação e para onde vai
 

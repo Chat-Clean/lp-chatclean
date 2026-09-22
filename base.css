@@ -1353,3 +1353,150 @@ strong {
   height: 1px;
   overflow: hidden;
 }
+
+/* ----- A demonstração em vídeo -------------------------------
+   Na pegada de VSL: dizer curto em cima, o vídeo grande no meio
+   e uma saída só embaixo.
+
+   O QUE CARREGA COM A PÁGINA É A CAPA, não o player. O <iframe>
+   do YouTube só nasce no clique (`video.js`), porque embutir de
+   largada traz mais de um mega de script de terceiro para uma
+   página de anúncio. */
+
+.video {
+  display: grid;
+  justify-items: center;
+  gap: clamp(2rem, 4vw, 2.75rem);
+  text-align: center;
+}
+
+.video__dizer {
+  margin-inline: auto;
+}
+
+/* O quadro, com o fio de latão da identidade. O `padding` fino
+   deixa o fio aparecer em volta da imagem em vez de encostar
+   nela, que é como o site desenha moldura. */
+.video__quadro {
+  width: 100%;
+  max-width: 54rem;
+  padding: 6px;
+  border-radius: calc(var(--raio-cartao) + 6px);
+  background: linear-gradient(
+    160deg,
+    rgba(210, 181, 106, 0.55),
+    rgba(255, 255, 255, 0.06) 42%,
+    rgba(210, 181, 106, 0.28)
+  );
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.45);
+}
+
+/* O botão é a capa inteira: a área de clique é a imagem toda, e
+   não só o triângulo. Alvo pequeno em tela de celular é o jeito
+   mais barato de perder a visualização. */
+.video__capa {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  padding: 0;
+  overflow: hidden;
+  background: var(--verde-noite);
+  border: 0;
+  border-radius: var(--raio-cartao);
+  cursor: pointer;
+}
+
+.video__capa img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s ease, filter 0.3s ease;
+}
+
+.video__capa:hover img,
+.video__capa:focus-visible img {
+  transform: scale(1.03);
+  filter: brightness(1.06);
+}
+
+.video__capa:focus-visible {
+  outline: 3px solid var(--latao-claro);
+  outline-offset: 4px;
+}
+
+/* O selo de play. Latão sobre a imagem, com um halo escuro por
+   baixo: a capa é clara de um lado e escura do outro, e sem o
+   halo o selo sumiria em cima do verde. */
+.video__play {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: clamp(4.25rem, 9vw, 5.5rem);
+  height: clamp(4.25rem, 9vw, 5.5rem);
+  display: grid;
+  place-items: center;
+  color: #fffaeb;
+  background-image: linear-gradient(180deg, #a3813a 0%, #8a6c2c 52%, #74591f 100%);
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 8px rgba(20, 35, 27, 0.35),
+    0 18px 40px rgba(0, 0, 0, 0.5);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+/* O triângulo é óptico, não geométrico: centrado no eixo x ele
+   PARECE deslocado para a esquerda, porque a massa fica toda de
+   um lado. Os 3px devolvem o equilíbrio. */
+.video__play svg {
+  margin-left: 3px;
+}
+
+.video__capa:hover .video__play,
+.video__capa:focus-visible .video__play {
+  transform: scale(1.09);
+  box-shadow:
+    0 0 0 10px rgba(20, 35, 27, 0.45),
+    0 22px 50px rgba(0, 0, 0, 0.55);
+}
+
+/* O player que entra no lugar da capa. */
+.video__quadro iframe {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 0;
+  border-radius: var(--raio-cartao);
+}
+
+.video__abaixo {
+  display: grid;
+  justify-items: center;
+  gap: 1.25rem;
+}
+
+.video__abaixo p {
+  margin: 0;
+  font-family: var(--fonte-display);
+  font-size: clamp(1.25rem, 2.6vw, 1.625rem);
+  color: var(--branco);
+}
+
+@media (max-width: 640px) {
+  .video__quadro {
+    padding: 4px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .video__capa img,
+  .video__play {
+    transition: none;
+  }
+
+  .video__capa:hover img,
+  .video__capa:focus-visible img {
+    transform: none;
+  }
+}
