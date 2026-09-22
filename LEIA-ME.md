@@ -17,23 +17,36 @@ estilo-api-oficial.css   só o que é da de API (os dois estados do WhatsApp)
 base.css                 identidade compartilhada pelas duas
 formulario.js            máscara, validação e envio, compartilhado pelas duas
 ativos/                  logotipos e as marcas dos clientes
+api/lead-landing.js      a função que grava o lead (o endpoint do formulário)
+api/_regras-do-lead.js   o que é um lead válido, sem rede
+api/_banco-de-leads.js   a gravação no Supabase com a chave de serviço
 vercel.json              o rewrite de /api e o cabeçalho noindex
 ```
 
 Uma cópia de cada arquivo compartilhado, que é a vantagem de ter voltado a um
 projeto só: corrigir `base.css` ou `formulario.js` conserta as duas de uma vez.
 
-### Por que `/api` não é uma pasta `api/`
+### Como `/api` é uma página e `/api/lead-landing` é uma função
 
-Na Vercel, `api/` é a convenção de Serverless Functions, e arquivo dentro dela
-corre o risco de ser tratado como função em vez de página. O arquivo mora na
-raiz como `api-oficial.html`, e um rewrite no `vercel.json` dá o endereço
-`/api` sem encostar na convenção.
+As duas coisas moram no mesmo prefixo, e isso é de propósito.
 
-**Isso não conflita com a API de verdade.** O formulário posta em
-`chatclean.com.br/api/lead-landing`, que é outro domínio, o do site. O `/api`
-daqui é uma página; o `/api/...` de lá é a função. Domínios diferentes, sem
-colisão.
+A landing da API Oficial é `api-oficial.html` na raiz, e um rewrite no
+`vercel.json` dá a ela o endereço `/api`. A função do formulário é
+`api/lead-landing.js`, que a Vercel publica em `/api/lead-landing` pela
+convenção de Serverless Functions.
+
+Elas não colidem porque a Vercel tenta o **sistema de arquivos antes dos
+rewrites**: `/api/lead-landing` casa com a função e para ali; `/api` exato não
+casa com arquivo nenhum — não existe `api/index.js` — e só então cai no
+rewrite, que entrega a página.
+
+Os módulos ao lado começam com `_` justamente por causa dessa convenção:
+arquivo dentro de `api/` vira endpoint, e os prefixados com `_` não viram. É
+como `_regras-do-lead.js` fica perto da função sem ganhar uma URL própria.
+
+> Se um dia a página `/api` começar a responder 404, é este arranjo que
+> quebrou. O teste é direto: `curl -I https://lp.chatclean.com.br/api` deve
+> devolver HTML, e `curl -X POST .../api/lead-landing` deve devolver JSON.
 
 ## A identidade não foi reinventada
 
@@ -109,9 +122,10 @@ O caminho inteiro:
 
 ```
 formulario.js            máscara do telefone, validação por campo, envio
-  └─ POST /api/lead-landing          (chatclean/api/lead-landing.js)
-       └─ valida de novo             (src/domain/lead/leadDaLanding.js)
-       └─ grava com a chave de serviço  (api/_nucleo/bancoDeLeads.js)
+  └─ POST /api/lead-landing          (api/lead-landing.js, deste projeto)
+       └─ valida de novo             (api/_regras-do-lead.js)
+       └─ confere o teto por IP      (api/_banco-de-leads.js)
+       └─ grava com a chave de serviço
             └─ tabela leads_das_landings, RLS sem policy nenhuma
        └─ devolve { leadId, whatsappUrl }
   └─ navega para o whatsappUrl
@@ -126,22 +140,44 @@ sem nunca abrir a página, então quem decide é o servidor. Quando ele recusa c
 dia divergirem, quem ganha é a de lá.
 
 **O número do WhatsApp não mora na página.** O endereço da conversa vem na
-resposta do servidor, montado em `leadDaLanding.js`
+resposta do servidor, montado em `_regras-do-lead.js`
 (`WHATSAPP_DAS_LANDINGS`). Quem adulterar o HTML consegue, no máximo, gravar um
 lead com o próprio nome errado, não desviar a conversa.
 
-## O deploy: mesma origem, e nada para configurar
+### As regras são uma cópia, e isso é escolha
 
-As páginas são servidas **do mesmo domínio da API**. O formulário posta em
-`/api/lead-landing`, caminho relativo, e mesma origem não pede permissão a
-ninguém: não há variável de ambiente, não há `data-endereco`, não há CORS.
+`api/_regras-do-lead.js` é gêmeo de `src/domain/lead/leadDaLanding.js`, no
+repositório do site. Não é import: este projeto é uma unidade de deploy inteira
+e sozinha, e não enxerga o outro repositório.
 
-Se as páginas forem servidas de outro domínio, o formulário para de funcionar.
-Não é descuido: era assim antes, com uma lista de origens permitidas, e essa
-lista foi removida porque não defendia nada (veja a seção de segurança).
+As frases de erro estão escritas **três vezes** — aqui, em `formulario.js` e no
+site. Se divergirem, a pessoa vê o campo passar no navegador e ser recusado
+pelo servidor sem entender o que mudou. Mexeu numa, confira as outras.
+
+## O deploy: duas variáveis de ambiente
+
+As páginas e a função saem **do mesmo domínio**, este projeto. O formulário
+posta em `/api/lead-landing`, caminho relativo, e mesma origem não pede
+permissão a ninguém: não há `data-endereco` e não há CORS.
+
+No projeto da Vercel, em *Settings → Environment Variables*, os dois nomes são
+os **mesmos** do repositório do site, para os valores serem copiados sem
+tradução:
+
+| Variável | O que é | Onde achar |
+|---|---|---|
+| `SUPABASE_URL` | a URL do projeto Supabase | *Project Settings → Data API* |
+| `SUPABASE_CHAVE_DE_SERVICO` | a `service_role` | *Project Settings → API Keys* |
+
+A chave de serviço **ignora RLS**: é por isso que ela funciona contra uma
+tabela que nega tudo, e é por isso que ela nunca pode levar prefixo `VITE_`,
+que a mandaria para o navegador junto com a tabela inteira.
+
+Sem as duas, a função responde 500 e a página diz *"o pedido de contato está
+indisponível"*. O motivo exato fica no log da Vercel, nunca na resposta.
 
 Abrir o arquivo com duplo clique (`file://`) mostra a página e a máscara, mas o
-envio falha: não há API do outro lado. O `/api` também só existe depois do
+envio falha: não há função do outro lado. O `/api` também só existe depois do
 deploy, porque é rewrite; localmente a página é `api-oficial.html`.
 
 ## A segurança do endpoint
@@ -151,9 +187,9 @@ página. Estas são as camadas, e o que cada uma realmente cobre.
 
 | Camada | Contra o quê | Onde |
 |---|---|---|
-| Validação no servidor | corpo malformado, campo fora do vocabulário | `leadDaLanding.js` |
+| Validação no servidor | corpo malformado, campo fora do vocabulário | `_regras-do-lead.js` |
 | RLS sem política e `revoke` | leitura ou escrita por `anon`/`authenticated` | migração |
-| Chave de serviço só no servidor | qualquer acesso direto ao banco | `bancoDeLeads.js` |
+| Chave de serviço só no servidor | qualquer acesso direto ao banco | `_banco-de-leads.js` |
 | Restrições da tabela | valor inválido que passasse pela validação | migração |
 | Teto de envios por IP | enchente automática | `lead-landing.js` |
 | Campo-isca | robô que preenche formulário por nome de campo | os dois HTML |
@@ -248,6 +284,9 @@ três páginas.
 
 ## Antes de publicar
 
+- **`SUPABASE_URL` e `SUPABASE_CHAVE_DE_SERVICO` precisam estar no projeto da
+  Vercel**, nos três ambientes. Sem elas as páginas sobem bonitas e o
+  formulário responde erro no envio, que é o jeito mais caro de descobrir.
 - As duas páginas estão com `noindex, nofollow`: são páginas de anúncio e não
   devem competir com o site no orgânico. Tirar só se a intenção mudar.
 - Os números dentro das ilustrações (funil, contagens do número bloqueado) são
