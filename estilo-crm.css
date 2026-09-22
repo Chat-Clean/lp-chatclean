@@ -421,91 +421,6 @@
   font-weight: 500;
 }
 
-/* ----- Cena dos canais (cartão largo do bento) -------------
-   Cada canal é uma pílula com o ponto na cor do próprio
-   aplicativo, e o ponto solta uma onda em sequência, como
-   mensagem chegando. É a mesma técnica de `.cena-onda` no site
-   institucional: só `transform` e `opacity`, que o navegador
-   compõe na placa de vídeo sem refazer layout.
-
-   A lista é `aria-hidden`: o texto do cartão já diz que são
-   todos os canais, e cinco nomes repetidos só atrapalham quem
-   ouve a página. */
-.canais {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  list-style: none;
-  margin: 1.4rem 0 0;
-  padding: 0;
-}
-
-.canal-chip {
-  --cor: var(--verde);
-  display: inline-flex;
-  align-items: center;
-  gap: 0.55rem;
-  font-family: var(--fonte-util);
-  font-size: 0.75rem;
-  font-weight: 700;
-  line-height: 1;
-  color: var(--tinta);
-  background: var(--branco);
-  border: 1px solid var(--cinza-fio);
-  border-radius: var(--raio-pilula);
-  padding: 0.6rem 0.95rem;
-  transition: border-color 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.cartao:hover .canal-chip,
-.cartao:focus-within .canal-chip {
-  border-color: var(--verde-borda);
-}
-
-.canal-chip i {
-  position: relative;
-  flex: 0 0 auto;
-  width: 0.5rem;
-  height: 0.5rem;
-  border-radius: 50%;
-  background: var(--cor);
-}
-
-.canal-chip i::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  background: var(--cor);
-  animation: onda-de-canal 6s ease-out infinite;
-}
-
-/* O atraso escalonado é o que faz a cena parecer uma fila de
-   mensagens, e não cinco luzes piscando juntas. */
-.canal-chip--insta i::after { animation-delay: 0.6s; }
-.canal-chip--face i::after { animation-delay: 1.2s; }
-.canal-chip--tele i::after { animation-delay: 1.8s; }
-.canal-chip--web i::after { animation-delay: 2.4s; }
-
-@keyframes onda-de-canal {
-  0% {
-    transform: scale(1);
-    opacity: 0.55;
-  }
-  12%,
-  100% {
-    transform: scale(3.4);
-    opacity: 0;
-  }
-}
-
-/* As cores dos próprios aplicativos, como no site: o WhatsApp
-   usa o verde da própria ChatClean. */
-.canal-chip--insta { --cor: #e1306c; }
-.canal-chip--face { --cor: #1877f2; }
-.canal-chip--tele { --cor: #229ed9; }
-.canal-chip--web { --cor: var(--latao); }
-
 /* A marca no cabeçalho do painel: o quadro do funil É a tela da
    ChatClean, então o logotipo ali é cromo de produto, e não
    enfeite de marca por cima de uma ilustração. */
@@ -929,5 +844,355 @@
   .fala--digitando i {
     animation: none;
     opacity: 0.8;
+  }
+}
+
+/* ----- Cena: a caixa de entrada única -----------------------
+   A tese do cartão largo, e por isso a cena mais elaborada: os
+   quatro canais chamam por vez, o fio de cada um acende até a
+   caixa, e a conversa aparece na lista.
+
+   As quatro conversas JÁ ESTÃO no HTML, na ordem invertida (a
+   mais nova em cima). Cada passo só revela a sua: nada é
+   inserido, nada empurra vizinho, o cartão não muda de altura.
+
+   ─── O FIO É DUAS CAMADAS, NÃO UMA QUE TROCA DE COR ─────────
+
+   Cor de traço não transita de graça: mudar `stroke` repinta.
+   Há um fio apagado sempre lá e um aceso por cima, e o que
+   transita é a OPACIDADE do de cima. */
+
+.palco--caixa {
+  display: grid;
+  grid-template-columns: auto 4.5rem minmax(0, 1fr);
+  align-items: center;
+  gap: 0;
+  padding: 1.1rem 1.15rem;
+  min-height: 14rem;
+}
+
+/* ----- A coluna dos canais ----- */
+
+.caixa__canais {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.85rem;
+}
+
+.canal {
+  --cor: var(--verde);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--fonte-util);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  color: var(--cinza);
+  /* Quem ainda não chamou fica apagado: é o que faz o canal da vez
+     saltar sem precisar de seta nem rótulo dizendo "agora é este". */
+  opacity: 0.45;
+  transition:
+    opacity 0.35s ease,
+    transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.canal--whats { --cor: #25d366; }
+.canal--insta { --cor: #e1306c; }
+.canal--face { --cor: #1877f2; }
+.canal--tele { --cor: #229ed9; }
+
+.canal > span {
+  position: relative;
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 2.15rem;
+  height: 2.15rem;
+  border-radius: 10px;
+  background: var(--branco);
+  box-shadow: 0 1px 3px rgba(20, 35, 27, 0.12);
+  color: var(--cor);
+}
+
+.canal > span svg {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+/* A onda do canal da vez. Mora num pseudoelemento para a pulsação
+   não mexer no azulejo, que precisa ficar parado por baixo. */
+.canal > span::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 10px;
+  box-shadow: 0 0 0 2px var(--cor);
+  opacity: 0;
+}
+
+/* O canal da vez: cresce e solta a onda. Os quatro passos estão
+   escritos um a um porque CSS não compara número, e quatro linhas
+   explícitas leem melhor do que um truque que ninguém decifra. */
+.palco--caixa[data-passo="1"] .canal--whats,
+.palco--caixa[data-passo="2"] .canal--insta,
+.palco--caixa[data-passo="3"] .canal--face,
+.palco--caixa[data-passo="4"] .canal--tele {
+  opacity: 1;
+  transform: scale(1.06);
+}
+
+.palco--caixa[data-passo="1"] .canal--whats > span::after,
+.palco--caixa[data-passo="2"] .canal--insta > span::after,
+.palco--caixa[data-passo="3"] .canal--face > span::after,
+.palco--caixa[data-passo="4"] .canal--tele > span::after {
+  animation: caixa-onda 1.1s ease-out;
+}
+
+/* Quem já chamou não volta a apagar de todo: fica aceso, porque a
+   cena é de acúmulo, e no fim os quatro estão na mesma tela. */
+.palco--caixa[data-passo="2"] .canal--whats,
+.palco--caixa[data-passo="3"] .canal--whats,
+.palco--caixa[data-passo="3"] .canal--insta,
+.palco--caixa[data-passo="4"] .canal--whats,
+.palco--caixa[data-passo="4"] .canal--insta,
+.palco--caixa[data-passo="4"] .canal--face {
+  opacity: 0.85;
+}
+
+@keyframes caixa-onda {
+  0% {
+    opacity: 0.8;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.7);
+  }
+}
+
+/* ----- Os fios ----- */
+
+.caixa__fios {
+  width: 100%;
+  height: 78%;
+  overflow: visible;
+}
+
+.fio {
+  fill: none;
+  stroke: rgba(20, 35, 27, 0.13);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.fio--aceso {
+  stroke: var(--verde);
+  stroke-width: 1.6;
+  opacity: 0;
+  transition: opacity 0.45s ease;
+}
+
+.palco--caixa[data-passo="1"] .fio--1,
+.palco--caixa[data-passo="2"] .fio--2,
+.palco--caixa[data-passo="3"] .fio--3,
+.palco--caixa[data-passo="4"] .fio--4 {
+  opacity: 1;
+}
+
+/* Fio de quem já chegou: uma brasa, para a cena mostrar que os
+   canais continuam ligados e não que só o último existe. */
+.palco--caixa[data-passo="2"] .fio--1,
+.palco--caixa[data-passo="3"] .fio--1,
+.palco--caixa[data-passo="3"] .fio--2,
+.palco--caixa[data-passo="4"] .fio--1,
+.palco--caixa[data-passo="4"] .fio--2,
+.palco--caixa[data-passo="4"] .fio--3 {
+  opacity: 0.32;
+}
+
+/* ----- A caixa de entrada ----- */
+
+.caixa__painel {
+  min-width: 0;
+  padding: 0.7rem;
+  border-radius: 15px;
+  background: var(--branco);
+  box-shadow:
+    0 0 0 1px var(--cinza-fio),
+    0 22px 44px -18px rgba(20, 35, 27, 0.28);
+}
+
+.caixa__topo {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0 0.3rem 0.55rem;
+  font-family: var(--fonte-util);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  color: var(--tinta);
+}
+
+/* A contagem sobe com a cena. Texto em `content` porque CSS não
+   soma: são quatro estados, e escrevê-los é mais honesto que
+   inventar um contador que ninguém entende depois. */
+.caixa__conta {
+  font-size: 0.625rem;
+  font-weight: 600;
+  color: var(--cinza);
+}
+
+.palco--caixa[data-passo="1"] .caixa__conta::after { content: "1 conversa"; }
+.palco--caixa[data-passo="2"] .caixa__conta::after { content: "2 conversas"; }
+.palco--caixa[data-passo="3"] .caixa__conta::after { content: "3 conversas"; }
+.palco--caixa[data-passo="4"] .caixa__conta::after { content: "4 conversas"; }
+
+.caixa__conversas {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.3rem;
+}
+
+.caixa__conversas li {
+  --cor: var(--verde);
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.42rem 0.5rem;
+  border-radius: 11px;
+  background: var(--creme);
+}
+
+/* Entra da esquerda, e não de baixo: a mensagem vem do canal, que
+   está à esquerda. A direção conta a história. */
+.palco--caixa .caixa__conversas li {
+  transform: translateX(-14px);
+}
+
+.palco--caixa .caixa__conversas li[data-visivel] {
+  transform: none;
+}
+
+/* O destaque da mais nova é uma camada por opacidade, e não uma
+   troca de cor de fundo: trocar `background` repinta, e a camada
+   só compõe. */
+.caixa__conversas li::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 11px;
+  background: var(--verde-lavado);
+  box-shadow: inset 0 0 0 1px var(--verde-borda);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.palco--caixa[data-passo="1"] li[data-surge-em="1"]::before,
+.palco--caixa[data-passo="2"] li[data-surge-em="2"]::before,
+.palco--caixa[data-passo="3"] li[data-surge-em="3"]::before,
+.palco--caixa[data-passo="4"] li[data-surge-em="4"]::before {
+  opacity: 1;
+}
+
+.caixa__marca {
+  position: relative;
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 8px;
+  background: var(--branco);
+  box-shadow: 0 1px 2px rgba(20, 35, 27, 0.1);
+  color: var(--cor);
+}
+
+.caixa__marca svg {
+  width: 0.8rem;
+  height: 0.8rem;
+}
+
+.caixa__quem {
+  position: relative;
+  min-width: 0;
+  flex: 1;
+  font-size: 0.6875rem;
+  line-height: 1.3;
+  color: var(--cinza);
+}
+
+.caixa__quem b {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--tinta);
+}
+
+/* Nome e recado cortam com reticências em vez de quebrar em duas
+   linhas: linha que cresce muda a altura do cartão. */
+.caixa__quem,
+.caixa__quem b {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.caixa__nova {
+  position: relative;
+  flex: 0 0 auto;
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 50%;
+  background: var(--verde);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.palco--caixa[data-passo="1"] li[data-surge-em="1"] .caixa__nova,
+.palco--caixa[data-passo="2"] li[data-surge-em="2"] .caixa__nova,
+.palco--caixa[data-passo="3"] li[data-surge-em="3"] .caixa__nova,
+.palco--caixa[data-passo="4"] li[data-surge-em="4"] .caixa__nova {
+  opacity: 1;
+}
+
+/* ----- Estreito: o fio sai, o azulejo fica ----- */
+
+@media (max-width: 599px) {
+  .palco--caixa {
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 0.85rem;
+    min-height: 0;
+  }
+
+  /* O fio some porque em 330px de cartão ele seria um risco de 20px
+     sem leitura nenhuma. A coluna de azulejos continua, e é ela que
+     diz de onde a conversa veio. */
+  .caixa__fios {
+    display: none;
+  }
+
+  .canal {
+    font-size: 0;
+    gap: 0;
+  }
+
+  .canal > span {
+    width: 1.9rem;
+    height: 1.9rem;
+  }
+
+  .caixa__canais {
+    gap: 0.6rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .canal > span::after {
+    animation: none;
   }
 }

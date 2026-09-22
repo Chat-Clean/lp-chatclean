@@ -105,10 +105,30 @@ mostram.
 
 | cartão | o que a cena mostra |
 |---|---|
+| Todos os canais numa lista só | cada canal chama por vez, o fio dele acende e a conversa cai na caixa de entrada |
 | Funil em Kanban | a meta do mês enchendo, e um negócio fechando em verde |
 | ChatBot e Agente de IA | a pergunta, o robô digitando, a resposta, e a passagem para a Ana |
 | Campanhas | o funil do disparo: enviadas, entregues, lidas, responderam |
 | Dashboards | tempo de resposta, CSAT e as colunas por atendente subindo |
+
+### A caixa de entrada é a cena mais elaborada, e tem dois detalhes
+
+É a tese do cartão largo, e por isso ganhou o tratamento completo do site:
+canais à esquerda, fios curvos acendendo, e a caixa à direita recebendo.
+
+**A lista está escrita na ordem invertida**, a mais nova em cima. As quatro
+conversas já estão no HTML, no lugar final: cada passo só revela a sua. Nada é
+inserido, nada empurra vizinho, o cartão não muda de altura. É o tipo de coisa
+que alguém "arruma" numa edição distraída, então há uma asserção exigindo que
+os passos apareçam em ordem decrescente.
+
+**O fio é duas camadas, não uma que troca de cor.** Cor de traço não transita
+de graça: mudar `stroke` repinta. Há um fio apagado sempre no lugar e um aceso
+por cima, e o que transita é a opacidade do de cima.
+
+Abaixo de 600px os fios somem e os rótulos dos canais também: num cartão de
+330px o fio seria um risco de 20px sem leitura nenhuma. A coluna de azulejos
+continua, e é ela que diz de onde a conversa veio.
 
 ### Uma cena é marcação, não JavaScript
 
