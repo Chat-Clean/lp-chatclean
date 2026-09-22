@@ -136,7 +136,12 @@ Três decisões que fazem as colunas se acertarem:
   faz o `<svg>` cair nos 150px intrínsecos;
 - os quatro canais são espalhados por `space-around`, cujos centros caem em
   12,5 / 37,5 / 62,5 / 87,5 por cento: é onde os fios começam. Coluna e fios
-  medem a mesma altura, então se alinham sem conta nenhuma no JavaScript.
+  medem a mesma altura, então se alinham sem conta nenhuma no JavaScript;
+- a lista de conversas tem coluna explícita `minmax(0, 1fr)` e cada linha tem
+  `min-width: 0`. Sem isso, no celular, a lista ficava mais larga que o painel
+  e vazava para fora do cartão: a coluna implícita de uma grade tem mínimo em
+  min-content, e linha com `nowrap` tem min-content do recado inteiro. As
+  reticências nunca agiam porque a linha nunca chegava a encolher.
 
 O corte para cartão estreito é **container query**, não media query: no
 carrossel do celular este cartão tem 330px com a janela em 600px. Abaixo de

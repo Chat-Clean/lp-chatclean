@@ -1051,6 +1051,9 @@
 
 .caixa__painel {
   min-width: 0;
+  /* O que ainda assim passar da borda é cortado no canto arredondado
+     do painel, e não no meio do cartão. */
+  overflow: hidden;
   padding: 0.7rem;
   border-radius: 15px;
   background: var(--branco);
@@ -1064,6 +1067,7 @@
   align-items: baseline;
   justify-content: space-between;
   gap: 0.5rem;
+  white-space: nowrap;
   padding: 0 0.3rem 0.55rem;
   font-family: var(--fonte-util);
   font-size: 0.6875rem;
@@ -1090,10 +1094,19 @@
   margin: 0;
   padding: 0;
   display: grid;
+  /* `minmax(0, 1fr)` e não a coluna implícita: a implícita é `auto`,
+     cujo mínimo é o min-content das linhas, e uma linha com `nowrap`
+     tem min-content do tamanho do recado inteiro. No celular a lista
+     ficava mais larga que o painel e vazava para fora do cartão, e as
+     reticências nunca agiam porque a linha nunca chegava a encolher. */
+  grid-template-columns: minmax(0, 1fr);
   gap: 0.3rem;
 }
 
 .caixa__conversas li {
+  /* O outro lado da mesma garantia: item de grade nasce com
+     `min-width: auto`, e sem zerar ele a coluna acima não encolhe. */
+  min-width: 0;
   position: relative;
   display: flex;
   align-items: center;
@@ -1200,7 +1213,18 @@
 @container (max-width: 30rem) {
   .palco--caixa {
     grid-template-columns: max-content minmax(0, 1fr);
-    gap: 0.85rem;
+    gap: 0.6rem;
+    /* Cartão de 330px: cada rem de respiro que sobra aqui é rem que
+       falta para o recado da conversa. */
+    padding: 0.75rem;
+  }
+
+  .caixa__painel {
+    padding: 0.55rem;
+  }
+
+  .caixa__topo {
+    font-size: 0.625rem;
   }
 
   /* O fio some porque em 330px de cartão ele seria um risco de 20px
@@ -1216,8 +1240,8 @@
   }
 
   .caixa__canal > span {
-    width: 1.9rem;
-    height: 1.9rem;
+    width: 1.75rem;
+    height: 1.75rem;
   }
 }
 
