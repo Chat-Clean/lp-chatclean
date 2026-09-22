@@ -591,17 +591,12 @@
                serviço e devolve o endereço da conversa no
                WhatsApp com a mensagem já escrita.
 
-               Para apontar para outro lugar, use `data-endereco`
-               no <form>. Sem ele o padrão é o caminho relativo,
-               que só funciona se a página for servida do mesmo
-               domínio da API.
+               O caminho é relativo, e por isso a página precisa
+               ser servida do mesmo domínio da API. Mesma origem
+               dispensa CORS: não há variável de ambiente nem
+               lista de origens para manter.
                ------------------------------------------------ -->
-          <form
-            class="formulario"
-            data-landing="crm"
-            data-endereco="https://chatclean.com.br/api/lead-landing"
-            novalidate
-          >
+          <form class="formulario" data-landing="crm" novalidate>
             <div class="formulario__marca">
               <img src="ativos/marca-chatclean.svg" alt="" width="34" height="34" />
               <span>ChatClean</span>
@@ -659,6 +654,19 @@
                   <span class="campo__erro" id="crm-erro-aceite" data-erro="aceite"></span>
                 </span>
               </label>
+
+              <!-- CAMPO-ISCA. Fica fora da tela e fora da ordem de tabulação:
+                   ninguém que use a página com olho, mouse ou leitor de tela
+                   chega nele. Robô que preenche formulário pelo nome dos
+                   campos preenche, e o servidor descarta o envio sem dizer
+                   por quê.
+
+                   NÃO use `display: none` aqui: parte dos robôs pula campo
+                   escondido assim, e a armadilha deixa de funcionar. -->
+              <div class="isca" aria-hidden="true">
+                <label for="crm-site">Site</label>
+                <input id="crm-site" name="site" type="text" tabindex="-1" autocomplete="off" />
+              </div>
 
               <div class="campo-de-envio">
                 <button class="botao botao--latao botao--largo" type="submit">

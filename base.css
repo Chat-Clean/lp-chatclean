@@ -1338,3 +1338,18 @@ strong {
     transition-duration: 0.001s !important;
   }
 }
+
+/* ----- O campo-isca ----------------------------------------
+   Fora da tela e fora do fluxo, mas renderizado: `display: none`
+   e `hidden` são pulados por parte dos robôs, e a armadilha
+   depende de ele parecer um campo comum no HTML.
+
+   Quem navega por teclado não chega nele (`tabindex="-1"` no
+   HTML) e quem ouve a página também não (`aria-hidden`). */
+.isca {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}

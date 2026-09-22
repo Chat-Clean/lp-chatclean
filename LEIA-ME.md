@@ -130,38 +130,73 @@ resposta do servidor, montado em `leadDaLanding.js`
 (`WHATSAPP_DAS_LANDINGS`). Quem adulterar o HTML consegue, no máximo, gravar um
 lead com o próprio nome errado, não desviar a conversa.
 
-## O deploy: dois projetos ao todo
+## O deploy: mesma origem, e nada para configurar
 
-| Projeto da Vercel | Root Directory | Domínio |
-|---|---|---|
-| o do site (já existe) | `chatclean/` | `chatclean.com.br`, e é onde a API roda |
-| novo | `chatclean landing pages/` | `lp.chatclean.com.br` |
+As páginas são servidas **do mesmo domínio da API**. O formulário posta em
+`/api/lead-landing`, caminho relativo, e mesma origem não pede permissão a
+ninguém: não há variável de ambiente, não há `data-endereco`, não há CORS.
 
-### Os três passos
-
-1. **Repositório.** Esta pasta não está sob controle de versão. Para a Vercel
-   fazer deploy por Git, ela precisa estar num repositório: próprio, ou dentro
-   do `chatclean/` com o Root Directory do projeto apontando para cá.
-2. **Domínio.** `lp.chatclean.com.br` no projeto novo.
-3. **CORS, no projeto do SITE** (é lá que a API roda), como variável de
-   ambiente:
-
-```
-LANDINGS_ORIGENS_PERMITIDAS=https://lp.chatclean.com.br
-```
-
-Uma origem só, porque as duas páginas vivem no mesmo domínio agora. Sem essa
-variável, nenhuma origem externa é liberada e o formulário falha com erro de
-CORS no navegador. É o padrão seguro: endpoint que grava dado pessoal não aceita
-qualquer origem só porque é mais fácil. Correspondência exata, sem curinga e sem
-a barra no fim.
-
-Mudou o domínio? Dois lugares: a variável acima e o `data-endereco` dos dois
-`<form>`. O projeto em si não sabe o próprio nome.
+Se as páginas forem servidas de outro domínio, o formulário para de funcionar.
+Não é descuido: era assim antes, com uma lista de origens permitidas, e essa
+lista foi removida porque não defendia nada (veja a seção de segurança).
 
 Abrir o arquivo com duplo clique (`file://`) mostra a página e a máscara, mas o
-envio falha: o navegador barra a chamada. O `/api` também só existe depois do
+envio falha: não há API do outro lado. O `/api` também só existe depois do
 deploy, porque é rewrite; localmente a página é `api-oficial.html`.
+
+## A segurança do endpoint
+
+O formulário é público por natureza: qualquer um posta nele sem nunca abrir a
+página. Estas são as camadas, e o que cada uma realmente cobre.
+
+| Camada | Contra o quê | Onde |
+|---|---|---|
+| Validação no servidor | corpo malformado, campo fora do vocabulário | `leadDaLanding.js` |
+| RLS sem política e `revoke` | leitura ou escrita por `anon`/`authenticated` | migração |
+| Chave de serviço só no servidor | qualquer acesso direto ao banco | `bancoDeLeads.js` |
+| Restrições da tabela | valor inválido que passasse pela validação | migração |
+| Teto de envios por IP | enchente automática | `lead-landing.js` |
+| Campo-isca | robô que preenche formulário por nome de campo | os dois HTML |
+| Teto de corpo | payload grande gastando memória | `lead-landing.js` |
+
+### O que CORS não fazia
+
+A versão anterior tinha `LANDINGS_ORIGENS_PERMITIDAS`, descrita como defesa. Não
+era. **CORS é imposto pelo navegador, não pelo servidor**: medido, um POST sem
+cabeçalho `Origin` gravava normalmente, e com `Origin` de qualquer site também.
+A lista só decidia se o navegador deixava a página LER a resposta. Removida
+junto com a necessidade dela, agora que tudo é mesma origem.
+
+### O teto de envios
+
+Seis por IP a cada dez minutos, em `LIMITE_DE_ENVIOS`. Folgado para gente de
+verdade, inclusive um escritório inteiro atrás do mesmo IP de saída; apertado
+para um laço, que faz seis em dois segundos. Estourou, responde `429` com
+`Retry-After` e uma frase que não revela qual é o número.
+
+Duas decisões que parecem frouxas e são deliberadas:
+
+- **Falha aberta.** Se a contagem não responde, o lead passa. Banco lento
+  derrubando a captação troca um problema de lixo por um problema de receita.
+- **Sem IP, sem teto.** Em ambiente sem proxy o cabeçalho não vem, e barrar
+  todo mundo nesse caso seria pior que não barrar ninguém.
+
+O teto contém enchente; ele não é o portão. Quem precisar de mais que isso: o
+Firewall da Vercel faz limite de taxa na borda, antes de a função rodar.
+
+### O campo-isca
+
+Um `<input name="site">` fora da tela, fora da ordem de tabulação e
+`aria-hidden`. Ninguém que use a página com olho, mouse ou leitor de tela chega
+nele; robô que preenche por nome de campo preenche.
+
+Quando vem preenchido, o servidor responde **201, como se tivesse dado certo**,
+e não grava. Recusar ensinaria o robô a tentar de novo sem o campo. A conferência
+acontece depois da validação, também de propósito: assim o tempo de resposta não
+denuncia a armadilha.
+
+**Não troque o CSS dele por `display: none`.** Parte dos robôs pula campo
+escondido assim, e a isca deixa de pescar.
 
 ## As duas na mesma tabela, separadas por uma coluna
 

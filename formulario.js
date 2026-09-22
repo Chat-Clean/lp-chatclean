@@ -286,6 +286,9 @@
       telefone: valorDoCampo("telefone"),
       atendentes: valorDoCampo("atendentes"),
       aceite: valorDoCampo("aceite") === true,
+      // O campo-isca vai sempre, e vazio quando é gente. Ver o comentário
+      // dele no HTML: quem preenche é robô, e o servidor descarta.
+      site: valorDoCampo("site"),
       origem: window.location.pathname,
       campanha: campanhaDaBusca(),
     };
