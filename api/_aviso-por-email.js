@@ -225,14 +225,9 @@ function corpoEmHtml(lead, extras) {
       '" style="display:inline-block;padding:16px 34px;font-family:Arial,Helvetica,sans-serif;font-size:16px;font-weight:700;letter-spacing:.03em;color:' +
       COR.noite +
       ';text-decoration:none">Falar no WhatsApp &nbsp;&rarr;</a>' +
-      "</td></tr></table>" +
-      // O número escrito, embaixo do botão: botão de e-mail não sobrevive a
-      // todo cliente, e daí o número ainda dá para copiar ou discar.
-      '<p style="margin:14px 0 0;font-family:Arial,Helvetica,sans-serif;font-size:15px;color:' +
-      COR.tinta +
-      ';text-align:center">' +
-      escapar(telefone) +
-      "</p>"
+      // Só o botão. O número já está na ficha, logo acima, e clicável: repetir
+      // aqui era dizer a mesma coisa duas vezes na mesma tela.
+      "</td></tr></table>"
     : '<p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:15px;color:' +
       COR.alerta +
       ';text-align:center">Telefone fora do formato esperado: ' +
@@ -346,7 +341,7 @@ function corpoEmTexto(lead, extras) {
   linhas.push("Quando:     " + quandoVisivel(dados.criadoEm));
 
   const link = whatsappDoLead(lead.telefone, lead);
-  linhas.push("", "Falar no WhatsApp (" + telefone + "):", link || "-");
+  linhas.push("", "Falar no WhatsApp:", link || "-");
   return linhas.join("\n");
 }
 

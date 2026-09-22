@@ -192,8 +192,8 @@ deploy, porque é rewrite; localmente a página é `api-oficial.html`.
 
 Gravou, avisa: cada lead dispara um e-mail para
 `chatcleanatendimento@gmail.com` com a ficha e um botão que abre a conversa no
-WhatsApp **com o lead**. O número também vai escrito, logo abaixo do botão,
-porque botão em e-mail nem sempre sobrevive ao cliente de quem lê.
+WhatsApp **com o lead**. O número aparece uma vez só, na ficha, e clicável:
+repetir embaixo do botão era dizer a mesma coisa duas vezes na mesma tela.
 
 O aviso sai de `api/_aviso-por-email.js`, chamado pela função logo depois da
 gravação. Não há gatilho no banco: quem escreve nessa tabela é só essa função,
