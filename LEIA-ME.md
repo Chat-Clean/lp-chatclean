@@ -88,7 +88,7 @@ Sem framework e quase sem JavaScript, tudo em CSS:
   latão se desenha no topo (`:hover` e `:focus-within`, então funciona pelo
   teclado também);
 - na landing de CRM, o cartão do funil paira em laço sobre a vaga pontilhada, e
-  os pontos dos canais soltam uma onda em sequência;
+  os cinco cartões de recurso têm cena própria (seção abaixo);
 - na landing de API, o fio tracejado corre do WhatsApp para a ChatClean, o
   pulso verde bate no perfil verificado e a linha da tabela acende no hover;
 - tudo respeita `prefers-reduced-motion`.
