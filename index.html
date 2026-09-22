@@ -1,0 +1,710 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CRM para WhatsApp | ChatClean</title>
+    <meta
+      name="description"
+      content="WhatsApp, Instagram, Facebook e Telegram numa caixa de entrada só, com o funil de vendas do lado. Um número para a equipe inteira e cada conversa registrada."
+    />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="theme-color" content="#14231b" />
+    <link rel="icon" type="image/svg+xml" href="ativos/marca-chatclean.svg" />
+
+    <!-- Identidade tipográfica do site: Playfair Display (display),
+         Poppins (texto) e Montserrat (rótulos, botões e caixa alta). -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Poppins:wght@400;500;600;700&family=Montserrat:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="base.css" />
+    <link rel="stylesheet" href="estilo-crm.css" />
+  </head>
+
+  <body>
+    <!-- Ícones: um desenho, um lugar. O traço segue o mesmo padrão do site
+         (2px, ponta redonda), para não haver duas famílias de ícone. -->
+    <svg hidden aria-hidden="true">
+      <defs>
+        <symbol id="i-seta" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
+        </symbol>
+        <symbol id="i-confere" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 6 9 17l-5-5" />
+        </symbol>
+        <symbol id="i-fone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92Z" />
+        </symbol>
+        <symbol id="i-caixa" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 12h-6l-2 3h-4l-2-3H2" /><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11Z" />
+        </symbol>
+        <symbol id="i-funil" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect width="7" height="18" x="3" y="3" rx="1" /><rect width="7" height="12" x="14" y="3" rx="1" />
+        </symbol>
+        <symbol id="i-robo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 8V4H8" /><rect width="16" height="12" x="4" y="8" rx="2" /><path d="M2 14h2m16 0h2M15 13v2m-6-2v2" />
+        </symbol>
+        <symbol id="i-megafone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m3 11 18-5v12L3 14v-3z" /><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6" />
+        </symbol>
+        <symbol id="i-grafico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 3v18h18" /><path d="M18 17V9m-5 8V5M8 17v-3" />
+        </symbol>
+        <symbol id="i-cofre" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect width="18" height="18" x="3" y="3" rx="2" /><circle cx="12" cy="12" r="4" /><path d="M12 8v1m0 6v1m-4-4h1m6 0h1" />
+        </symbol>
+        <symbol id="i-relogio" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10" /><path d="M12 6v6l4 2" />
+        </symbol>
+        <symbol id="i-pessoas" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
+        </symbol>
+        <symbol id="i-estrela" viewBox="0 0 24 24" fill="currentColor">
+          <path d="m12 2 2.95 6.15 6.8.83-4.95 4.7 1.25 6.72L12 17.1l-6.05 3.3L7.2 13.68 2.25 8.98l6.8-.83L12 2Z" />
+        </symbol>
+        <symbol id="i-alerta" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 9v4m0 4h.01" /><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z" />
+        </symbol>
+      </defs>
+    </svg>
+
+    <!-- =======================================================
+         Cabeçalho: logotipo e um telefone. Uma landing tem um
+         trabalho só, e menu completo é sete saídas para quem
+         chegou por anúncio.
+         ======================================================= -->
+    <header class="topo">
+      <div class="envelope topo__interno">
+        <a class="topo__marca" href="https://chatclean.com.br" aria-label="ChatClean, página inicial">
+          <img src="ativos/chatclean-white.svg" alt="ChatClean" width="150" height="30" />
+        </a>
+        <a
+          class="topo__contato"
+          href="https://api.whatsapp.com/send?phone=5584998900718&amp;text=Ol%C3%A1%2C+quero+conhecer+o+CRM+da+ChatClean"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <svg aria-hidden="true" width="14" height="14"><use href="#i-fone" /></svg>
+          Falar com a gente
+        </a>
+      </div>
+    </header>
+
+    <main>
+      <!-- =====================================================
+           HERO — a tese da página é o funil. O que um CRM faz
+           não se explica: se mostra. O quadro da direita é o
+           produto, com o cartão no ar entre duas etapas.
+           ===================================================== -->
+      <section class="hero">
+        <div class="envelope hero__interno">
+          <div class="hero__texto">
+            <span class="etiqueta etiqueta--noite entra entra--1">CRM para WhatsApp</span>
+
+            <h1 class="entra entra--2">
+              Seu funil de vendas mora no
+              <span class="latao">celular dos vendedores</span>
+            </h1>
+
+            <p class="hero__apoio entra entra--3">
+              WhatsApp, Instagram, Facebook e Telegram numa caixa de entrada só,
+              com o funil de vendas do lado. Um número para a equipe inteira e
+              nenhum lead esquecido no visto
+            </p>
+
+            <div class="par-de-botoes entra entra--4">
+              <a class="botao botao--claro" href="#quero-ver">
+                Quero ver funcionando
+                <svg class="botao__seta" aria-hidden="true" width="17" height="17"><use href="#i-seta" /></svg>
+              </a>
+              <a class="botao botao--fantasma" href="#o-que-muda">Ver o que muda</a>
+            </div>
+
+            <ul class="hero__provas entra entra--5">
+              <li>Sem fidelidade</li>
+              <li>Implantação por nossa conta</li>
+              <li>Suporte em português</li>
+            </ul>
+          </div>
+
+          <!-- ELEMENTO DE ASSINATURA -------------------------
+               O quadro do funil, em HTML e CSS. Não é imagem:
+               as colunas, os cartões e o total são texto, e o
+               cartão no ar flutua em laço sobre a vaga
+               pontilhada em latão.
+
+               Os nomes e valores são de exemplo: é uma
+               ilustração da tela, não dado de cliente.
+               ------------------------------------------------ -->
+          <div class="hero__quadro entra entra--4" role="img"
+               aria-label="Ilustração do funil de vendas da ChatClean: colunas Novo lead, Qualificando e Proposta enviada, com cartões de negociação e o total de R$ 184.500 em aberto.">
+            <div class="funil">
+              <div class="funil__topo">
+                <div class="funil__identidade">
+                  <img src="ativos/chatclean-white.svg" alt="" width="84" height="17" />
+                  <div>
+                  <span class="funil__rotulo">Funil · Comercial</span>
+                  <p class="funil__total">R$&nbsp;184.500 <span>em aberto</span></p>
+                  </div>
+                </div>
+                <div class="funil__equipe" aria-hidden="true">
+                  <span>RM</span><span>JC</span><span>AF</span><span class="funil__equipe-mais">+5</span>
+                </div>
+              </div>
+
+              <div class="funil__colunas" aria-hidden="true">
+                <div class="coluna">
+                  <header><span>Novo lead</span><b>6</b></header>
+                  <article class="ficha">
+                    <div class="ficha__topo">
+                      <span class="ficha__quem">Padaria Vila Nova</span>
+                      <i class="canal canal--whats" title="WhatsApp"></i>
+                    </div>
+                    <p class="ficha__fala">“Vocês entregam ainda hoje?”</p>
+                    <footer><span class="ficha__valor">R$ 2.400</span><span class="ficha__tempo">há 2 min</span></footer>
+                  </article>
+                  <article class="ficha">
+                    <div class="ficha__topo">
+                      <span class="ficha__quem">Ana Ribeiro</span>
+                      <i class="canal canal--insta" title="Instagram"></i>
+                    </div>
+                    <p class="ficha__fala">“Chegou o orçamento?”</p>
+                    <footer><span class="ficha__valor">R$ 890</span><span class="ficha__tempo">há 14 min</span></footer>
+                  </article>
+                </div>
+
+                <div class="coluna">
+                  <header><span>Qualificando</span><b>4</b></header>
+                  <article class="ficha">
+                    <div class="ficha__topo">
+                      <span class="ficha__quem">Metalúrgica Sertão</span>
+                      <i class="canal canal--whats" title="WhatsApp"></i>
+                    </div>
+                    <p class="ficha__fala">Pediu prazo de 30 dias</p>
+                    <footer><span class="ficha__valor">R$ 18.700</span><span class="ficha__tempo">ontem</span></footer>
+                  </article>
+                  <article class="ficha ficha--robo">
+                    <div class="ficha__topo">
+                      <span class="ficha__quem">Clínica Bem Viver</span>
+                      <i class="canal canal--tele" title="Telegram"></i>
+                    </div>
+                    <p class="ficha__fala">Robô qualificou e passou para Júlia</p>
+                    <footer><span class="ficha__valor">R$ 6.150</span><span class="ficha__tempo">há 1 h</span></footer>
+                  </article>
+                </div>
+
+                <div class="coluna coluna--alvo">
+                  <header><span>Proposta enviada</span><b>7</b></header>
+                  <!-- A vaga onde o cartão vai cair: pontilhado em latão, o
+                       único lugar da página em que o metal aparece fora do
+                       título. É o destino, não enfeite.
+
+                       Esta coluna tem SÓ a vaga: o espaço abaixo dela é
+                       onde o cartão em trânsito paira. Com um segundo
+                       cartão aqui, os dois se tapavam e o movimento
+                       deixava de se ler. -->
+                  <div class="vaga">Soltar aqui</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- O cartão em trânsito. Fora do fluxo do quadro para poder
+                 ficar torto e por cima de duas colunas ao mesmo tempo. -->
+            <article class="ficha ficha--no-ar" aria-hidden="true">
+              <div class="ficha__topo">
+                <span class="ficha__quem">Imobiliária Terra Invest</span>
+                <i class="canal canal--whats" title="WhatsApp"></i>
+              </div>
+              <p class="ficha__fala">“Fechado, manda o contrato”</p>
+              <footer><span class="ficha__valor">R$ 74.900</span><span class="ficha__tempo">agora</span></footer>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================
+           Prova social: quem já atende assim.
+           ===================================================== -->
+      <section class="secao secao--estreita secao--creme">
+        <div class="envelope">
+          <p class="faixa__titulo">Empresas que já atendem dentro da ChatClean</p>
+          <ul class="faixa-de-clientes">
+            <li><img src="ativos/clientes/lauto-cargo.png" alt="L'auto Cargo" loading="lazy" /></li>
+            <li><img src="ativos/clientes/imobee.svg" alt="Imobee" loading="lazy" /></li>
+            <li><img src="ativos/clientes/avelloz.svg" alt="Avelloz" loading="lazy" /></li>
+            <li><img src="ativos/clientes/liv.svg" alt="Liv" loading="lazy" /></li>
+            <li><img src="ativos/clientes/simplo.png" alt="Simplo" loading="lazy" /></li>
+            <li><img src="ativos/clientes/bom-todo.png" alt="Bom Todo" loading="lazy" /></li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- =====================================================
+           O custo. Cada cartão carrega o PAR: a perda em cima e
+           a resposta da plataforma embaixo. Nasceu de cortar
+           texto — três cartões de problema mais três de solução
+           viravam redação, e ninguém lia a segunda metade.
+           ===================================================== -->
+      <section class="secao secao--marcada" id="o-que-muda">
+        <div class="envelope">
+          <div class="titulo-de-secao">
+            <span class="etiqueta"><svg aria-hidden="true" width="13" height="13"><use href="#i-alerta" /></svg> O que está vazando</span>
+            <h2>O problema não é o volume. É não ter onde guardar <span class="destaque">o que foi dito</span></h2>
+            <p>Três coisas acontecem em toda operação que vende pelo WhatsApp sem CRM</p>
+          </div>
+
+          <div class="grade grade--3">
+            <article class="cartao">
+              <span class="selo-de-icone"><svg aria-hidden="true"><use href="#i-relogio" /></svg></span>
+              <h3>O lead de ontem</h3>
+              <p>Ninguém combinou quem retorna</p>
+              <div class="chips">
+                <span class="chip">sem responsável</span>
+                <span class="chip">sem prazo</span>
+              </div>
+              <p class="virada__resposta">
+                <svg aria-hidden="true"><use href="#i-confere" /></svg>
+                Vira cartão com dono, etapa e data de retorno
+              </p>
+            </article>
+
+            <article class="cartao">
+              <span class="selo-de-icone"><svg aria-hidden="true"><use href="#i-pessoas" /></svg></span>
+              <h3>O desconto prometido</h3>
+              <p>Combinado no particular de um vendedor</p>
+              <div class="chips">
+                <span class="chip">nada registrado</span>
+                <span class="chip">cobrado depois</span>
+              </div>
+              <p class="virada__resposta">
+                <svg aria-hidden="true"><use href="#i-confere" /></svg>
+                Fica na conversa, visível para o time inteiro
+              </p>
+            </article>
+
+            <article class="cartao">
+              <span class="selo-de-icone"><svg aria-hidden="true"><use href="#i-cofre" /></svg></span>
+              <h3>A carteira no chip</h3>
+              <p>O número está no celular de um funcionário</p>
+              <div class="chips">
+                <span class="chip">sai com ele</span>
+                <span class="chip">sem histórico</span>
+              </div>
+              <p class="virada__resposta">
+                <svg aria-hidden="true"><use href="#i-confere" /></svg>
+                Contatos e conversas ficam na plataforma
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================
+           O produto, em bento. O cartão largo é o dos canais:
+           ele é o único que precisa MOSTRAR alguma coisa, e por
+           isso ocupa o dobro. Os outros são uma linha cada.
+           ===================================================== -->
+      <section class="secao secao--creme">
+        <div class="envelope">
+          <div class="titulo-de-secao">
+            <span class="etiqueta">Dentro da plataforma</span>
+            <h2>Uma tela para atender. Outra para saber <span class="destaque">quanto vale</span></h2>
+            <p>A conversa acontecendo e a negociação andando, no mesmo lugar</p>
+          </div>
+
+          <div class="bento">
+            <article class="cartao bento__largo">
+              <span class="selo-de-icone"><svg aria-hidden="true"><use href="#i-caixa" /></svg></span>
+              <h3>Todos os canais numa lista só</h3>
+              <p>Sua equipe para de trocar de aplicativo no meio do atendimento</p>
+
+              <!-- A cena dos canais: o ponto de cada um solta uma onda em
+                   sequência, como mensagem chegando. Só `transform` e
+                   `opacity`, que o navegador compõe na placa de vídeo. -->
+              <ul class="canais" aria-hidden="true">
+                <li class="canal-chip canal-chip--whats"><i></i>WhatsApp</li>
+                <li class="canal-chip canal-chip--insta"><i></i>Instagram</li>
+                <li class="canal-chip canal-chip--face"><i></i>Facebook</li>
+                <li class="canal-chip canal-chip--tele"><i></i>Telegram</li>
+                <li class="canal-chip canal-chip--web"><i></i>Webchat</li>
+              </ul>
+            </article>
+
+            <article class="cartao">
+              <span class="selo-de-icone"><svg aria-hidden="true"><use href="#i-funil" /></svg></span>
+              <h3>Funil em Kanban</h3>
+              <p>Cada negócio é um cartão com valor e dono</p>
+              <div class="chips">
+                <span class="chip">vários funis</span>
+                <span class="chip">metas</span>
+              </div>
+            </article>
+
+            <article class="cartao">
+              <span class="selo-de-icone"><svg aria-hidden="true"><use href="#i-robo" /></svg></span>
+              <h3>ChatBot e Agente de IA</h3>
+              <p>Responde no seu tom e chama uma pessoa quando precisa</p>
+              <div class="chips">
+                <span class="chip">24 horas</span>
+                <span class="chip">sem programar</span>
+              </div>
+            </article>
+
+            <article class="cartao">
+              <span class="selo-de-icone"><svg aria-hidden="true"><use href="#i-megafone" /></svg></span>
+              <h3>Campanhas</h3>
+              <p>Modelos aprovados pela Meta, disparo por lista</p>
+              <div class="chips">
+                <span class="chip">agendadas</span>
+                <span class="chip">funil de envio</span>
+              </div>
+            </article>
+
+            <article class="cartao">
+              <span class="selo-de-icone"><svg aria-hidden="true"><use href="#i-grafico" /></svg></span>
+              <h3>Dashboards</h3>
+              <p>Tempo de resposta, atendente e etapa do funil</p>
+              <div class="chips">
+                <span class="chip">CSAT</span>
+                <span class="chip">por colaborador</span>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================
+           Preço. Não há tabela de prateleira nesta página de
+           propósito: a conta depende do tamanho da operação, e
+           ela é aberta na proposta.
+           ===================================================== -->
+      <section class="secao secao--noite">
+        <div class="envelope preco">
+          <div>
+            <span class="etiqueta etiqueta--noite">Quanto custa</span>
+            <h2>A conta depende de <span class="latao">duas coisas</span></h2>
+            <p class="linha-de-apoio preco__apoio">
+              Quantas pessoas vão atender e quantos canais você liga. A gente
+              olha o seu atendimento e monta a conta aberta na proposta
+            </p>
+          </div>
+
+          <ul class="lista-conferida preco__lista">
+            <li>
+              <svg aria-hidden="true"><use href="#i-confere" /></svg>
+              <span><strong>Sem fidelidade</strong><br />Cancela quando quiser, sem multa</span>
+            </li>
+            <li>
+              <svg aria-hidden="true"><use href="#i-confere" /></svg>
+              <span><strong>Implantação inclusa</strong><br />Canais, fluxos e treinamento da equipe</span>
+            </li>
+            <li>
+              <svg aria-hidden="true"><use href="#i-confere" /></svg>
+              <span><strong>No ar em poucos dias úteis</strong><br />Sem TI, sem servidor, sem instalar nada</span>
+            </li>
+            <li>
+              <svg aria-hidden="true"><use href="#i-confere" /></svg>
+              <span><strong>Suporte em português</strong><br />Por quem conhece a sua conta</span>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- =====================================================
+           Depoimentos de clientes reais do site institucional.
+           As citações ficam PALAVRA POR PALAVRA, com a
+           pontuação de quem falou: encurtar fala de cliente
+           para caber num estilo é reescrever o depoimento.
+           ===================================================== -->
+      <section class="secao secao--creme-fundo">
+        <div class="envelope">
+          <div class="titulo-de-secao">
+            <span class="etiqueta">Quem já usa</span>
+            <h2>O que muda na segunda-feira</h2>
+          </div>
+
+          <div class="grade grade--3">
+            <figure class="cartao voz">
+              <div class="voz__notas" aria-label="Cinco de cinco">
+                <svg aria-hidden="true" width="15" height="15"><use href="#i-estrela" /></svg>
+                <svg aria-hidden="true" width="15" height="15"><use href="#i-estrela" /></svg>
+                <svg aria-hidden="true" width="15" height="15"><use href="#i-estrela" /></svg>
+                <svg aria-hidden="true" width="15" height="15"><use href="#i-estrela" /></svg>
+                <svg aria-hidden="true" width="15" height="15"><use href="#i-estrela" /></svg>
+              </div>
+              <blockquote>
+                “Reunimos WhatsApp, Instagram e Facebook em um só lugar. A equipe
+                responde mais rápido e o atendimento ficou muito mais organizado.”
+              </blockquote>
+              <figcaption>
+                <strong>Equipe L'auto Cargo</strong>
+                <span>Operação de Atendimento</span>
+              </figcaption>
+            </figure>
+
+            <figure class="cartao voz">
+              <div class="voz__notas" aria-label="Cinco de cinco">
+                <svg aria-hidden="true" width="15" height="15"><use href="#i-estrela" /></svg>
+                <svg aria-hidden="true" width="15" height="15"><use href="#i-estrela" /></svg>
+                <svg aria-hidden="true" width="15" height="15"><use href="#i-estrela" /></svg>
+                <svg aria-hidden="true" width="15" height="15"><use href="#i-estrela" /></svg>
+                <svg aria-hidden="true" width="15" height="15"><use href="#i-estrela" /></svg>
+              </div>
+              <blockquote>
+                “Conseguimos responder clientes 24 horas por dia sem deixar nenhuma
+                conversa sem resposta. Nossas vendas cresceram muito.”
+              </blockquote>
+              <figcaption>
+                <strong>Equipe Terra Invest Imóveis</strong>
+                <span>Comercial</span>
+              </figcaption>
+            </figure>
+
+            <figure class="cartao voz">
+              <div class="voz__notas" aria-label="Cinco de cinco">
+                <svg aria-hidden="true" width="15" height="15"><use href="#i-estrela" /></svg>
+                <svg aria-hidden="true" width="15" height="15"><use href="#i-estrela" /></svg>
+                <svg aria-hidden="true" width="15" height="15"><use href="#i-estrela" /></svg>
+                <svg aria-hidden="true" width="15" height="15"><use href="#i-estrela" /></svg>
+                <svg aria-hidden="true" width="15" height="15"><use href="#i-estrela" /></svg>
+              </div>
+              <blockquote>
+                “A mudança para o WhatsApp oficial da empresa foi tranquila, e os
+                relatórios nos ajudam a entender o que melhorar todo mês.”
+              </blockquote>
+              <figcaption>
+                <strong>Equipe Grupo Dura Mais</strong>
+                <span>Atendimento ao Cliente</span>
+              </figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================
+           Perguntas: as que aparecem antes da decisão. Resposta
+           de duas linhas, não de artigo.
+           ===================================================== -->
+      <section class="secao">
+        <div class="envelope">
+          <div class="titulo-de-secao">
+            <span class="etiqueta">Antes de decidir</span>
+            <h2>As perguntas que sempre chegam</h2>
+          </div>
+
+          <div class="perguntas">
+            <details class="pergunta">
+              <summary>Posso ter vários atendentes no mesmo número?</summary>
+              <div class="pergunta__resposta">
+                Sim, e é o ponto de partida. A equipe inteira atende pelo mesmo
+                número, cada um com o próprio acesso, com departamentos, filas e
+                transferência de conversa
+              </div>
+            </details>
+
+            <details class="pergunta">
+              <summary>Preciso trocar o meu número de WhatsApp?</summary>
+              <div class="pergunta__resposta">
+                Não. Dá para migrar o número que seus clientes já conhecem, e quem
+                executa a migração somos nós
+              </div>
+            </details>
+
+            <details class="pergunta">
+              <summary>Minha equipe não é técnica. É difícil de usar?</summary>
+              <div class="pergunta__resposta">
+                A tela de quem atende é uma lista de conversas: quem usa WhatsApp
+                sabe usar. O que exige configuração a gente monta com você e treina
+                o time antes de ligar
+              </div>
+            </details>
+
+            <details class="pergunta">
+              <summary>Quanto tempo leva para começar?</summary>
+              <div class="pergunta__resposta">
+                Poucos dias úteis. O prazo depende da verificação da sua empresa
+                junto à Meta, que é a parte fora das nossas mãos
+              </div>
+            </details>
+
+            <details class="pergunta">
+              <summary>Existe custo por mensagem?</summary>
+              <div class="pergunta__resposta">
+                A mensalidade da ChatClean é uma coisa, o que o WhatsApp cobra por
+                conversa iniciada pela empresa é outra. No Brasil fica em torno de
+                R$&nbsp;0,04 para utilidade e R$&nbsp;0,35 para marketing, e quando
+                o cliente fala primeiro não há cobrança
+              </div>
+            </details>
+
+            <details class="pergunta">
+              <summary>Tem fidelidade ou multa de cancelamento?</summary>
+              <div class="pergunta__resposta">
+                Não, nas duas. Você cancela quando quiser e reativa quando precisar,
+                sem multa
+              </div>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================
+           O formulário. Quatro obrigatórios e uma pergunta de
+           um clique: cada campo a mais é gente que desiste no
+           meio.
+           ===================================================== -->
+      <section class="secao secao--creme" id="quero-ver">
+        <div class="envelope fecho">
+          <div class="fecho__promessa">
+            <span class="etiqueta">Demonstração</span>
+            <h2>Veja o seu atendimento <span class="destaque">dentro da ChatClean</span></h2>
+            <p class="linha-de-apoio">
+              Trinta minutos com a tela aberta: você mostra como atende hoje e a
+              gente mostra como isso fica na plataforma, com o seu funil e o seu
+              time. Sem apresentação de slides
+            </p>
+
+            <ul class="lista-conferida fecho__lista">
+              <li>
+                <svg aria-hidden="true"><use href="#i-confere" /></svg>
+                <span>Quem fala com você conhece a plataforma, não é só vendedor</span>
+              </li>
+              <li>
+                <svg aria-hidden="true"><use href="#i-confere" /></svg>
+                <span>Sai da conversa com a conta aberta: mensalidade, canais e custo por conversa</span>
+              </li>
+              <li>
+                <svg aria-hidden="true"><use href="#i-confere" /></svg>
+                <span>Se não fizer sentido para o seu caso, a gente diz</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- PARA ONDE ESTE FORMULÁRIO ENVIA -------------------
+               Para `/api/lead-landing`, que valida de novo (a
+               checagem do navegador é cortesia, não defesa),
+               grava em `leads_das_landings` com a chave de
+               serviço e devolve o endereço da conversa no
+               WhatsApp com a mensagem já escrita.
+
+               Para apontar para outro lugar, use `data-endereco`
+               no <form>. Sem ele o padrão é o caminho relativo,
+               que só funciona se a página for servida do mesmo
+               domínio da API.
+               ------------------------------------------------ -->
+          <form
+            class="formulario"
+            data-landing="crm"
+            data-endereco="https://chatclean.com.br/api/lead-landing"
+            novalidate
+          >
+            <div class="formulario__marca">
+              <img src="ativos/marca-chatclean.svg" alt="" width="34" height="34" />
+              <span>ChatClean</span>
+            </div>
+
+            <h3 class="formulario__titulo">Agendar a demonstração</h3>
+            <p class="formulario__nota">Cinco campos, resposta no mesmo dia útil</p>
+
+            <div class="campos campos--duplo">
+              <div class="campo">
+                <label for="crm-nome">Seu nome</label>
+                <input id="crm-nome" name="nome" type="text" autocomplete="name" placeholder="Ex.: Ana Ribeiro" maxlength="120" required aria-describedby="crm-erro-nome" />
+                <span class="campo__erro" id="crm-erro-nome" data-erro="nome"></span>
+              </div>
+
+              <div class="campo">
+                <label for="crm-empresa">Empresa</label>
+                <input id="crm-empresa" name="empresa" type="text" autocomplete="organization" placeholder="Ex.: Ótica Central" maxlength="120" required aria-describedby="crm-erro-empresa" />
+                <span class="campo__erro" id="crm-erro-empresa" data-erro="empresa"></span>
+              </div>
+
+              <div class="campo">
+                <label for="crm-email">E-mail</label>
+                <input id="crm-email" name="email" type="email" autocomplete="email" placeholder="voce@empresa.com" maxlength="160" required aria-describedby="crm-erro-email" />
+                <span class="campo__erro" id="crm-erro-email" data-erro="email"></span>
+              </div>
+
+              <div class="campo">
+                <label for="crm-whats">WhatsApp <span class="campo__dica">com DDD</span></label>
+                <!-- `inputmode="numeric"` abre o teclado de número no celular, e
+                     a máscara de `formulario.js` escreve os parênteses e o
+                     traço enquanto a pessoa digita. -->
+                <input id="crm-whats" name="telefone" type="tel" inputmode="numeric" autocomplete="tel" placeholder="(84) 99890-0718" maxlength="16" required aria-describedby="crm-erro-telefone" />
+                <span class="campo__erro" id="crm-erro-telefone" data-erro="telefone"></span>
+              </div>
+
+              <fieldset class="pilulas">
+                <legend>Quantas pessoas atendem hoje?</legend>
+                <div class="pilulas__opcoes">
+                  <label class="pilula"><input type="radio" name="atendentes" value="so-eu" required /><span>Só eu</span></label>
+                  <label class="pilula"><input type="radio" name="atendentes" value="2-5" required /><span>2 a 5</span></label>
+                  <label class="pilula"><input type="radio" name="atendentes" value="6-15" required /><span>6 a 15</span></label>
+                  <label class="pilula"><input type="radio" name="atendentes" value="16-40" required /><span>16 a 40</span></label>
+                  <label class="pilula"><input type="radio" name="atendentes" value="40+" required /><span>Mais de 40</span></label>
+                </div>
+                <span class="campo__erro" data-erro="atendentes"></span>
+              </fieldset>
+
+              <label class="aceite" for="crm-aceite">
+                <input id="crm-aceite" name="aceite" type="checkbox" required aria-describedby="crm-erro-aceite" />
+                <span>
+                  Autorizo a ChatClean a entrar em contato comigo sobre a
+                  plataforma. Meus dados são usados só para isso, como descrito na
+                  <a href="https://chatclean.com.br/politica-de-privacidade" target="_blank" rel="noopener noreferrer">política de privacidade</a>
+                  <span class="campo__erro" id="crm-erro-aceite" data-erro="aceite"></span>
+                </span>
+              </label>
+
+              <div class="campo-de-envio">
+                <button class="botao botao--latao botao--largo" type="submit">
+                  Quero ver funcionando
+                  <svg class="botao__seta" aria-hidden="true" width="17" height="17"><use href="#i-seta" /></svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- O recado geral: "confira os campos", "enviando", "algo deu
+                 errado". `role="status"` anuncia a troca sem roubar o foco de
+                 quem está digitando. -->
+            <p class="recado" data-recado role="status" hidden></p>
+
+            <p class="formulario__rodape">
+              Seus dados não são vendidos nem compartilhados para publicidade
+            </p>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <footer class="rodape">
+      <div class="envelope rodape__interno">
+        <div>
+          <img src="ativos/chatclean-white.svg" alt="ChatClean" width="130" height="26" />
+          <div class="rodape__dados">
+            <span>
+              <a href="https://api.whatsapp.com/send?phone=5584998900718" target="_blank" rel="noopener noreferrer">+55 84 99890-0718</a>
+              · <a href="mailto:contato@chatclean.com.br">contato@chatclean.com.br</a>
+            </span>
+            <span>Av. Prudente de Morais, 5121, Natal, RN</span>
+          </div>
+        </div>
+        <div class="rodape__legal">
+          <span>© 2026 ChatClean. CNPJ 57.487.327/0001-57</span>
+          <span>
+            <a href="https://chatclean.com.br/politica-de-privacidade" target="_blank" rel="noopener noreferrer">Política de privacidade</a>
+            ·
+            <a href="https://chatclean.com.br/termos-de-servico" target="_blank" rel="noopener noreferrer">Termos de serviço</a>
+          </span>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Máscara, validação e envio. Um arquivo só para as duas páginas. -->
+    <script src="formulario.js" defer></script>
+  </body>
+</html>

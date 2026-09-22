@@ -1,0 +1,715 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>API Oficial do WhatsApp | ChatClean</title>
+    <meta
+      name="description"
+      content="Coloque o WhatsApp da sua empresa na API Oficial da Meta: número no CNPJ, equipe inteira no mesmo número e nenhum risco de bloqueio. A ChatClean cuida da homologação."
+    />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="theme-color" content="#14231b" />
+    <link rel="icon" type="image/svg+xml" href="ativos/marca-chatclean.svg" />
+
+    <!-- Identidade tipográfica do site: Playfair Display (display),
+         Poppins (texto) e Montserrat (rótulos, botões e caixa alta). -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Poppins:wght@400;500;600;700&family=Montserrat:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="base.css" />
+    <link rel="stylesheet" href="estilo-api-oficial.css" />
+  </head>
+
+  <body>
+    <svg hidden aria-hidden="true">
+      <defs>
+        <!-- A marca do WhatsApp. Entra aqui porque o assunto DA PÁGINA é o
+             WhatsApp: é referência ao produto de que se fala, ao lado da
+             marca da ChatClean, que é de quem é a página. O aviso de marca
+             registrada está no rodapé. -->
+        <symbol id="i-whatsapp" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z" />
+        </symbol>
+        <symbol id="i-bloqueio" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <circle cx="12" cy="12" r="9" /><path d="m5.6 5.6 12.8 12.8" />
+        </symbol>
+        <symbol id="i-seta" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
+        </symbol>
+        <symbol id="i-confere" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 6 9 17l-5-5" />
+        </symbol>
+        <symbol id="i-xis" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 6 6 18M6 6l12 12" />
+        </symbol>
+        <symbol id="i-fone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92Z" />
+        </symbol>
+        <symbol id="i-escudo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" /><path d="m9 12 2 2 4-4" />
+        </symbol>
+        <symbol id="i-selo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z" /><path d="m9 12 2 2 4-4" />
+        </symbol>
+        <symbol id="i-pessoas" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
+        </symbol>
+        <symbol id="i-alerta" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 9v4m0 4h.01" /><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z" />
+        </symbol>
+        <symbol id="i-contrato" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z" /><path d="M14 2v5h6M9 13h6m-6 4h4" />
+        </symbol>
+        <symbol id="i-onda" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M2 13v-2m4 5V8m4 11V5m4 14V5m4 11V8m4 5v-2" />
+        </symbol>
+        <symbol id="i-plugue" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 2v6m6-6v6M6 8h12v3a6 6 0 0 1-6 6 6 6 0 0 1-6-6zm6 9v5" />
+        </symbol>
+        <symbol id="i-moeda" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="9" /><path d="M14.5 9h-4a1.5 1.5 0 0 0 0 3h3a1.5 1.5 0 0 1 0 3h-4M12 7v10" />
+        </symbol>
+        <symbol id="i-mensagem" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8z" />
+        </symbol>
+        <symbol id="i-robo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 8V4H8" /><rect width="16" height="12" x="4" y="8" rx="2" /><path d="M2 14h2m16 0h2M15 13v2m-6-2v2" />
+        </symbol>
+      </defs>
+    </svg>
+
+    <header class="topo">
+      <div class="envelope topo__interno">
+        <a class="topo__marca" href="https://chatclean.com.br" aria-label="ChatClean, página inicial">
+          <img src="ativos/chatclean-white.svg" alt="ChatClean" width="150" height="30" />
+        </a>
+        <a
+          class="topo__contato"
+          href="https://api.whatsapp.com/send?phone=5584998900718&amp;text=Ol%C3%A1%2C+quero+ativar+a+API+Oficial+do+WhatsApp"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <svg aria-hidden="true" width="14" height="14"><use href="#i-fone" /></svg>
+          Falar com a gente
+        </a>
+      </div>
+    </header>
+
+    <main>
+      <!-- =====================================================
+           HERO — a tese é o próprio número. À esquerda o
+           WhatsApp com o selo de bloqueio; à direita o mesmo
+           WhatsApp ligado à ChatClean, com o perfil verificado.
+           Quem passa o olho entende sem ler uma linha.
+
+           As duas peças são ilustração da ChatClean: nenhuma
+           reproduz a interface do WhatsApp.
+           ===================================================== -->
+      <section class="hero">
+        <div class="envelope hero__interno">
+          <div class="hero__texto">
+            <span class="etiqueta etiqueta--noite entra entra--1">API Oficial do WhatsApp</span>
+
+            <h1 class="entra entra--2">
+              O número que atende sua empresa
+              <span class="latao">não pode cair</span>
+            </h1>
+
+            <p class="hero__apoio entra entra--3">
+              Chip comum em ferramenta não oficial é bloqueio esperando a hora. Na
+              API Oficial da Meta o número fica no CNPJ da empresa, a equipe
+              atende junto e ninguém acorda com a conta suspensa
+            </p>
+
+            <div class="par-de-botoes entra entra--4">
+              <a class="botao botao--claro" href="#quero">
+                Quero minha API Oficial
+                <svg class="botao__seta" aria-hidden="true" width="17" height="17"><use href="#i-seta" /></svg>
+              </a>
+              <a class="botao botao--fantasma" href="#diferenca">Ver a diferença</a>
+            </div>
+
+            <ul class="hero__provas entra entra--5">
+              <li>Homologação por nossa conta</li>
+              <li>Seu número pode migrar</li>
+              <li>No ar em poucos dias úteis</li>
+            </ul>
+          </div>
+
+          <div class="hero__cena entra entra--4">
+            <figure class="tela tela--caida">
+              <figcaption class="tela__rotulo">Hoje, no chip comum</figcaption>
+              <div class="tela__corpo" role="img"
+                   aria-label="Ilustração do WhatsApp bloqueado: conta suspensa, 1.847 conversas e 612 contatos fora do ar, 3 atendentes sem acesso.">
+                <div class="app">
+                  <span class="app__icone app__icone--morto">
+                    <svg aria-hidden="true"><use href="#i-whatsapp" /></svg>
+                    <span class="app__bloqueio">
+                      <svg aria-hidden="true"><use href="#i-bloqueio" /></svg>
+                    </span>
+                  </span>
+                  <div>
+                    <p class="app__nome">WhatsApp</p>
+                    <p class="app__estado app__estado--morto">Conta suspensa</p>
+                  </div>
+                </div>
+
+                <p class="tela__numero">+55 84 9&bull;&bull;&bull;&bull;-&bull;&bull;&bull;&bull;</p>
+
+                <ul class="tela__contagem">
+                  <li><b>1.847</b> conversas</li>
+                  <li><b>612</b> contatos</li>
+                  <li><b>0</b> como recorrer</li>
+                </ul>
+              </div>
+            </figure>
+
+            <figure class="tela tela--oficial">
+              <figcaption class="tela__rotulo tela__rotulo--verde">Na API Oficial</figcaption>
+              <div class="tela__corpo" role="img"
+                   aria-label="Ilustração do WhatsApp ligado à ChatClean: conta comercial oficial verificada, oito atendentes no mesmo número e nenhum risco de bloqueio.">
+                <!-- O par que a página vende: o WhatsApp de um lado, a
+                     ChatClean do outro, e o fio correndo entre os dois. -->
+                <div class="dupla">
+                  <span class="app__icone app__icone--vivo">
+                    <svg aria-hidden="true"><use href="#i-whatsapp" /></svg>
+                  </span>
+                  <span class="dupla__elo" aria-hidden="true"></span>
+                  <span class="dupla__marca">
+                    <img src="ativos/marca-chatclean.svg" alt="" width="34" height="34" />
+                  </span>
+                </div>
+
+                <div class="perfil">
+                  <p class="perfil__nome">
+                    Sua Empresa
+                    <svg class="perfil__selo" aria-label="Verificada" width="15" height="15"><use href="#i-selo" /></svg>
+                  </p>
+                  <p class="perfil__estado">
+                    <i class="pulso" aria-hidden="true"></i>
+                    Conta comercial oficial
+                  </p>
+                </div>
+
+                <p class="tela__numero tela__numero--vivo">+55 84 99100-0000</p>
+
+                <ul class="tela__contagem tela__contagem--viva">
+                  <li><b>8</b> atendentes no mesmo número</li>
+                  <li><b>0</b> risco de bloqueio</li>
+                  <li><b>100%</b> do histórico na empresa</li>
+                </ul>
+              </div>
+            </figure>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================
+           O mecanismo. Antes de vender a solução, explicar por
+           que o problema acontece: quem entende o motivo não
+           tenta o atalho de novo.
+           ===================================================== -->
+      <section class="secao secao--marcada">
+        <div class="envelope">
+          <div class="titulo-de-secao">
+            <span class="etiqueta etiqueta--latao">
+              <svg aria-hidden="true" width="13" height="13"><use href="#i-alerta" /></svg>
+              Por que o chip cai
+            </span>
+            <h2>Não é azar. É regra <span class="destaque">cumprindo o que promete</span></h2>
+            <p>Três motivos, e nenhum melhora com o tempo</p>
+          </div>
+
+          <div class="grade grade--3">
+            <article class="cartao">
+              <span class="selo-de-icone"><svg aria-hidden="true"><use href="#i-contrato" /></svg></span>
+              <h3>Está nos termos de uso</h3>
+              <p>O aplicativo comum não foi feito para central de atendimento</p>
+              <div class="chips">
+                <span class="chip">uso pessoal</span>
+                <span class="chip">até 4 aparelhos</span>
+              </div>
+            </article>
+
+            <article class="cartao">
+              <span class="selo-de-icone"><svg aria-hidden="true"><use href="#i-onda" /></svg></span>
+              <h3>O padrão de envio entrega</h3>
+              <p>Muita mensagem saindo para quem nunca falou com você</p>
+              <div class="chips">
+                <span class="chip">denúncias</span>
+                <span class="chip">bloqueios de quem recebe</span>
+              </div>
+            </article>
+
+            <article class="cartao">
+              <span class="selo-de-icone"><svg aria-hidden="true"><use href="#i-plugue" /></svg></span>
+              <h3>Ferramenta não oficial é pista</h3>
+              <p>Painel que lê o WhatsApp Web por fora é identificável</p>
+              <div class="chips">
+                <span class="chip">sem recurso</span>
+                <span class="chip">histórico preso dentro</span>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================
+           A comparação. Tabela de verdade, porque é uma tabela
+           de verdade: duas colunas e um critério por linha.
+           ===================================================== -->
+      <section class="secao secao--creme" id="diferenca">
+        <div class="envelope">
+          <div class="titulo-de-secao">
+            <span class="etiqueta">A diferença</span>
+            <h2>O aplicativo que você usa hoje <span class="destaque">e o canal oficial</span></h2>
+            <p>São dois produtos diferentes da Meta, e só um foi feito para uma equipe atender</p>
+          </div>
+
+          <div class="tabela-rolante">
+            <table class="comparativo">
+              <caption class="lido-por-leitor">
+                Comparação entre o aplicativo WhatsApp Business e a API Oficial do
+                WhatsApp com a ChatClean.
+              </caption>
+              <thead>
+                <tr>
+                  <th scope="col">O que você precisa</th>
+                  <th scope="col">App WhatsApp Business</th>
+                  <th scope="col" class="comparativo__nossa">API Oficial + ChatClean</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">Atendentes no mesmo número</th>
+                  <td><span class="marca marca--nao"><svg aria-hidden="true" width="12" height="12"><use href="#i-xis" /></svg></span> Até 4 aparelhos</td>
+                  <td><span class="marca marca--sim"><svg aria-hidden="true" width="12" height="12"><use href="#i-confere" /></svg></span> A equipe inteira, com acesso individual</td>
+                </tr>
+                <tr>
+                  <th scope="row">Risco de bloqueio</th>
+                  <td><span class="marca marca--nao"><svg aria-hidden="true" width="12" height="12"><use href="#i-xis" /></svg></span> Cresce com o volume</td>
+                  <td><span class="marca marca--sim"><svg aria-hidden="true" width="12" height="12"><use href="#i-confere" /></svg></span> Canal homologado pela Meta</td>
+                </tr>
+                <tr>
+                  <th scope="row">Dono do número</th>
+                  <td><span class="marca marca--nao"><svg aria-hidden="true" width="12" height="12"><use href="#i-xis" /></svg></span> Quem está com o celular</td>
+                  <td><span class="marca marca--sim"><svg aria-hidden="true" width="12" height="12"><use href="#i-confere" /></svg></span> O CNPJ, com perfil oficial</td>
+                </tr>
+                <tr>
+                  <th scope="row">Campanhas em escala</th>
+                  <td><span class="marca marca--nao"><svg aria-hidden="true" width="12" height="12"><use href="#i-xis" /></svg></span> Transmissão, com risco</td>
+                  <td><span class="marca marca--sim"><svg aria-hidden="true" width="12" height="12"><use href="#i-confere" /></svg></span> Modelos aprovados pela Meta</td>
+                </tr>
+                <tr>
+                  <th scope="row">Robô e Agente de IA</th>
+                  <td><span class="marca marca--nao"><svg aria-hidden="true" width="12" height="12"><use href="#i-xis" /></svg></span> Só aviso de ausência</td>
+                  <td><span class="marca marca--sim"><svg aria-hidden="true" width="12" height="12"><use href="#i-confere" /></svg></span> Fluxos e IA que transferem</td>
+                </tr>
+                <tr>
+                  <th scope="row">Conexão com CRM</th>
+                  <td><span class="marca marca--nao"><svg aria-hidden="true" width="12" height="12"><use href="#i-xis" /></svg></span> Nenhuma</td>
+                  <td><span class="marca marca--sim"><svg aria-hidden="true" width="12" height="12"><use href="#i-confere" /></svg></span> Funil, contatos e webhook nativos</td>
+                </tr>
+                <tr>
+                  <th scope="row">Relatórios</th>
+                  <td><span class="marca marca--nao"><svg aria-hidden="true" width="12" height="12"><use href="#i-xis" /></svg></span> Contagem de mensagens</td>
+                  <td><span class="marca marca--sim"><svg aria-hidden="true" width="12" height="12"><use href="#i-confere" /></svg></span> Tempo de resposta, atendente e etapa</td>
+                </tr>
+                <tr>
+                  <th scope="row">Quando dá problema</th>
+                  <td><span class="marca marca--nao"><svg aria-hidden="true" width="12" height="12"><use href="#i-xis" /></svg></span> Você descobre com o número fora</td>
+                  <td><span class="marca marca--sim"><svg aria-hidden="true" width="12" height="12"><use href="#i-confere" /></svg></span> Suporte em português</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================
+           Os cinco passos. São numerados porque a ordem é real:
+           não dá para cadastrar o número antes de verificar a
+           empresa na Meta. O fio vertical é essa dependência.
+           ===================================================== -->
+      <section class="secao secao--noite">
+        <div class="envelope">
+          <div class="titulo-de-secao">
+            <span class="etiqueta etiqueta--noite">A homologação</span>
+            <h2>Cinco etapas, e <span class="latao">quatro são nossas</span></h2>
+            <p>Sua equipe aparece no passo 4, para aprender a usar</p>
+          </div>
+
+          <ol class="caminho">
+            <li class="passo">
+              <span class="passo__numero">01</span>
+              <div>
+                <h3>Verificação da empresa</h3>
+                <p>CNPJ e documentos no Meta Business Manager</p>
+              </div>
+            </li>
+            <li class="passo">
+              <span class="passo__numero">02</span>
+              <div>
+                <h3>Cadastro do número</h3>
+                <p>Migrar o que seus clientes já conhecem ou começar com um novo</p>
+              </div>
+            </li>
+            <li class="passo">
+              <span class="passo__numero">03</span>
+              <div>
+                <h3>Configuração da plataforma</h3>
+                <p>Modelos de mensagem, departamentos, filas e fluxos do robô</p>
+              </div>
+            </li>
+            <li class="passo">
+              <span class="passo__numero">04</span>
+              <div>
+                <h3>Treinamento da equipe</h3>
+                <p>Onboarding com quem vai atender, na tela que ela vai usar</p>
+              </div>
+            </li>
+            <li class="passo passo--fim">
+              <span class="passo__numero">05</span>
+              <div>
+                <h3>No ar</h3>
+                <p>Poucos dias úteis, com o número no nome da empresa</p>
+              </div>
+            </li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- =====================================================
+           O custo. Abrir a conta antes de perguntarem é o que
+           separa proposta de armadilha.
+           ===================================================== -->
+      <section class="secao secao--creme-fundo">
+        <div class="envelope conta">
+          <div>
+            <span class="etiqueta"><svg aria-hidden="true" width="13" height="13"><use href="#i-moeda" /></svg> A conta aberta</span>
+            <h2>Duas cobranças, <span class="destaque">nunca escondidas</span></h2>
+            <p class="linha-de-apoio conta__apoio">
+              A mensalidade é da ChatClean. O custo por conversa é da Meta e vai
+              direto para ela. Os dois aparecem separados na sua proposta
+            </p>
+            <p class="conta__ressalva">
+              Valores de referência da Meta para o Brasil, que mudam por categoria
+              e por país de destino. Conferimos a tabela vigente ao montar a
+              proposta
+            </p>
+          </div>
+
+          <div class="tarifas">
+            <div class="tarifa tarifa--gratis">
+              <span class="tarifa__rotulo">Cliente fala primeiro</span>
+              <p class="tarifa__valor">Sem custo</p>
+              <p class="tarifa__nota">Atender quem procurou você não gera cobrança</p>
+            </div>
+            <div class="tarifa">
+              <span class="tarifa__rotulo">Utilidade</span>
+              <p class="tarifa__valor">≈ R$ 0,04 <span>por conversa</span></p>
+              <p class="tarifa__nota">Confirmação, lembrete, aviso de entrega, código de acesso</p>
+            </div>
+            <div class="tarifa">
+              <span class="tarifa__rotulo">Marketing</span>
+              <p class="tarifa__valor">≈ R$ 0,35 <span>por conversa</span></p>
+              <p class="tarifa__nota">Oferta, campanha e reativação de base parada</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================
+           O que vem junto: o número oficial sozinho é um cano.
+           A plataforma é o que faz dele atendimento.
+           ===================================================== -->
+      <section class="secao">
+        <div class="envelope">
+          <div class="titulo-de-secao">
+            <span class="etiqueta">Vem junto</span>
+            <h2>O número oficial é o começo. <span class="destaque">Não é o produto</span></h2>
+            <p>API contratada sozinha entrega e recebe mensagem, e nada mais</p>
+          </div>
+
+          <div class="grade grade--2">
+            <article class="cartao">
+              <span class="selo-de-icone"><svg aria-hidden="true"><use href="#i-mensagem" /></svg></span>
+              <h3>Uma caixa de entrada para todos os canais</h3>
+              <p>WhatsApp Oficial, Instagram, Facebook, Telegram e webchat na mesma lista</p>
+              <div class="chips">
+                <span class="chip">departamentos</span>
+                <span class="chip">filas</span>
+                <span class="chip">transferência</span>
+              </div>
+            </article>
+
+            <article class="cartao">
+              <span class="selo-de-icone"><svg aria-hidden="true"><use href="#i-robo" /></svg></span>
+              <h3>Robô, IA e funil de vendas</h3>
+              <p>Fluxos automáticos e cada negociação virando cartão com valor e dono</p>
+              <div class="chips">
+                <span class="chip">Kanban</span>
+                <span class="chip">agente de IA</span>
+              </div>
+            </article>
+
+            <article class="cartao">
+              <span class="selo-de-icone"><svg aria-hidden="true"><use href="#i-pessoas" /></svg></span>
+              <h3>Sua equipe atendendo junto</h3>
+              <p>Cada atendente com login próprio no mesmo número</p>
+              <div class="chips">
+                <span class="chip">chat interno</span>
+                <span class="chip">horário de atendimento</span>
+              </div>
+            </article>
+
+            <article class="cartao">
+              <span class="selo-de-icone"><svg aria-hidden="true"><use href="#i-escudo" /></svg></span>
+              <h3>Os dados ficam com você</h3>
+              <p>Contatos e conversas moram na plataforma, não em um aparelho</p>
+              <div class="chips">
+                <span class="chip">LGPD</span>
+                <span class="chip">acesso por perfil</span>
+                <span class="chip">dois fatores</span>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================== -->
+      <section class="secao secao--creme">
+        <div class="envelope">
+          <div class="titulo-de-secao">
+            <span class="etiqueta">Antes de decidir</span>
+            <h2>As perguntas que sempre chegam</h2>
+          </div>
+
+          <div class="perguntas">
+            <details class="pergunta">
+              <summary>Vou perder o número que meus clientes conhecem?</summary>
+              <div class="pergunta__resposta">
+                Não. O número atual pode ser migrado para a API Oficial, e quem
+                executa a migração somos nós
+              </div>
+            </details>
+
+            <details class="pergunta">
+              <summary>E o histórico das conversas antigas?</summary>
+              <div class="pergunta__resposta">
+                O histórico do aplicativo fica no aparelho, e nenhuma plataforma
+                muda isso. O que a gente importa são os contatos. Da virada em
+                diante toda conversa fica registrada na plataforma
+              </div>
+            </details>
+
+            <details class="pergunta">
+              <summary>Preciso ter CNPJ?</summary>
+              <div class="pergunta__resposta">
+                Sim, e MEI serve. A verificação na Meta é feita com CNPJ e
+                documentos do negócio, e é ela que põe o número no nome da empresa
+              </div>
+            </details>
+
+            <details class="pergunta">
+              <summary>Quanto tempo leva?</summary>
+              <div class="pergunta__resposta">
+                Poucos dias úteis. O prazo depende da aprovação da Meta na
+                verificação da empresa, a única etapa fora das nossas mãos
+              </div>
+            </details>
+
+            <details class="pergunta">
+              <summary>Posso mandar campanha para minha base?</summary>
+              <div class="pergunta__resposta">
+                Pode, e é aqui que muita gente se queima no chip comum. Na API
+                Oficial o envio usa modelos aprovados pela Meta, pagos por conversa
+                na categoria marketing
+              </div>
+            </details>
+
+            <details class="pergunta">
+              <summary>Meu número já foi bloqueado antes. Ainda dá?</summary>
+              <div class="pergunta__resposta">
+                Na maioria dos casos sim, porque bloqueio de chip no aplicativo
+                comum é diferente de restrição na conta comercial. A gente confere
+                a situação antes de prometer prazo
+              </div>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================
+           O formulário. Cinco campos: o que o time comercial
+           pergunta melhor por WhatsApp não entra aqui.
+           ===================================================== -->
+      <section class="secao secao--noite" id="quero">
+        <div class="envelope fecho">
+          <div class="fecho__promessa">
+            <span class="etiqueta etiqueta--noite">Ativação</span>
+            <h2>Coloque o número da empresa <span class="latao">no nome dela</span></h2>
+            <p class="linha-de-apoio fecho__apoio">
+              Preencha e a gente volta com o diagnóstico do seu caso: o que dá para
+              migrar, o que a Meta vai pedir, o prazo real e a conta aberta
+            </p>
+
+            <ul class="lista-conferida fecho__lista">
+              <li>
+                <svg aria-hidden="true"><use href="#i-confere" /></svg>
+                <span><strong>Nós fazemos a homologação</strong><br />Business Manager, número e aprovação dos modelos</span>
+              </li>
+              <li>
+                <svg aria-hidden="true"><use href="#i-confere" /></svg>
+                <span><strong>Sem fidelidade</strong><br />Cancela quando quiser, sem multa</span>
+              </li>
+              <li>
+                <svg aria-hidden="true"><use href="#i-confere" /></svg>
+                <span><strong>Se não der, a gente diz</strong><br />Conferimos seu número antes de prometer prazo</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- PARA ONDE ESTE FORMULÁRIO ENVIA -------------------
+               Para `/api/lead-landing`, que valida de novo (a
+               checagem do navegador é cortesia, não defesa),
+               grava em `leads_das_landings` com a chave de
+               serviço e devolve o endereço da conversa no
+               WhatsApp com a mensagem já escrita.
+
+               Para apontar para outro lugar, use `data-endereco`
+               no <form>. Sem ele o padrão é o caminho relativo,
+               que só funciona se a página for servida do mesmo
+               domínio da API.
+               ------------------------------------------------ -->
+          <form
+            class="formulario"
+            data-landing="api-oficial"
+            data-endereco="https://chatclean.com.br/api/lead-landing"
+            novalidate
+          >
+            <div class="formulario__marca">
+              <img src="ativos/marca-chatclean.svg" alt="" width="34" height="34" />
+              <span>ChatClean</span>
+            </div>
+
+            <h3 class="formulario__titulo">Garantir minha API Oficial</h3>
+            <p class="formulario__nota">Cinco campos, resposta no mesmo dia útil</p>
+
+            <div class="campos campos--duplo">
+              <div class="campo">
+                <label for="api-nome">Seu nome</label>
+                <input id="api-nome" name="nome" type="text" autocomplete="name" placeholder="Ex.: Ana Ribeiro" maxlength="120" required aria-describedby="api-erro-nome" />
+                <span class="campo__erro" id="api-erro-nome" data-erro="nome"></span>
+              </div>
+
+              <div class="campo">
+                <label for="api-empresa">Empresa</label>
+                <input id="api-empresa" name="empresa" type="text" autocomplete="organization" placeholder="Ex.: Ótica Central" maxlength="120" required aria-describedby="api-erro-empresa" />
+                <span class="campo__erro" id="api-erro-empresa" data-erro="empresa"></span>
+              </div>
+
+              <div class="campo">
+                <label for="api-email">E-mail</label>
+                <input id="api-email" name="email" type="email" autocomplete="email" placeholder="voce@empresa.com" maxlength="160" required aria-describedby="api-erro-email" />
+                <span class="campo__erro" id="api-erro-email" data-erro="email"></span>
+              </div>
+
+              <div class="campo">
+                <label for="api-whats">WhatsApp <span class="campo__dica">com DDD</span></label>
+                <!-- `inputmode="numeric"` abre o teclado de número no celular, e
+                     a máscara de `formulario.js` escreve os parênteses e o
+                     traço enquanto a pessoa digita. -->
+                <input id="api-whats" name="telefone" type="tel" inputmode="numeric" autocomplete="tel" placeholder="(84) 99890-0718" maxlength="16" required aria-describedby="api-erro-telefone" />
+                <span class="campo__erro" id="api-erro-telefone" data-erro="telefone"></span>
+              </div>
+
+              <fieldset class="pilulas">
+                <legend>Quantas pessoas atendem hoje?</legend>
+                <div class="pilulas__opcoes">
+                  <label class="pilula"><input type="radio" name="atendentes" value="so-eu" required /><span>Só eu</span></label>
+                  <label class="pilula"><input type="radio" name="atendentes" value="2-5" required /><span>2 a 5</span></label>
+                  <label class="pilula"><input type="radio" name="atendentes" value="6-15" required /><span>6 a 15</span></label>
+                  <label class="pilula"><input type="radio" name="atendentes" value="16-40" required /><span>16 a 40</span></label>
+                  <label class="pilula"><input type="radio" name="atendentes" value="40+" required /><span>Mais de 40</span></label>
+                </div>
+                <span class="campo__erro" data-erro="atendentes"></span>
+              </fieldset>
+
+              <fieldset class="pilulas">
+                <legend>Seu número já foi bloqueado?</legend>
+                <div class="pilulas__opcoes">
+                  <label class="pilula"><input type="radio" name="bloqueio" value="sim" required /><span>Sim, já caiu</span></label>
+                  <label class="pilula"><input type="radio" name="bloqueio" value="quase" required /><span>Já levei aviso</span></label>
+                  <label class="pilula"><input type="radio" name="bloqueio" value="nao" required /><span>Nunca</span></label>
+                </div>
+                <span class="campo__erro" data-erro="bloqueio"></span>
+              </fieldset>
+
+              <label class="aceite" for="api-aceite">
+                <input id="api-aceite" name="aceite" type="checkbox" required aria-describedby="api-erro-aceite" />
+                <span>
+                  Autorizo a ChatClean a entrar em contato comigo sobre a API
+                  Oficial. Meus dados são usados só para isso, como descrito na
+                  <a href="https://chatclean.com.br/politica-de-privacidade" target="_blank" rel="noopener noreferrer">política de privacidade</a>
+                  <span class="campo__erro" id="api-erro-aceite" data-erro="aceite"></span>
+                </span>
+              </label>
+
+              <div class="campo-de-envio">
+                <button class="botao botao--latao botao--largo" type="submit">
+                  Quero minha API Oficial
+                  <svg class="botao__seta" aria-hidden="true" width="17" height="17"><use href="#i-seta" /></svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- O recado geral: "confira os campos", "enviando", "algo deu
+                 errado". `role="status"` anuncia a troca sem roubar o foco de
+                 quem está digitando. -->
+            <p class="recado" data-recado role="status" hidden></p>
+
+            <p class="formulario__rodape">
+              Seus dados não são vendidos nem compartilhados para publicidade
+            </p>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <footer class="rodape">
+      <div class="envelope rodape__interno">
+        <div>
+          <img src="ativos/chatclean-white.svg" alt="ChatClean" width="130" height="26" />
+          <div class="rodape__dados">
+            <span>
+              <a href="https://api.whatsapp.com/send?phone=5584998900718" target="_blank" rel="noopener noreferrer">+55 84 99890-0718</a>
+              · <a href="mailto:contato@chatclean.com.br">contato@chatclean.com.br</a>
+            </span>
+            <span>Av. Prudente de Morais, 5121, Natal, RN</span>
+          </div>
+        </div>
+        <div class="rodape__legal">
+          <span>© 2026 ChatClean. CNPJ 57.487.327/0001-57</span>
+          <span>
+            WhatsApp é marca da Meta Platforms, Inc. A ChatClean é parceira de
+            plataforma, não é a Meta
+          </span>
+          <span>
+            <a href="https://chatclean.com.br/politica-de-privacidade" target="_blank" rel="noopener noreferrer">Política de privacidade</a>
+            ·
+            <a href="https://chatclean.com.br/termos-de-servico" target="_blank" rel="noopener noreferrer">Termos de serviço</a>
+          </span>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Máscara, validação e envio. Um arquivo só para as duas páginas. -->
+    <script src="formulario.js" defer></script>
+  </body>
+</html>

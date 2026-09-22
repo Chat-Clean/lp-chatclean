@@ -1,0 +1,1340 @@
+/* ============================================================
+   ChatClean — base das landing pages
+   ------------------------------------------------------------
+   A identidade não é reinventada aqui: cores, fontes e os dois
+   tratamentos de latão são os MESMOS do site institucional
+   (chatclean/src/App.css e chatclean/src/index.css). Este
+   arquivo só traz esses valores para HTML puro, sem Tailwind.
+
+   Cada landing tem o próprio CSS por cima deste, e é lá que
+   mora o elemento de assinatura da página.
+   ============================================================ */
+
+/* ----- Tokens da marca -------------------------------------
+   Os seis valores da identidade (51bc69, 1f4a34, 14231b,
+   f1efe5, b7923e, bce5ff) e os tons de apoio já calibrados
+   para contraste no site: o verde 600 lê sobre branco (4,6:1)
+   e o 700 serve para texto pequeno (7,5:1). O cinza é
+   esverdeado de propósito — o zinc-500 comum cai para 4,19:1
+   sobre o creme, abaixo do piso. */
+:root {
+  --verde: #51bc69;
+  --verde-claro: #6cc684;
+  --verde-lavado: #eef8f0;
+  --verde-borda: #b9e2c3;
+  --verde-medio: #35894a;
+  --verde-texto: #256339;
+  --verde-fundo: #1f4a34;
+  --verde-noite: #14231b;
+
+  --creme: #f1efe5;
+  --creme-fundo: #e9e5d6;
+  --creme-fio: #ddd8c6;
+
+  --latao: #b7923e;
+  --latao-claro: #d2b56a;
+  --latao-escuro: #856826;
+  --latao-lavado: #f3ead2;
+
+  --azul: #bce5ff;
+  --azul-lavado: #e3f3ff;
+
+  --branco: #ffffff;
+  --cinza: #5e6560;
+  --cinza-fio: #e4e1d4;
+  --tinta: #14231b;
+
+  --alerta: #b3261e;
+  --alerta-lavado: #fdeceb;
+
+  --fonte-display: "Playfair Display", Georgia, "Times New Roman", serif;
+  --fonte-corpo: "Poppins", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --fonte-util: "Montserrat", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --raio-cartao: 20px;
+  --raio-controle: 12px;
+  --raio-pilula: 999px;
+
+  --largura: 1180px;
+  --respiro-secao: clamp(4.5rem, 9vw, 7.5rem);
+}
+
+/* ----- Reset curto ----------------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--branco);
+  color: var(--tinta);
+  font-family: var(--fonte-corpo);
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* A regra acima é forte o bastante para atropelar o `display:
+   none` que o navegador dá a `[hidden]` — e a folha de ícones
+   do topo da página é um `<svg hidden>`. Sem esta linha ela
+   vira um bloco branco de 150px antes do cabeçalho. */
+[hidden] {
+  display: none;
+}
+
+img {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+a {
+  color: inherit;
+}
+
+::selection {
+  background: var(--verde);
+  color: #fff;
+}
+
+/* ----- Tipografia -----------------------------------------
+   Playfair no que é display (h1, h2), Poppins no texto
+   corrido, Montserrat no que é rótulo, botão e caixa alta.
+   A mesma divisão de papéis do site. */
+h1,
+h2 {
+  font-family: var(--fonte-display);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.04;
+  margin: 0;
+  text-wrap: balance;
+}
+
+h3,
+h4 {
+  font-family: var(--fonte-util);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+  margin: 0;
+}
+
+h1 {
+  font-size: clamp(2.5rem, 6.2vw, 4.4rem);
+}
+
+h2 {
+  font-size: clamp(2rem, 4.2vw, 3.2rem);
+}
+
+h3 {
+  font-size: 1.125rem;
+}
+
+p {
+  margin: 0;
+}
+
+strong {
+  font-weight: 600;
+}
+
+/* ----- Blocos de estrutura --------------------------------- */
+.envelope {
+  width: 100%;
+  max-width: var(--largura);
+  margin-inline: auto;
+  padding-inline: clamp(1.25rem, 4vw, 2.5rem);
+}
+
+.secao {
+  padding-block: var(--respiro-secao);
+}
+
+.secao--creme {
+  background: var(--creme);
+  border-block: 1px solid var(--creme-fio);
+}
+
+.secao--creme-fundo {
+  background: var(--creme-fundo);
+  border-block: 1px solid var(--creme-fio);
+}
+
+.secao--noite {
+  background: var(--verde-noite);
+  color: var(--branco);
+}
+
+.secao--estreita {
+  padding-block: clamp(3rem, 6vw, 4.5rem);
+}
+
+/* A etiqueta que abre cada seção. Diz de que assunto se
+   trata — não é enfeite: onde não há assunto novo, não há
+   etiqueta. */
+.etiqueta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--fonte-util);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--verde-texto);
+  background: var(--verde-lavado);
+  border: 1px solid var(--verde-borda);
+  border-radius: var(--raio-pilula);
+  padding: 0.45rem 0.95rem;
+}
+
+.etiqueta--noite {
+  color: var(--latao-claro);
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
+.etiqueta--latao {
+  color: var(--latao-escuro);
+  background: var(--latao-lavado);
+  border-color: #e6d3a3;
+}
+
+.titulo-de-secao {
+  max-width: 44rem;
+}
+
+.titulo-de-secao > .etiqueta {
+  margin-bottom: 1.5rem;
+}
+
+.titulo-de-secao > p {
+  margin-top: 1.25rem;
+  font-size: clamp(1.0625rem, 1.6vw, 1.1875rem);
+  color: var(--cinza);
+}
+
+/* Sobre o verde-noite, o texto claro vem por herança de seção —
+   e não repetido em cada bloco. Uma regra por elemento, no
+   lugar de uma variante de classe para cada. */
+.secao--noite h2,
+.secao--noite h3 {
+  color: var(--branco);
+}
+
+.secao--noite .titulo-de-secao > p,
+.secao--noite .linha-de-apoio {
+  color: rgba(255, 255, 255, 0.74);
+}
+
+.secao--noite .lista-conferida li {
+  color: rgba(255, 255, 255, 0.76);
+}
+
+.secao--noite .lista-conferida strong {
+  color: var(--branco);
+  font-weight: 600;
+}
+
+.centralizado {
+  margin-inline: auto;
+  text-align: center;
+}
+
+.linha-de-apoio {
+  font-size: clamp(1.0625rem, 1.8vw, 1.25rem);
+  line-height: 1.65;
+  color: var(--cinza);
+}
+
+/* ----- Latão: os dois tratamentos da marca -----------------
+   `.latao` é o texto recortado no gradiente de metal, com a
+   faixa clara atravessando na diagonal. Parado de propósito.
+   Só vive sobre fundo escuro — é ali que ele tem contraste,
+   e é ali que o site o usa. A folga embaixo existe porque a
+   perninha do "p" desce abaixo da caixa da palavra e o
+   gradiente só pinta dentro dela. */
+.latao {
+  color: var(--latao);
+}
+
+@supports ((background-clip: text) or (-webkit-background-clip: text)) {
+  .latao {
+    background-image: linear-gradient(
+      100deg,
+      #a07e35 0%,
+      var(--latao) 22%,
+      #e7d6a8 42%,
+      #fdf6e6 50%,
+      #e7d6a8 58%,
+      var(--latao) 78%,
+      #a07e35 100%
+    );
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    padding-bottom: 0.2em;
+    margin-bottom: -0.2em;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+}
+
+/* Sobre fundo claro o latão não tem contraste para display:
+   ali a palavra destacada vai no verde escuro da marca. */
+.destaque {
+  color: var(--verde-fundo);
+}
+
+/* ----- Botões ----------------------------------------------
+   Um nome por papel. O de latão é metal, não papel colorido:
+   o gradiente escurece de cima para baixo, o fio claro na
+   borda é o reflexo, e a sombra apoia o botão no fundo. */
+.botao {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  font-family: var(--fonte-util);
+  font-size: 0.9375rem;
+  font-weight: 700;
+  line-height: 1;
+  text-decoration: none;
+  border: 0;
+  border-radius: var(--raio-pilula);
+  padding: 1.15rem 2rem;
+  cursor: pointer;
+  transition:
+    background-color 0.25s ease,
+    box-shadow 0.25s ease,
+    color 0.25s ease,
+    transform 0.25s ease;
+}
+
+.botao:focus-visible {
+  outline: 2px solid var(--verde);
+  outline-offset: 3px;
+}
+
+.botao--verde {
+  background: var(--verde-medio);
+  color: var(--branco);
+  box-shadow: 0 12px 28px -14px rgba(31, 74, 52, 0.7);
+}
+
+.botao--verde:hover {
+  background: var(--verde-texto);
+}
+
+.botao--claro {
+  background: var(--branco);
+  color: var(--verde-fundo);
+  box-shadow: 0 0 40px rgba(255, 255, 255, 0.22);
+}
+
+.botao--claro:hover {
+  background: var(--verde-lavado);
+  box-shadow: 0 0 58px rgba(255, 255, 255, 0.4);
+}
+
+.botao--fantasma {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--branco);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.botao--fantasma:hover {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.6);
+}
+
+.botao--latao {
+  color: #fffaeb;
+  background-image: linear-gradient(180deg, #a3813a 0%, #8a6c2c 52%, #74591f 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 250, 235, 0.45),
+    inset 0 -1px 0 rgba(20, 35, 27, 0.25),
+    0 10px 24px -8px rgba(20, 35, 27, 0.45),
+    0 0 26px -6px rgba(183, 146, 62, 0.45);
+}
+
+.botao--latao:hover {
+  background-image: linear-gradient(180deg, #b08b40 0%, #957432 52%, #7d6023 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 250, 235, 0.6),
+    inset 0 -1px 0 rgba(20, 35, 27, 0.25),
+    0 12px 28px -8px rgba(20, 35, 27, 0.45),
+    0 0 34px -6px rgba(183, 146, 62, 0.6);
+}
+
+.botao--largo {
+  width: 100%;
+  padding-block: 1.25rem;
+  font-size: 1rem;
+}
+
+.botao__seta {
+  transition: transform 0.25s ease;
+}
+
+.botao:hover .botao__seta {
+  transform: translateX(3px);
+}
+
+.par-de-botoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.875rem;
+  align-items: center;
+}
+
+.elo-discreto {
+  font-family: var(--fonte-util);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--cinza);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  padding: 0.5rem 0;
+}
+
+.elo-discreto:hover {
+  color: var(--tinta);
+}
+
+.secao--noite .elo-discreto {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.secao--noite .elo-discreto:hover {
+  color: var(--branco);
+}
+
+/* ----- Cabeçalho -------------------------------------------
+   Uma landing tem um trabalho só: o cabeçalho tem o logotipo,
+   que volta para a home, e um telefone. Nenhuma outra saída.
+   (É a mesma decisão do /api-oficial do site.) */
+.topo {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(20, 35, 27, 0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.topo__interno {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-block: 0.9rem;
+}
+
+.topo__marca img {
+  height: 30px;
+  width: auto;
+}
+
+.topo__contato {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--fonte-util);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.82);
+  text-decoration: none;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: var(--raio-pilula);
+  padding: 0.55rem 1.1rem;
+  transition: border-color 0.25s ease, color 0.25s ease;
+}
+
+.topo__contato:hover {
+  color: var(--branco);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.topo__contato:focus-visible {
+  outline: 2px solid var(--verde);
+  outline-offset: 3px;
+}
+
+/* ----- Hero: a casca comum às duas landings ----------------
+   Verde-noite com um brilho verde lavado vindo da direita, por
+   trás da ilustração. Cada página põe a própria ilustração
+   nessa coluna — a estrutura é a mesma, a tese é diferente. */
+.hero {
+  position: relative;
+  background: var(--verde-noite);
+  color: var(--branco);
+  overflow: hidden;
+  padding-block: clamp(3.5rem, 7vw, 6rem) clamp(4rem, 8vw, 7rem);
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  top: -20%;
+  right: -10%;
+  width: 60%;
+  height: 120%;
+  background: radial-gradient(circle at center, rgba(81, 188, 105, 0.22), transparent 62%);
+  pointer-events: none;
+}
+
+.hero__interno {
+  position: relative;
+  display: grid;
+  gap: clamp(3rem, 5vw, 4.5rem);
+  align-items: center;
+}
+
+/* Item de grade nasce com `min-width: auto`, e isso é a largura
+   de min-content do conteúdo — no celular, a soma das colunas
+   do quadro do funil. Sem este zero o quadro empurrava a PÁGINA
+   INTEIRA para ~520px: o texto da hero saía cortado na direita
+   e o cabeçalho junto. Com ele, quem rola é só o quadro, que já
+   tem `overflow-x: auto`. */
+.hero__interno > * {
+  min-width: 0;
+}
+
+@media (min-width: 1000px) {
+  .hero__interno {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 0.95fr);
+    gap: 4rem;
+  }
+}
+
+.hero__texto h1 {
+  margin-top: 1.5rem;
+  color: var(--branco);
+}
+
+.hero__apoio {
+  margin-top: 1.5rem;
+  max-width: 34rem;
+  font-size: clamp(1.0625rem, 1.7vw, 1.1875rem);
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.76);
+}
+
+.hero .par-de-botoes {
+  margin-top: 2.25rem;
+}
+
+/* As três garantias, em linha, separadas por um ponto verde.
+   São fatos curtos — não cabe um cartão para cada. */
+.hero__provas {
+  list-style: none;
+  margin: 2rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  font-family: var(--fonte-util);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.62);
+}
+
+.hero__provas li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.hero__provas li::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--verde);
+}
+
+/* ----- Fecho: a promessa ao lado do formulário -------------
+   Mesma estrutura nas duas páginas. O fundo muda (creme no
+   CRM, verde-noite na API) e quem cuida disso é a classe da
+   seção, não esta. */
+.fecho {
+  display: grid;
+  gap: clamp(2.5rem, 5vw, 3.5rem);
+  align-items: start;
+}
+
+@media (min-width: 960px) {
+  .fecho {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 27rem);
+    gap: 4rem;
+  }
+
+  .fecho__promessa {
+    padding-top: 0.5rem;
+  }
+}
+
+.fecho__promessa h2 {
+  margin-top: 1.5rem;
+}
+
+.fecho__promessa > p {
+  margin-top: 1.5rem;
+  max-width: 34rem;
+}
+
+/* `.fecho__lista` NÃO fica aqui: ela também é `.lista-conferida`,
+   que zera a margem da lista mais abaixo neste arquivo. Com a
+   mesma especificidade, quem vem depois ganha — e o respiro
+   acima da lista sumia. A regra está junto de `.lista-conferida`. */
+
+/* ----- Fundo com a marca -----------------------------------
+   A bolha da ChatClean, grande e quase apagada, atrás de
+   algumas seções. É textura de marca, não ilustração: fica
+   abaixo de tudo, não recebe clique e some para quem lê por
+   leitor de tela. Usada com parcimônia — se estiver em toda
+   seção, deixa de marcar qualquer coisa. */
+.secao--marcada {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.secao--marcada::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: clamp(1.5rem, 5vw, 4rem);
+  right: clamp(1rem, 4vw, 4.5rem);
+  width: min(17rem, 30vw);
+  aspect-ratio: 1;
+  background: url("ativos/marca-chatclean.svg") center / contain no-repeat;
+  opacity: 0.05;
+  pointer-events: none;
+}
+
+/* No celular ela sentaria atrás do próprio título: marca
+   d'água ali não marca nada, só suja o texto. */
+@media (max-width: 760px) {
+  .secao--marcada::before {
+    display: none;
+  }
+}
+
+
+
+/* ----- Cartões genéricos -----------------------------------
+   O cartão reage: sobe, acende a borda, o selo do ícone vira
+   verde cheio e um fio de latão se desenha no topo, da
+   esquerda para a direita. Tudo em `transform` e `opacity`,
+   que o navegador compõe sem refazer layout. */
+.cartao {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background: var(--branco);
+  border: 1px solid var(--cinza-fio);
+  border-radius: var(--raio-cartao);
+  padding: clamp(1.5rem, 2.5vw, 2rem);
+  transition:
+    transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.3s ease,
+    box-shadow 0.35s ease;
+}
+
+.cartao::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--latao), var(--verde));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cartao:hover,
+.cartao:focus-within {
+  transform: translateY(-4px);
+  border-color: var(--verde-borda);
+  box-shadow: 0 24px 44px -26px rgba(20, 35, 27, 0.4);
+}
+
+.cartao:hover::before,
+.cartao:focus-within::before {
+  transform: scaleX(1);
+}
+
+.cartao h3 {
+  margin-bottom: 0.5rem;
+}
+
+/* Uma linha, não um parágrafo. A regra de ouro desta página é
+   que o cartão se lê de relance — o que precisa de explicação
+   vira conversa com o time comercial. */
+.cartao p {
+  color: var(--cinza);
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  max-width: 26rem;
+}
+
+.selo-de-icone {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 14px;
+  background: var(--verde-lavado);
+  color: var(--verde-texto);
+  margin-bottom: 1.125rem;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease,
+    transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.selo-de-icone svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.cartao:hover .selo-de-icone,
+.cartao:focus-within .selo-de-icone {
+  background: var(--verde-medio);
+  color: var(--branco);
+  transform: rotate(-8deg) scale(1.08);
+}
+
+/* ----- Chips de dado ---------------------------------------
+   O que virava terceira e quarta linha de parágrafo vira
+   etiqueta: se lê de relance e cabe no celular. Só entram
+   substantivos concretos, nunca adjetivo de venda. */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 1.15rem;
+}
+
+.chip {
+  font-family: var(--fonte-util);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--cinza);
+  background: var(--creme);
+  border: 1px solid var(--creme-fio);
+  border-radius: var(--raio-pilula);
+  padding: 0.45rem 0.7rem;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.cartao:hover .chip,
+.cartao:focus-within .chip {
+  background: var(--verde-lavado);
+  border-color: var(--verde-borda);
+  color: var(--verde-texto);
+}
+
+.secao--noite .chip {
+  color: rgba(255, 255, 255, 0.72);
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(255, 255, 255, 0.16);
+}
+
+/* ----- Cartão de virada ------------------------------------
+   Problema em cima, resposta embaixo, no mesmo cartão. Nasceu
+   de cortar texto: em vez de três cartões de problema e mais
+   três de solução, cada peça carrega o par. A resposta fica
+   SEMPRE visível — esconder no hover deixaria o celular sem
+   ela. */
+.virada__resposta {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid var(--creme-fio);
+  font-family: var(--fonte-util);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--verde-texto);
+}
+
+.virada__resposta svg {
+  flex: 0 0 auto;
+  width: 1rem;
+  height: 1rem;
+  margin-top: 0.15rem;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cartao:hover .virada__resposta svg,
+.cartao:focus-within .virada__resposta svg {
+  transform: scale(1.25);
+}
+
+.grade {
+  display: grid;
+  gap: 1.25rem;
+  margin-top: 3rem;
+}
+
+@media (min-width: 640px) {
+  .grade--2,
+  .grade--3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 960px) {
+  .grade--3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Bento: um cartão largo quebra a grade regular. Sem ele, seis
+   retângulos iguais viram uma tabela de recursos. */
+.bento {
+  display: grid;
+  gap: 1.25rem;
+  margin-top: 3rem;
+}
+
+@media (min-width: 720px) {
+  .bento {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .bento__largo {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (min-width: 1020px) {
+  .bento {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .bento__largo {
+    grid-column: span 2;
+  }
+}
+
+/* ----- Lista com marca de conferido ------------------------ */
+.lista-conferida {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.lista-conferida li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+}
+
+.lista-conferida svg {
+  flex: 0 0 auto;
+  width: 1.125rem;
+  height: 1.125rem;
+  margin-top: 0.2rem;
+  color: var(--verde-medio);
+}
+
+.secao--noite .lista-conferida svg {
+  color: var(--verde-claro);
+}
+
+/* A lista do fecho, depois da que zera margens — ver o comentário
+   no bloco `.fecho`. */
+.fecho__lista {
+  margin-top: 2rem;
+  gap: 0.9rem;
+  max-width: 32rem;
+}
+
+/* ----- Perguntas ------------------------------------------- */
+.perguntas {
+  margin-top: 3rem;
+  display: grid;
+  gap: 0.75rem;
+  max-width: 52rem;
+}
+
+.pergunta {
+  background: var(--branco);
+  border: 1px solid var(--cinza-fio);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.pergunta[open] {
+  border-color: var(--verde-borda);
+}
+
+.pergunta > summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  cursor: pointer;
+  list-style: none;
+  font-family: var(--fonte-util);
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 1.15rem 1.5rem;
+}
+
+.pergunta > summary::-webkit-details-marker {
+  display: none;
+}
+
+.pergunta > summary:hover {
+  background: var(--verde-lavado);
+}
+
+.pergunta > summary:focus-visible {
+  outline: 2px solid var(--verde);
+  outline-offset: -2px;
+}
+
+.pergunta > summary::after {
+  content: "";
+  flex: 0 0 auto;
+  width: 0.65rem;
+  height: 0.65rem;
+  border-right: 2px solid var(--verde-medio);
+  border-bottom: 2px solid var(--verde-medio);
+  transform: rotate(45deg) translateY(-2px);
+  transition: transform 0.25s ease;
+}
+
+.pergunta[open] > summary::after {
+  transform: rotate(-135deg) translateY(-2px);
+}
+
+.pergunta__resposta {
+  padding: 0 1.5rem 1.35rem;
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  color: var(--cinza);
+}
+
+/* ----- Formulário -----------------------------------------
+   Campo curto é campo respondido. O que o time comercial
+   pergunta melhor por WhatsApp não entra aqui. */
+.formulario {
+  background: var(--branco);
+  border: 1px solid var(--cinza-fio);
+  border-radius: 24px;
+  padding: clamp(1.5rem, 3vw, 2.25rem);
+  box-shadow: 0 32px 64px -32px rgba(20, 35, 27, 0.28);
+}
+
+/* O cartão do formulário é branco mesmo dentro de uma seção
+   verde-noite, e por isso a cor do título vem escrita aqui:
+   sem ela, a regra `.secao--noite h3` pinta este título de
+   branco sobre branco. Esta vem depois no arquivo e, com a
+   mesma especificidade, vence pela ordem. */
+.formulario h3 {
+  color: var(--tinta);
+}
+
+/* A marca no alto do formulário: é o último ponto da página, e
+   é onde a pessoa entrega o telefone. Saber de quem é a casa
+   importa mais aqui do que em qualquer outra seção. */
+.formulario__marca {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-bottom: 1.35rem;
+  padding-bottom: 1.15rem;
+  border-bottom: 1px solid var(--creme-fio);
+}
+
+.formulario__marca img {
+  width: 2.1rem;
+  height: 2.1rem;
+}
+
+.formulario__marca span {
+  font-family: var(--fonte-util);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--cinza);
+}
+
+.formulario__titulo {
+  font-size: 1.25rem;
+}
+
+.formulario__nota {
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--cinza);
+}
+
+.campos {
+  display: grid;
+  gap: 1.1rem;
+  margin-top: 1.75rem;
+}
+
+@media (min-width: 560px) {
+  .campos--duplo {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .campos--duplo .campo--inteiro,
+  .campos--duplo fieldset,
+  .campos--duplo .aceite,
+  .campos--duplo .campo-de-envio {
+    grid-column: 1 / -1;
+  }
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.campo > label,
+.campos legend {
+  font-family: var(--fonte-util);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--tinta);
+}
+
+.campo__dica {
+  font-family: var(--fonte-corpo);
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--cinza);
+}
+
+.campo input,
+.campo select,
+.campo textarea {
+  font-family: var(--fonte-corpo);
+  font-size: 0.9375rem;
+  color: var(--tinta);
+  background: var(--branco);
+  border: 1px solid var(--cinza-fio);
+  border-radius: var(--raio-controle);
+  padding: 0.85rem 1rem;
+  width: 100%;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.campo textarea {
+  resize: vertical;
+  min-height: 5.5rem;
+  line-height: 1.6;
+}
+
+.campo input::placeholder,
+.campo textarea::placeholder {
+  color: #a4a89f;
+}
+
+.campo input:focus,
+.campo select:focus,
+.campo textarea:focus {
+  outline: 0;
+  border-color: var(--verde);
+  box-shadow: 0 0 0 3px rgba(81, 188, 105, 0.22);
+}
+
+/* A pergunta de um clique: rádio que parece pílula. O input
+   fica só para o teclado e o leitor de tela. */
+.pilulas {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.pilulas__opcoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.6rem;
+}
+
+.pilula {
+  position: relative;
+}
+
+.pilula input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+  margin: 0;
+}
+
+.pilula span {
+  display: block;
+  font-family: var(--fonte-util);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--cinza);
+  background: var(--creme);
+  border: 1px solid var(--creme-fio);
+  border-radius: var(--raio-pilula);
+  padding: 0.6rem 1.1rem;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.pilula input:checked + span {
+  background: var(--verde-medio);
+  border-color: var(--verde-medio);
+  color: var(--branco);
+}
+
+.pilula input:focus-visible + span {
+  outline: 2px solid var(--verde);
+  outline-offset: 2px;
+}
+
+.aceite {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: var(--cinza);
+}
+
+.aceite input {
+  flex: 0 0 auto;
+  width: 1.05rem;
+  height: 1.05rem;
+  margin-top: 0.3rem;
+  accent-color: var(--verde-medio);
+}
+
+.aceite a {
+  color: var(--verde-texto);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* ----- O erro de um campo ----------------------------------
+   A frase mora num elemento que JÁ existe no HTML, vazio. Criar
+   na hora do erro faria o layout pular, e leitor de tela só
+   anuncia o que já estava lá quando o `aria-describedby`
+   aponta. Vazio, ele não ocupa espaço. */
+.campo__erro {
+  display: block;
+  margin-top: 0.35rem;
+  font-family: var(--fonte-util);
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.45;
+  color: var(--alerta);
+}
+
+.campo__erro:empty {
+  display: none;
+}
+
+/* A borda vermelha entra por uma classe no BLOCO, não no
+   controle: nas pílulas quem erra é o conjunto, não um rádio
+   específico, e no aceite é a linha inteira. */
+.com-erro input:not([type="checkbox"]):not([type="radio"]),
+.com-erro select,
+.com-erro textarea {
+  border-color: var(--alerta);
+  background: var(--alerta-lavado);
+}
+
+.com-erro input:not([type="checkbox"]):not([type="radio"]):focus,
+.com-erro select:focus,
+.com-erro textarea:focus {
+  border-color: var(--alerta);
+  box-shadow: 0 0 0 3px rgba(179, 38, 30, 0.18);
+}
+
+.pilulas.com-erro legend,
+.aceite.com-erro {
+  color: var(--alerta);
+}
+
+.pilulas.com-erro .pilula span {
+  border-color: #e9c4c1;
+}
+
+.aceite.com-erro input {
+  outline: 2px solid var(--alerta);
+  outline-offset: 2px;
+}
+
+/* ----- O recado geral, acima do botão ----------------------
+   Um lugar só para "confira os campos", "enviando" e "algo deu
+   errado". `role="status"` no HTML faz o leitor de tela
+   anunciar a troca sem roubar o foco de quem está digitando. */
+.recado {
+  display: block;
+  margin-top: 1.1rem;
+  font-family: var(--fonte-util);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1.55;
+  border-radius: var(--raio-controle);
+  padding: 0.85rem 1rem;
+  color: var(--cinza);
+  background: var(--creme);
+  border: 1px solid var(--creme-fio);
+}
+
+.recado[data-tom="erro"] {
+  color: var(--alerta);
+  background: var(--alerta-lavado);
+  border-color: #efc9c6;
+}
+
+.recado[data-tom="ok"] {
+  color: var(--verde-texto);
+  background: var(--verde-lavado);
+  border-color: var(--verde-borda);
+}
+
+/* Enquanto envia, o botão para de convidar ao clique. */
+.botao[disabled] {
+  opacity: 0.72;
+  cursor: progress;
+  pointer-events: none;
+}
+
+.formulario__rodape {
+  margin-top: 1.1rem;
+  font-size: 0.75rem;
+  line-height: 1.6;
+  color: var(--cinza);
+  text-align: center;
+}
+
+/* ----- Rodapé --------------------------------------------- */
+.rodape {
+  background: var(--verde-noite);
+  color: rgba(255, 255, 255, 0.62);
+  padding-block: 2.75rem;
+  font-size: 0.8125rem;
+}
+
+.rodape__interno {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.rodape img {
+  height: 26px;
+  width: auto;
+  margin-bottom: 0.9rem;
+}
+
+.rodape__dados {
+  display: grid;
+  gap: 0.25rem;
+  line-height: 1.65;
+}
+
+.rodape a {
+  color: rgba(255, 255, 255, 0.75);
+  text-decoration: none;
+}
+
+.rodape a:hover {
+  color: var(--verde-claro);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.rodape__legal {
+  text-align: right;
+  display: grid;
+  gap: 0.35rem;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+@media (max-width: 720px) {
+  .rodape__legal {
+    text-align: left;
+  }
+}
+
+/* ----- Entrada na carga -----------------------------------
+   Uma sequência só, na hero, e nada mais animando por rolagem:
+   a página inteira reagindo ao scroll é o que faz um site
+   parecer gerado. */
+@keyframes sobe {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.entra {
+  animation: sobe 0.75s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.entra--1 { animation-delay: 0.05s; }
+.entra--2 { animation-delay: 0.16s; }
+.entra--3 { animation-delay: 0.27s; }
+.entra--4 { animation-delay: 0.38s; }
+.entra--5 { animation-delay: 0.5s; }
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001s !important;
+  }
+}

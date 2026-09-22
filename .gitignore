@@ -1,0 +1,7 @@
+# Lixo do sistema de arquivos
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Saída local da Vercel
+.vercel

@@ -1,0 +1,524 @@
+/* ============================================================
+   Landing page — CRM para WhatsApp
+   ------------------------------------------------------------
+   A assinatura desta página é o QUADRO DO FUNIL na hero: um
+   Kanban de verdade em HTML e CSS, com um cartão no ar entre
+   duas etapas. O que um CRM faz não se explica em texto — se
+   mostra.
+
+   A casca da hero e do fecho mora em `base.css`, compartilhada
+   com a outra landing. Aqui fica só o que é desta página.
+   ============================================================ */
+
+/* ----- ASSINATURA: o quadro do funil -----------------------
+   O quadro tem a própria escala tipográfica: `font-size` com
+   clamp aqui, e tudo dentro em `em`. Assim ele encolhe como
+   uma peça só, sem uma dúzia de pontos de quebra. */
+.hero__quadro {
+  position: relative;
+  font-size: clamp(0.7rem, 1.6vw, 0.8125rem);
+}
+
+.funil {
+  background: rgba(255, 255, 255, 0.055);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 1.75em;
+  padding: 1.5em;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 48px 90px -40px rgba(0, 0, 0, 0.7);
+}
+
+.funil__topo {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1em;
+  padding-bottom: 1.35em;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.funil__rotulo {
+  display: block;
+  font-family: var(--fonte-util);
+  font-size: 0.8em;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.funil__total {
+  margin-top: 0.3em;
+  font-family: var(--fonte-util);
+  font-size: 1.7em;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--branco);
+  font-variant-numeric: tabular-nums;
+}
+
+.funil__total span {
+  display: block;
+  font-size: 0.45em;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.funil__equipe {
+  display: flex;
+}
+
+/* A sobreposição vem de `span + span`, e não de uma margem em
+   todos: assim a ordem do DOM é a ordem que se lê, e cada
+   avatar passa por cima do anterior, como numa pilha. */
+.funil__equipe span {
+  display: grid;
+  place-items: center;
+  width: 2.35em;
+  height: 2.35em;
+  border-radius: 50%;
+  border: 2px solid var(--verde-noite);
+  background: var(--verde-medio);
+  font-family: var(--fonte-util);
+  font-size: 0.78em;
+  font-weight: 700;
+  color: var(--branco);
+}
+
+.funil__equipe span + span {
+  margin-left: -0.6em;
+}
+
+.funil__equipe .funil__equipe-mais {
+  background: rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.75);
+}
+
+/* As colunas rolam na horizontal quando não cabem. É o que um
+   Kanban faz de verdade — melhor que empilhar e perder a ideia
+   de etapa. */
+.funil__colunas {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(10.5em, 1fr);
+  gap: 0.9em;
+  margin-top: 1.35em;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-bottom: 0.25em;
+}
+
+.funil__colunas::-webkit-scrollbar {
+  display: none;
+}
+
+.coluna header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5em;
+  margin-bottom: 0.85em;
+  font-family: var(--fonte-util);
+  font-size: 0.85em;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.coluna header b {
+  display: grid;
+  place-items: center;
+  min-width: 1.7em;
+  height: 1.7em;
+  padding-inline: 0.4em;
+  border-radius: var(--raio-pilula);
+  background: rgba(255, 255, 255, 0.1);
+  font-size: 0.85em;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.coluna--alvo header {
+  color: var(--latao-claro);
+}
+
+/* O cartão de negociação: quem, o que disse, quanto vale e
+   quando. Nada mais — é a informação de uma olhada. */
+.ficha {
+  background: rgba(255, 255, 255, 0.96);
+  border-radius: 0.9em;
+  padding: 0.85em 0.9em;
+  margin-bottom: 0.7em;
+  box-shadow: 0 10px 20px -12px rgba(0, 0, 0, 0.5);
+}
+
+.ficha__topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5em;
+}
+
+.ficha__quem {
+  font-family: var(--fonte-util);
+  font-size: 0.92em;
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--verde-noite);
+}
+
+.ficha__fala {
+  margin-top: 0.4em;
+  font-size: 0.9em;
+  line-height: 1.4;
+  color: var(--cinza);
+}
+
+.ficha footer {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5em;
+  margin-top: 0.7em;
+  padding-top: 0.55em;
+  border-top: 1px solid #ece9dd;
+}
+
+.ficha__valor {
+  font-family: var(--fonte-util);
+  font-size: 0.95em;
+  font-weight: 700;
+  color: var(--verde-texto);
+  font-variant-numeric: tabular-nums;
+}
+
+.ficha__tempo {
+  font-family: var(--fonte-util);
+  font-size: 0.8em;
+  font-weight: 600;
+  color: #9a9e96;
+}
+
+/* O cartão que o robô encaminhou leva um fio verde na lateral:
+   a plataforma marca de onde veio o movimento. */
+.ficha--robo {
+  border-left: 3px solid var(--verde);
+}
+
+/* O canal de onde a conversa veio, nas cores dos próprios
+   aplicativos — reconhecíveis de relance, como no site. */
+.canal {
+  flex: 0 0 auto;
+  width: 0.62em;
+  height: 0.62em;
+  border-radius: 50%;
+}
+
+.canal--whats {
+  background: var(--verde);
+}
+
+.canal--insta {
+  background: #e1306c;
+}
+
+.canal--tele {
+  background: #229ed9;
+}
+
+/* A vaga onde o cartão vai cair. É o único latão fora do
+   título, e existe porque é o destino do movimento. */
+.vaga {
+  display: grid;
+  place-items: center;
+  height: 5.2em;
+  margin-bottom: 0.7em;
+  border: 1.5px dashed rgba(210, 181, 106, 0.65);
+  border-radius: 0.9em;
+  background: rgba(183, 146, 62, 0.1);
+  font-family: var(--fonte-util);
+  font-size: 0.82em;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--latao-claro);
+}
+
+/* O cartão em trânsito: torto, mais alto que o quadro e
+   flutuando devagar em laço — a mesma flutuação da hero do
+   site. Some abaixo de 640px, onde não há espaço para ele
+   pairar sobre nada sem tapar o quadro. */
+.ficha--no-ar {
+  position: absolute;
+  padding-top: 1.35em;
+  z-index: 3;
+  /* O deslocamento é em `em`, NÃO em porcentagem. Tudo dentro do
+     quadro é medido em `em`, então esta distância é sempre a
+     mesma soma — topo do painel, cabeçalho da coluna e a vaga —
+     e o cartão cai logo abaixo do pontilhado em qualquer
+     largura. Com `top: 47%` ele acertava o alvo no desktop e
+     pousava EM CIMA da vaga no tablet, onde o quadro é mais
+     largo e, portanto, muito mais baixo. */
+  right: 1.6em;
+  top: 15.4em;
+  width: 11.5em;
+  margin: 0;
+  transform: rotate(-4deg);
+  box-shadow: 0 30px 55px -18px rgba(0, 0, 0, 0.75);
+  animation: paira 7s ease-in-out infinite;
+}
+
+.ficha--no-ar::after {
+  content: "arrastando";
+  position: absolute;
+  top: -1.05em;
+  left: 0.9em;
+  padding: 0.25em 0.75em;
+  border-radius: var(--raio-pilula);
+  background: var(--verde-medio);
+  font-family: var(--fonte-util);
+  font-size: 0.72em;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--branco);
+}
+
+@keyframes paira {
+  0%,
+  100% {
+    transform: rotate(-4deg) translateY(0);
+  }
+  50% {
+    transform: rotate(-4deg) translateY(-10px);
+  }
+}
+
+/* No celular as tres colunas nao cabem, e a que importa (a do destino)
+   ficava fora da tela: o cartao em transito era escondido e o celular
+   perdia justamente a cena que a pagina existe para mostrar.
+
+   Esconder a PRIMEIRA coluna resolve pelo conteudo, e nao pelo corte: as
+   duas que contam a historia (de onde sai e para onde vai) cabem inteiras,
+   e o cartao volta a aparecer. */
+@media (max-width: 639px) {
+  .funil__colunas .coluna:first-child {
+    display: none;
+  }
+
+  .ficha--no-ar {
+    right: 0.8em;
+    width: 10.5em;
+  }
+}
+
+/* ----- Faixa de clientes -----------------------------------
+   Logotipo em cinza, todos na mesma altura de olho. Ganha cor
+   no hover: quem quiser reconhecer, reconhece. */
+.faixa__titulo {
+  font-family: var(--fonte-util);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--cinza);
+  text-align: center;
+}
+
+.faixa-de-clientes {
+  list-style: none;
+  margin: 2rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(1.75rem, 5vw, 3.5rem);
+}
+
+.faixa-de-clientes img {
+  height: 30px;
+  width: auto;
+  max-width: 130px;
+  object-fit: contain;
+  filter: grayscale(1) opacity(0.5);
+  transition: filter 0.3s ease;
+}
+
+.faixa-de-clientes li:hover img {
+  filter: grayscale(0) opacity(1);
+}
+
+/* ----- Preço ---------------------------------------------- */
+.preco {
+  display: grid;
+  gap: clamp(2.5rem, 5vw, 4rem);
+}
+
+@media (min-width: 900px) {
+  .preco {
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    align-items: center;
+  }
+}
+
+.preco h2 {
+  margin-top: 1.5rem;
+}
+
+.preco__apoio {
+  margin-top: 1.5rem;
+  max-width: 34rem;
+}
+
+.preco__lista {
+  gap: 1rem;
+  background: rgba(255, 255, 255, 0.055);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--raio-cartao);
+  padding: clamp(1.5rem, 3vw, 2.25rem);
+}
+
+/* ----- Depoimentos ---------------------------------------- */
+.voz {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+}
+
+.voz__notas {
+  display: flex;
+  gap: 0.2rem;
+  color: var(--latao);
+  margin-bottom: 1rem;
+}
+
+.voz blockquote {
+  margin: 0;
+  flex: 1;
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  color: var(--tinta);
+}
+
+.voz figcaption {
+  display: grid;
+  gap: 0.15rem;
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--creme-fio);
+  font-family: var(--fonte-util);
+  font-size: 0.8125rem;
+}
+
+.voz figcaption strong {
+  font-weight: 700;
+  color: var(--tinta);
+}
+
+.voz figcaption span {
+  color: var(--cinza);
+  font-weight: 500;
+}
+
+/* ----- Cena dos canais (cartão largo do bento) -------------
+   Cada canal é uma pílula com o ponto na cor do próprio
+   aplicativo, e o ponto solta uma onda em sequência, como
+   mensagem chegando. É a mesma técnica de `.cena-onda` no site
+   institucional: só `transform` e `opacity`, que o navegador
+   compõe na placa de vídeo sem refazer layout.
+
+   A lista é `aria-hidden`: o texto do cartão já diz que são
+   todos os canais, e cinco nomes repetidos só atrapalham quem
+   ouve a página. */
+.canais {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  list-style: none;
+  margin: 1.4rem 0 0;
+  padding: 0;
+}
+
+.canal-chip {
+  --cor: var(--verde);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-family: var(--fonte-util);
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--tinta);
+  background: var(--branco);
+  border: 1px solid var(--cinza-fio);
+  border-radius: var(--raio-pilula);
+  padding: 0.6rem 0.95rem;
+  transition: border-color 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cartao:hover .canal-chip,
+.cartao:focus-within .canal-chip {
+  border-color: var(--verde-borda);
+}
+
+.canal-chip i {
+  position: relative;
+  flex: 0 0 auto;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--cor);
+}
+
+.canal-chip i::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: var(--cor);
+  animation: onda-de-canal 6s ease-out infinite;
+}
+
+/* O atraso escalonado é o que faz a cena parecer uma fila de
+   mensagens, e não cinco luzes piscando juntas. */
+.canal-chip--insta i::after { animation-delay: 0.6s; }
+.canal-chip--face i::after { animation-delay: 1.2s; }
+.canal-chip--tele i::after { animation-delay: 1.8s; }
+.canal-chip--web i::after { animation-delay: 2.4s; }
+
+@keyframes onda-de-canal {
+  0% {
+    transform: scale(1);
+    opacity: 0.55;
+  }
+  12%,
+  100% {
+    transform: scale(3.4);
+    opacity: 0;
+  }
+}
+
+/* As cores dos próprios aplicativos, como no site: o WhatsApp
+   usa o verde da própria ChatClean. */
+.canal-chip--insta { --cor: #e1306c; }
+.canal-chip--face { --cor: #1877f2; }
+.canal-chip--tele { --cor: #229ed9; }
+.canal-chip--web { --cor: var(--latao); }
+
+/* A marca no cabeçalho do painel: o quadro do funil É a tela da
+   ChatClean, então o logotipo ali é cromo de produto, e não
+   enfeite de marca por cima de uma ilustração. */
+.funil__identidade {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75em;
+}
+
+.funil__identidade img {
+  flex: 0 0 auto;
+  width: auto;
+  height: 1.45em;
+  margin-top: 0.25em;
+  opacity: 0.9;
+}

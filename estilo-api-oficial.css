@@ -1,0 +1,705 @@
+/* ============================================================
+   Landing page — API Oficial do WhatsApp
+   ------------------------------------------------------------
+   A assinatura desta página são OS DOIS ESTADOS DO WHATSAPP na
+   hero: à esquerda a marca apagada com o selo de bloqueio, à
+   direita a mesma marca acesa, ligada à bolha da ChatClean por
+   um fio que corre. O tratamento visual é o argumento, e não
+   há uma linha de texto na hero dizendo "antes e depois".
+
+   Nenhuma das duas peças reproduz a interface do WhatsApp: são
+   ilustrações da ChatClean, com a marca do produto de que a
+   página fala. O aviso de marca registrada está no rodapé.
+
+   A casca da hero e do fecho mora em `base.css`, compartilhada
+   com a outra landing. Aqui fica só o que é desta página.
+   ============================================================ */
+
+/* ----- ASSINATURA: os dois estados do número ---------------
+   Escala tipográfica própria, como o quadro do funil da outra
+   landing: `font-size` com clamp aqui e tudo dentro em `em`. */
+.hero__cena {
+  position: relative;
+  display: grid;
+  gap: 1.5rem;
+  font-size: clamp(0.78rem, 1.45vw, 0.875rem);
+}
+
+/* A partir de 520px os dois se sobrepõem: o oficial passa na
+   frente do bloqueado. A ordem de empilhamento conta a
+   substituição. */
+@media (min-width: 520px) {
+  .hero__cena {
+    grid-template-columns: 0.94fr 1fr;
+    align-items: center;
+    gap: 0;
+  }
+}
+
+.tela {
+  margin: 0;
+}
+
+.tela__rotulo {
+  display: inline-block;
+  margin-bottom: 0.85em;
+  padding: 0.35em 0.95em;
+  border-radius: var(--raio-pilula);
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  font-family: var(--fonte-util);
+  font-size: 0.8em;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.52);
+}
+
+.tela__rotulo--verde {
+  background: rgba(81, 188, 105, 0.14);
+  border-color: rgba(81, 188, 105, 0.42);
+  color: var(--verde-claro);
+}
+
+.tela__corpo {
+  border-radius: 1.6em;
+  padding: 1.4em;
+}
+
+.tela--caida .tela__corpo {
+  background: #1b2b22;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+@media (min-width: 520px) {
+  .tela--caida {
+    transform: rotate(-3deg) translateY(1.25em);
+    margin-right: -0.5em;
+  }
+}
+
+/* O número oficial: branco, na frente, com o brilho verde. */
+.tela--oficial {
+  position: relative;
+  z-index: 2;
+}
+
+.tela--oficial .tela__corpo {
+  background: var(--branco);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  box-shadow:
+    0 44px 80px -32px rgba(0, 0, 0, 0.72),
+    0 0 64px -22px rgba(81, 188, 105, 0.38);
+}
+
+@media (min-width: 520px) {
+  .tela--oficial {
+    transform: rotate(1deg);
+  }
+}
+
+/* ----- A marca do WhatsApp nos dois estados ----------------
+   Acesa, ela vai no verde do PRÓPRIO WhatsApp (#25d366), e não
+   no verde da ChatClean: os dois são parecidos, e o ponto da
+   cena é justamente que são duas marcas diferentes, lado a
+   lado. Apagada, perde a cor e ganha o selo de bloqueio. */
+.app {
+  display: flex;
+  align-items: center;
+  gap: 0.9em;
+}
+
+.app__icone {
+  position: relative;
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 3.4em;
+  height: 3.4em;
+  border-radius: 1em;
+}
+
+.app__icone svg {
+  width: 2em;
+  height: 2em;
+}
+
+.app__icone--morto {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.app__icone--vivo {
+  background: #25d366;
+  color: var(--branco);
+  box-shadow: 0 10px 22px -10px rgba(37, 211, 102, 0.85);
+}
+
+/* O selo de bloqueio morde o canto do ícone, como um aviso de
+   sistema. A borda na cor do cartão é o que o descola do
+   ícone. */
+.app__bloqueio {
+  position: absolute;
+  right: -0.35em;
+  bottom: -0.35em;
+  display: grid;
+  place-items: center;
+  width: 1.7em;
+  height: 1.7em;
+  border-radius: 50%;
+  background: #b3261e;
+  border: 2px solid #1b2b22;
+  color: var(--branco);
+}
+
+.app__bloqueio svg {
+  width: 0.9em;
+  height: 0.9em;
+}
+
+.app__nome {
+  font-family: var(--fonte-util);
+  font-size: 1.05em;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: rgba(255, 255, 255, 0.52);
+}
+
+.app__estado {
+  display: flex;
+  align-items: center;
+  gap: 0.4em;
+  margin-top: 0.15em;
+  font-family: var(--fonte-util);
+  font-size: 0.85em;
+  font-weight: 600;
+}
+
+.app__estado--morto {
+  color: #f0a9a3;
+}
+
+/* ----- O par WhatsApp + ChatClean --------------------------
+   As duas marcas ligadas por um fio tracejado que corre de uma
+   para a outra. O movimento é `background-position`, que não
+   refaz layout, e a direção diz quem alimenta quem. */
+.dupla {
+  display: flex;
+  align-items: center;
+  gap: 0.75em;
+}
+
+.dupla__elo {
+  flex: 0 0 auto;
+  width: 2.6em;
+  height: 2px;
+  background-image: linear-gradient(90deg, var(--verde) 50%, transparent 50%);
+  background-size: 0.55em 2px;
+  animation: corre 1.1s linear infinite;
+}
+
+@keyframes corre {
+  to {
+    background-position: 0.55em 0;
+  }
+}
+
+.dupla__marca {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 3.4em;
+  height: 3.4em;
+  border-radius: 1em;
+  background: var(--creme);
+  border: 1px solid var(--creme-fio);
+}
+
+.dupla__marca img {
+  width: 2.5em;
+  height: 2.5em;
+}
+
+/* ----- O perfil verificado --------------------------------- */
+.perfil {
+  margin-top: 1.15em;
+}
+
+.perfil__nome {
+  display: flex;
+  align-items: center;
+  gap: 0.35em;
+  font-family: var(--fonte-util);
+  font-size: 1.05em;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--verde-noite);
+}
+
+.perfil__selo {
+  flex: 0 0 auto;
+  color: var(--verde-medio);
+}
+
+.perfil__estado {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  margin-top: 0.15em;
+  font-family: var(--fonte-util);
+  font-size: 0.85em;
+  font-weight: 600;
+  color: var(--verde-texto);
+}
+
+.pulso {
+  flex: 0 0 auto;
+  width: 0.5em;
+  height: 0.5em;
+  border-radius: 50%;
+  background: var(--verde);
+  animation: pulsa 2.2s ease-out infinite;
+}
+
+@keyframes pulsa {
+  0% {
+    box-shadow: 0 0 0 0 rgba(81, 188, 105, 0.55);
+  }
+  70% {
+    box-shadow: 0 0 0 0.6em rgba(81, 188, 105, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(81, 188, 105, 0);
+  }
+}
+
+/* ----- O número -------------------------------------------- */
+.tela__numero {
+  margin-top: 1em;
+  font-family: var(--fonte-util);
+  font-size: 1.3em;
+  white-space: nowrap;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums;
+  color: rgba(255, 255, 255, 0.34);
+  text-decoration: line-through;
+  text-decoration-color: rgba(240, 169, 163, 0.65);
+  text-decoration-thickness: 2px;
+}
+
+.tela__numero--vivo {
+  color: var(--verde-noite);
+  text-decoration: none;
+}
+
+.tela__contagem {
+  list-style: none;
+  display: grid;
+  gap: 0.6em;
+  margin: 1.15em 0 0;
+  padding: 1.15em 0 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 0.92em;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.42);
+}
+
+.tela__contagem b {
+  font-family: var(--fonte-util);
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.68);
+  font-variant-numeric: tabular-nums;
+}
+
+.tela__contagem--viva {
+  border-top-color: #ece9dd;
+  color: var(--cinza);
+}
+
+.tela__contagem--viva b {
+  color: var(--verde-texto);
+}
+
+/* ----- Comparativo ----------------------------------------
+   Tabela de verdade: um critério por linha, duas respostas. */
+.tabela-rolante {
+  margin-top: 3rem;
+  overflow-x: auto;
+  background: var(--branco);
+  border: 1px solid var(--creme-fio);
+  border-radius: var(--raio-cartao);
+}
+
+.comparativo {
+  width: 100%;
+  min-width: 42rem;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.comparativo th,
+.comparativo td {
+  text-align: left;
+  vertical-align: top;
+  padding: 1rem 1.15rem;
+  border-bottom: 1px solid #f0eee4;
+}
+
+.comparativo thead th {
+  font-family: var(--fonte-util);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--cinza);
+  background: var(--creme);
+  border-bottom: 1px solid var(--creme-fio);
+}
+
+.comparativo thead .comparativo__nossa {
+  color: var(--verde-texto);
+  background: var(--verde-lavado);
+}
+
+.comparativo tbody th {
+  width: 28%;
+  font-family: var(--fonte-util);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  line-height: 1.45;
+  color: var(--tinta);
+}
+
+.comparativo tbody td {
+  line-height: 1.5;
+  color: var(--cinza);
+}
+
+/* A coluna da resposta certa fica levemente verde de ponta a
+   ponta: a tabela toda aponta para um lado. A linha inteira
+   acende no hover, para o olho não se perder atravessando. */
+.comparativo tbody td:last-child {
+  background: rgba(81, 188, 105, 0.055);
+  color: var(--tinta);
+}
+
+.comparativo tbody tr {
+  transition: background-color 0.2s ease;
+}
+
+.comparativo tbody tr:hover {
+  background: var(--creme);
+}
+
+.comparativo tbody tr:last-child th,
+.comparativo tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.marca {
+  display: inline-grid;
+  place-items: center;
+  width: 1.15rem;
+  height: 1.15rem;
+  border-radius: 50%;
+  margin-right: 0.45rem;
+  vertical-align: -0.2rem;
+}
+
+.marca--sim {
+  background: var(--verde-medio);
+  color: var(--branco);
+}
+
+.marca--nao {
+  background: #efe3e1;
+  color: #9d4640;
+}
+
+
+.lido-por-leitor {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ----- Os cinco passos ------------------------------------
+   O fio vertical liga um passo ao seguinte porque a
+   dependência é real: não se cadastra o número antes de a
+   empresa estar verificada. O último número é verde: chegou. */
+.caminho {
+  list-style: none;
+  margin: 3rem 0 0;
+  padding: 0;
+  max-width: 46rem;
+}
+
+.passo {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 1.5rem;
+  padding-bottom: 2rem;
+}
+
+.passo::before {
+  content: "";
+  position: absolute;
+  left: 1.375rem;
+  top: 3.25rem;
+  bottom: 0.25rem;
+  width: 1px;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.24), rgba(255, 255, 255, 0.05));
+}
+
+.passo--fim {
+  padding-bottom: 0;
+}
+
+.passo--fim::before {
+  display: none;
+}
+
+.passo__numero {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.06);
+  font-family: var(--fonte-util);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--latao-claro);
+  font-variant-numeric: tabular-nums;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease,
+    transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.passo:hover .passo__numero {
+  background: var(--verde-medio);
+  border-color: var(--verde-medio);
+  color: var(--branco);
+  transform: scale(1.08);
+}
+
+.passo--fim .passo__numero {
+  background: var(--verde-medio);
+  border-color: var(--verde-medio);
+  color: var(--branco);
+}
+
+.passo h3 {
+  margin-top: 0.5rem;
+}
+
+.passo p {
+  margin-top: 0.5rem;
+  max-width: 34rem;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* ----- A conta aberta ------------------------------------- */
+.conta {
+  display: grid;
+  gap: clamp(2.5rem, 5vw, 3.5rem);
+}
+
+@media (min-width: 940px) {
+  .conta {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 25rem);
+    align-items: start;
+  }
+}
+
+.conta h2 {
+  margin-top: 1.5rem;
+}
+
+.conta__apoio {
+  margin-top: 1.5rem;
+  max-width: 34rem;
+}
+
+.conta__ressalva {
+  margin-top: 1.5rem;
+  max-width: 34rem;
+  padding-left: 1rem;
+  border-left: 2px solid var(--creme-fio);
+  font-size: 0.8125rem;
+  line-height: 1.65;
+  color: var(--cinza);
+}
+
+.tarifas {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.tarifa {
+  background: var(--branco);
+  border: 1px solid var(--cinza-fio);
+  border-radius: 16px;
+  padding: 1.15rem 1.35rem;
+  transition:
+    transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.3s ease,
+    box-shadow 0.35s ease;
+}
+
+.tarifa:hover {
+  transform: translateX(4px);
+  border-color: var(--verde-borda);
+  box-shadow: 0 18px 34px -24px rgba(20, 35, 27, 0.45);
+}
+
+.tarifa--gratis {
+  background: var(--verde-lavado);
+  border-color: var(--verde-borda);
+}
+
+.tarifa__rotulo {
+  display: block;
+  font-family: var(--fonte-util);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--cinza);
+}
+
+.tarifa__valor {
+  margin-top: 0.3rem;
+  font-family: var(--fonte-util);
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  color: var(--verde-noite);
+  font-variant-numeric: tabular-nums;
+}
+
+.tarifa__valor span {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  color: var(--cinza);
+}
+
+.tarifa__nota {
+  margin-top: 0.5rem;
+  font-size: 0.8125rem;
+  line-height: 1.55;
+  color: var(--cinza);
+}
+
+.tarifa--gratis .tarifa__rotulo,
+.tarifa--gratis .tarifa__valor,
+.tarifa--gratis .tarifa__nota {
+  color: var(--verde-texto);
+}
+
+/* ----- Fecho ---------------------------------------------- */
+.fecho__apoio {
+  max-width: 34rem;
+}
+
+/* ----- A comparação no celular ----------------------------
+   Três colunas não encolhem sem virar ilegível, e rolar de
+   lado escondia justamente a coluna da ChatClean: quem abria
+   no celular via só os "não" do aplicativo comum e precisava
+   descobrir sozinho que havia resposta do outro lado.
+
+   Abaixo de 760px cada linha vira um cartão com o critério em
+   cima e as duas respostas embaixo, rotuladas. Mesma
+   informação, mesma ordem, sem nada fora da tela. Os rótulos
+   saem do CSS porque são o cabeçalho da tabela, que some: não
+   há texto novo no HTML para manter em dois lugares. */
+@media (max-width: 759px) {
+  .tabela-rolante {
+    overflow: visible;
+    background: none;
+    border: 0;
+    border-radius: 0;
+  }
+
+  .comparativo {
+    min-width: 0;
+  }
+
+  .comparativo thead {
+    display: none;
+  }
+
+  .comparativo tbody,
+  .comparativo tbody tr,
+  .comparativo tbody th,
+  .comparativo tbody td {
+    display: block;
+    width: auto;
+  }
+
+  .comparativo tbody tr {
+    background: var(--branco);
+    border: 1px solid var(--creme-fio);
+    border-radius: var(--raio-cartao);
+    padding: 1.15rem 1.25rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .comparativo tbody tr:hover {
+    background: var(--branco);
+  }
+
+  .comparativo tbody th,
+  .comparativo tbody tr:last-child th {
+    padding: 0 0 0.85rem;
+    font-size: 0.9375rem;
+    border-bottom: 1px solid #f0eee4;
+  }
+
+  .comparativo tbody td,
+  .comparativo tbody tr:last-child td {
+    padding: 0.85rem 0 0;
+    border-bottom: 0;
+  }
+
+  .comparativo tbody td::before {
+    display: block;
+    margin-bottom: 0.3rem;
+    font-family: var(--fonte-util);
+    font-size: 0.625rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--cinza);
+  }
+
+  .comparativo tbody td:nth-of-type(1)::before {
+    content: "App WhatsApp Business";
+  }
+
+  .comparativo tbody td:nth-of-type(2)::before {
+    content: "API Oficial + ChatClean";
+    color: var(--verde-texto);
+  }
+
+  .comparativo tbody td:last-child,
+  .comparativo tbody tr:last-child td:last-child {
+    margin-top: 0.85rem;
+    padding: 0.8rem 0.9rem;
+    background: var(--verde-lavado);
+    border: 1px solid var(--verde-borda);
+    border-radius: 12px;
+  }
+}
