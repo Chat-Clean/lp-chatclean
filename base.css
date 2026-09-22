@@ -51,6 +51,10 @@
   --fonte-corpo: "Poppins", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --fonte-util: "Montserrat", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
 
+  /* O respiro lateral do conteudo. E token porque o carrossel do mobile
+     precisa do mesmo valor para sangrar ate a borda e voltar a alinhar. */
+  --respiro-lateral: clamp(1.25rem, 4vw, 2.5rem);
+
   --raio-cartao: 20px;
   --raio-controle: 12px;
   --raio-pilula: 999px;
@@ -161,7 +165,7 @@ strong {
   width: 100%;
   max-width: var(--largura);
   margin-inline: auto;
-  padding-inline: clamp(1.25rem, 4vw, 2.5rem);
+  padding-inline: var(--respiro-lateral);
 }
 
 .secao {
@@ -1498,5 +1502,126 @@ strong {
   .video__capa:hover img,
   .video__capa:focus-visible img {
     transform: none;
+  }
+}
+
+/* ----- O carrossel do celular -------------------------------
+   No desktop os cartões vivem lado a lado numa grade. Abaixo de
+   640px eles viravam uma pilha alta, e a pessoa rolava metros
+   para ver três cartões: quem chega por anúncio desiste antes.
+
+   Aqui eles viram um trilho que se arrasta com o dedo, com
+   pontinhos embaixo dizendo onde você está. NENHUM CARTÃO SOME
+   no caminho, que era o ponto: a experiência é a mesma, muda só
+   o eixo em que ela acontece.
+
+   O arrasto é do próprio navegador (`scroll-snap`), não de
+   JavaScript. Ele já tem a inércia certa, respeita o gesto de
+   voltar do sistema e continua funcionando se o script falhar.
+   O JavaScript só desenha os pontinhos. */
+
+@media (max-width: 639px) {
+  [data-carrossel] {
+    display: flex;
+    gap: 0.9rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    /* Sangra até a borda da tela e devolve o respiro por dentro: é o
+       que deixa o próximo cartão espiando na lateral, que é o sinal
+       de "tem mais para o lado" sem precisar escrever isso. */
+    margin-inline: calc(-1 * var(--respiro-lateral));
+    padding-inline: var(--respiro-lateral);
+    scroll-padding-inline: var(--respiro-lateral);
+    overscroll-behavior-x: contain;
+    /* A barra de rolagem some: quem manda o recado é o pontinho. */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  [data-carrossel]::-webkit-scrollbar {
+    display: none;
+  }
+
+  [data-carrossel] > * {
+    /* 84% deixa 16% do próximo aparecendo. Menos que isso e o espião
+       some; mais e o cartão da vez fica apertado. */
+    flex: 0 0 84%;
+    scroll-snap-align: center;
+    /* Um cartão por gesto: sem isto um arrasto forte passa três de
+       uma vez e a pessoa perde o lugar. */
+    scroll-snap-stop: always;
+    /* A grade dava a altura; no trilho cada cartão daria a sua, e as
+       bordas de baixo ficariam em degrau. */
+    align-self: stretch;
+    margin: 0;
+  }
+
+  /* O trilho recebe foco para quem navega por teclado conseguir rolar
+     com as setas. Sem `tabindex` a região rolável fica inalcançável. */
+  [data-carrossel]:focus-visible {
+    outline: 3px solid var(--verde);
+    outline-offset: 6px;
+    border-radius: var(--raio-cartao);
+  }
+
+  .pontos {
+    display: flex;
+    justify-content: center;
+    gap: 0.55rem;
+    margin-top: 1.5rem;
+  }
+
+  .pontos__ponto {
+    width: 0.5rem;
+    height: 0.5rem;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: var(--creme-fio);
+    cursor: pointer;
+    /* O alvo de toque tem 44px mesmo com o ponto tendo 8px: o desenho
+       é pequeno, a área de acerto não pode ser. */
+    position: relative;
+    transition: background 0.3s ease, transform 0.3s ease;
+  }
+
+  .pontos__ponto::after {
+    content: "";
+    position: absolute;
+    inset: -1.125rem;
+  }
+
+  .pontos__ponto[aria-current="true"] {
+    background: var(--verde);
+    transform: scale(1.5);
+  }
+
+  .pontos__ponto:focus-visible {
+    outline: 2px solid var(--verde);
+    outline-offset: 4px;
+  }
+
+  /* Em seção escura o pontinho apagado precisa de outro tom, senão
+     ele some no fundo. */
+  .secao--noite .pontos__ponto {
+    background: rgba(255, 255, 255, 0.25);
+  }
+
+  .secao--noite .pontos__ponto[aria-current="true"] {
+    background: var(--latao-claro);
+  }
+}
+
+/* Acima do corte não existe carrossel: `.pontos` é criado pelo script e
+   fica escondido, e o trilho volta a ser a grade de sempre. */
+@media (min-width: 640px) {
+  .pontos {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pontos__ponto {
+    transition: none;
   }
 }

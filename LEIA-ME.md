@@ -17,6 +17,7 @@ estilo-api-oficial.css   só o que é da de API (os dois estados do WhatsApp)
 base.css                 identidade compartilhada pelas duas
 formulario.js            máscara, validação e envio, compartilhado pelas duas
 video.js                 troca a capa pelo player do YouTube, só na de CRM
+carrossel.js             os pontinhos do carrossel do celular, nas duas
 ativos/                  logotipos e as marcas dos clientes
 ativos/chatclean-email.png   o logotipo do e-mail, em PNG (ver abaixo)
 ativos/video-crm.jpg     a capa do vídeo da demonstração
@@ -90,6 +91,60 @@ Sem framework e quase sem JavaScript, tudo em CSS:
 - na landing de API, o fio tracejado corre do WhatsApp para a ChatClean, o
   pulso verde bate no perfil verificado e a linha da tabela acende no hover;
 - tudo respeita `prefers-reduced-motion`.
+
+## No celular os cartões viram carrossel
+
+Abaixo de 640px, todo grupo marcado com `data-carrossel` deixa de ser grade e
+vira um trilho que se arrasta com o dedo, com pontinhos embaixo dizendo onde
+você está. **Nenhum cartão some no caminho**, que era o ponto: a experiência é
+a mesma, muda só o eixo em que ela acontece.
+
+Antes, três cartões viravam uma pilha alta e a pessoa rolava metros para ver o
+que no desktop cabia de uma vez. Quem chega por anúncio desiste antes.
+
+### O arrasto é do navegador, não do JavaScript
+
+Quem rola é o `scroll-snap` do CSS. Ele já tem a inércia certa, respeita o
+gesto de voltar do sistema e funciona com o dedo, com a roda do mouse e com as
+setas do teclado. Reimplementar isso com `pointerdown` e `transform` é o
+caminho mais curto para um arrasto que parece bom no emulador e trava no
+aparelho de verdade.
+
+O CSS mira o **atributo** `data-carrossel`, e não uma classe que `carrossel.js`
+precisasse pôr. A diferença aparece no dia em que o script não carrega: o
+arrasto continua inteiro, e o que falta são só os pontinhos.
+
+Três detalhes que fazem a diferença entre elegante e tosco:
+
+- o trilho **sangra até a borda da tela** e devolve o respiro por dentro, pelo
+  mesmo token `--respiro-lateral` que o `.envelope` usa. É o que deixa o
+  próximo cartão espiando na lateral, e isso diz "tem mais para o lado" sem
+  precisar escrever;
+- `scroll-snap-stop: always`, senão um arrasto forte passa três cartões de uma
+  vez e a pessoa perde o lugar;
+- o pontinho tem 8px de desenho e **44px de área de toque**, por um
+  `::after` invisível. Alvo pequeno em tela de celular é o jeito mais barato de
+  parecer quebrado.
+
+Para acrescentar um carrossel em outro grupo, basta pôr `data-carrossel` no
+contêiner. Os pontinhos são consequência, não conteúdo: a quantidade sai do
+número de cartões, e escrever à mão significa alguém acrescentar um cartão e
+ficar com três bolinhas para quatro.
+
+### O que continua diferente no celular, e por quê
+
+Duas coisas, as duas deliberadas:
+
+- **o quadro do funil esconde a primeira coluna.** O cartão "arrastando" é
+  ancorado no quadro, não nas colunas, e com as três à mostra ele pousaria
+  sobre a coluna errada. Devolver a coluna exige remontar a ilustração para o
+  cartão viajar junto com o trilho;
+- **a marca d'água da seção** some abaixo de 760px, onde sentaria atrás do
+  próprio título.
+
+A tabela comparativa da landing de API **não** é uma dessas: ela vira uma pilha
+de cartões e reinjeta o nome de cada coluna por `::before`, então nada se
+perde.
 
 ## Onde a logo aparece
 
