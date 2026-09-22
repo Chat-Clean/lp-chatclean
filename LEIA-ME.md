@@ -138,6 +138,20 @@ formulario.js            máscara do telefone, validação por campo, envio
 **Todos os campos são obrigatórios**, inclusive as perguntas de pílula. O envio
 só sai depois que todos passam.
 
+### O telefone aceita com e sem o 9
+
+Dez ou onze dígitos, os dois passam: `(84) 9890-0718` e `(84) 99890-0718`. Fixo
+também. O único formato recusado é onze dígitos que não começam com 9 depois do
+DDD, porque celular brasileiro não existe assim, e quase sempre é um dígito
+digitado a mais.
+
+O que impedia na prática **não era a validação, era a máscara**: ela reescreve o
+valor inteiro a cada tecla, e o cursor pulava para o fim. Apagar o 9 do meio de
+um número já digitado era brigar com o campo, e a conclusão natural é que ele
+não deixa. Agora a posição é preservada, contada em **dígitos** e não em
+caracteres, porque os parênteses e o traço aparecem e somem conforme o tamanho
+muda.
+
 **A validação do navegador não é a validação.** Qualquer um manda um POST direto
 sem nunca abrir a página, então quem decide é o servidor. Quando ele recusa com
 422, as frases dele são pintadas nos campos sem tradução: se as duas regras um

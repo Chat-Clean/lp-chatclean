@@ -97,7 +97,7 @@
       case "telefone": {
         const v = somenteDigitos(valor);
         if (v === "") return "Precisamos do WhatsApp para falar com você.";
-        if (!telefoneEhValido(v)) return "Confira o número: DDD mais 8 ou 9 dígitos.";
+        if (!telefoneEhValido(v)) return "Confira o número: DDD e o telefone, com ou sem o 9 na frente.";
         return null;
       }
       case "atendentes":
@@ -170,17 +170,50 @@
 
   const telefone = controle("telefone");
   if (telefone) {
-    telefone.addEventListener("input", () => {
-      // O cursor volta para o fim porque a máscara reescreve o valor inteiro.
-      // Digitar no meio de um telefone já formatado é raro o bastante para não
-      // pagar a complexidade de preservar a posição.
-      telefone.value = formatarTelefone(telefone.value);
-    });
+    /* A máscara reescreve o valor inteiro a cada tecla, e isso jogaria o
+       cursor para o fim. Não dá: apagar o 9 de um número já digitado é
+       mexer no meio, e com o cursor pulando fora a pessoa conclui que o
+       campo não deixa tirar o 9.
+
+       A posição é guardada em DÍGITOS, não em caracteres: os parênteses,
+       o espaço e o traço aparecem e somem sozinhos conforme o tamanho
+       muda, então contar caractere devolveria o cursor para o lugar
+       errado justamente quando a formatação muda. */
+    function reescreverComCursor() {
+      const antes = telefone.value;
+      const cursor = telefone.selectionStart;
+      const depois = formatarTelefone(antes);
+
+      if (cursor === null || cursor === undefined) {
+        telefone.value = depois;
+        return;
+      }
+
+      const digitosAntesDoCursor = somenteDigitos(antes.slice(0, cursor)).length;
+      telefone.value = depois;
+
+      let posicao = 0;
+      let contados = 0;
+      while (posicao < depois.length && contados < digitosAntesDoCursor) {
+        if (/\d/.test(depois[posicao])) contados++;
+        posicao++;
+      }
+      // Pula a pontuação à frente, para o cursor parar colado no próximo
+      // dígito e não entre o ")" e o espaço.
+      while (posicao < depois.length && !/\d/.test(depois[posicao])) posicao++;
+
+      try {
+        telefone.setSelectionRange(posicao, posicao);
+      } catch (erro) {
+        /* Navegador que não deixa mexer na seleção deste tipo de campo: o
+           valor já está formatado, e só o cursor fica no fim. */
+      }
+    }
+
+    telefone.addEventListener("input", reescreverComCursor);
     // Colar traz o texto do jeito que estava na área de transferência.
     telefone.addEventListener("paste", () => {
-      setTimeout(() => {
-        telefone.value = formatarTelefone(telefone.value);
-      }, 0);
+      setTimeout(reescreverComCursor, 0);
     });
   }
 

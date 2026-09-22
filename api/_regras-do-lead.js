@@ -149,7 +149,7 @@ function erroDoCampo(campo, valor, contexto) {
     case "telefone": {
       const v = somenteDigitos(valor);
       if (v === "") return "Precisamos do WhatsApp para falar com você.";
-      if (!telefoneEhValido(v)) return "Confira o número: DDD mais 8 ou 9 dígitos.";
+      if (!telefoneEhValido(v)) return "Confira o número: DDD e o telefone, com ou sem o 9 na frente.";
       return null;
     }
     case "atendentes": {
