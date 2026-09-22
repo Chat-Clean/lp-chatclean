@@ -159,7 +159,10 @@ function criarBancoDeLeads(opcoes) {
         };
       }
 
-      return { ok: true, id: gravada.id };
+      // `criado_em` vem junto porque o aviso por e-mail mostra a hora, e a
+      // hora certa é a que o banco carimbou — não a que a função achava que
+      // era um instante depois.
+      return { ok: true, id: gravada.id, criadoEm: gravada.criado_em || null };
     },
 
     /**

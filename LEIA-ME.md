@@ -20,6 +20,7 @@ ativos/                  logotipos e as marcas dos clientes
 api/lead-landing.js      a função que grava o lead (o endpoint do formulário)
 api/_regras-do-lead.js   o que é um lead válido, sem rede
 api/_banco-de-leads.js   a gravação no Supabase com a chave de serviço
+api/_aviso-por-email.js  o e-mail de lead novo para o atendimento
 vercel.json              o rewrite de /api e o cabeçalho noindex
 ```
 
@@ -127,6 +128,8 @@ formulario.js            máscara do telefone, validação por campo, envio
        └─ confere o teto por IP      (api/_banco-de-leads.js)
        └─ grava com a chave de serviço
             └─ tabela leads_das_landings, RLS sem policy nenhuma
+       └─ avisa o atendimento        (api/_aviso-por-email.js)
+            └─ falhou aqui? o lead continua gravado
        └─ devolve { leadId, whatsappUrl }
   └─ navega para o whatsappUrl
 ```
@@ -154,7 +157,7 @@ As frases de erro estão escritas **três vezes** — aqui, em `formulario.js` e
 site. Se divergirem, a pessoa vê o campo passar no navegador e ser recusado
 pelo servidor sem entender o que mudou. Mexeu numa, confira as outras.
 
-## O deploy: duas variáveis de ambiente
+## O deploy: o que precisa estar no painel
 
 As páginas e a função saem **do mesmo domínio**, este projeto. O formulário
 posta em `/api/lead-landing`, caminho relativo, e mesma origem não pede
@@ -168,6 +171,9 @@ tradução:
 |---|---|---|
 | `SUPABASE_URL` | a URL do projeto Supabase | *Project Settings → Data API* |
 | `SUPABASE_CHAVE_DE_SERVICO` | a `service_role` | *Project Settings → API Keys* |
+| `RESEND_API_KEY` | a chave do Resend, para o aviso de lead novo | *resend.com → API Keys* |
+| `RESEND_REMETENTE` | opcional: de quem o aviso vem | veja a seção do aviso |
+| `LANDINGS_EMAIL_DESTINO` | opcional: para onde o aviso vai | o padrão está no código |
 
 A chave de serviço **ignora RLS**: é por isso que ela funciona contra uma
 tabela que nega tudo, e é por isso que ela nunca pode levar prefixo `VITE_`,
@@ -179,6 +185,56 @@ indisponível"*. O motivo exato fica no log da Vercel, nunca na resposta.
 Abrir o arquivo com duplo clique (`file://`) mostra a página e a máscara, mas o
 envio falha: não há função do outro lado. O `/api` também só existe depois do
 deploy, porque é rewrite; localmente a página é `api-oficial.html`.
+
+## O aviso de lead novo, por e-mail
+
+Gravou, avisa: cada lead dispara um e-mail para
+`chatcleanatendimento@gmail.com` com a ficha e um botão que abre a conversa no
+WhatsApp **com o lead**. O número também vai escrito, logo abaixo do botão,
+porque botão em e-mail nem sempre sobrevive ao cliente de quem lê.
+
+O aviso sai de `api/_aviso-por-email.js`, chamado pela função logo depois da
+gravação. Não há gatilho no banco: quem escreve nessa tabela é só essa função,
+então "gravou" e "avisar" são o mesmo instante.
+
+O que vai no e-mail: nome, empresa, WhatsApp clicável, e-mail clicável, quantos
+atendentes, se já foi bloqueado (só na de API), de qual página veio, a campanha
+(`utm`) e a hora. **Não vai o IP** — ele existe para auditoria do consentimento
+e para o teto de envios, não para a caixa de entrada do time.
+
+Três detalhes que economizam tempo de quem recebe:
+
+- o **assunto** traz página, nome e empresa, para triar sem abrir;
+- quando a resposta de bloqueio é *"Sim, já caiu"*, o assunto grita
+  `JÁ FOI BLOQUEADO`: é o lead mais quente que estas páginas produzem;
+- **responder o e-mail responde para o lead** (`reply_to`), sem copiar endereço.
+
+### Um aviso perdido não é um lead perdido
+
+Se o Resend estiver fora, se a chave faltar ou se o e-mail for recusado, o lead
+**continua gravado** e a pessoa continua indo para o WhatsApp. A falha vai para
+o log da Vercel com o `leadId`, e é por ali que se acha o lead que não virou
+e-mail. O contrário — perder um lead porque o provedor de e-mail piscou —
+trocaria um problema de aviso por um problema de receita.
+
+O envio é esperado antes da resposta, e não largado para depois: função
+serverless pode ser congelada assim que responde, e o que fica para trás às
+vezes simplesmente não acontece. O prazo é curto (4s) para o formulário não
+ficar pendurado.
+
+### O remetente precisa de domínio verificado
+
+Sem configurar nada, o aviso sai de `onboarding@resend.dev`, que é o domínio de
+teste do Resend — e ele **só entrega para o e-mail dono da conta**. Para o
+aviso chegar de verdade em `chatcleanatendimento@gmail.com`:
+
+1. no Resend, *Domains → Add Domain*, `chatclean.com.br`;
+2. publique os registros DNS que ele pedir (SPF, DKIM e o de retorno);
+3. ponha `RESEND_REMETENTE` como `ChatClean <lead@chatclean.com.br>`.
+
+Enquanto o domínio não estiver verificado, o teste possível é abrir a conta do
+Resend com o próprio `chatcleanatendimento@gmail.com`: aí o domínio de teste
+entrega nele.
 
 ## A segurança do endpoint
 
@@ -287,6 +343,10 @@ três páginas.
 - **`SUPABASE_URL` e `SUPABASE_CHAVE_DE_SERVICO` precisam estar no projeto da
   Vercel**, nos três ambientes. Sem elas as páginas sobem bonitas e o
   formulário responde erro no envio, que é o jeito mais caro de descobrir.
+- **`RESEND_API_KEY` também**, senão o lead é gravado e ninguém fica sabendo.
+  Essa falha é silenciosa para quem preencheu: só aparece no log da Vercel.
+- Mande um lead de teste depois de publicar e confira as duas pontas: a linha
+  na tabela `leads_das_landings` e o e-mail na caixa do atendimento.
 - As duas páginas estão com `noindex, nofollow`: são páginas de anúncio e não
   devem competir com o site no orgânico. Tirar só se a intenção mudar.
 - Os números dentro das ilustrações (funil, contagens do número bloqueado) são

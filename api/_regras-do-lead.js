@@ -32,14 +32,49 @@
 /** O WhatsApp para onde o lead segue depois de gravado. NÚMERO DE EXEMPLO. */
 const WHATSAPP_DAS_LANDINGS = "5584998900718";
 
+/** Para onde vai o aviso de lead novo. */
+const EMAIL_DO_ATENDIMENTO = "chatcleanatendimento@gmail.com";
+
 /** A versão do texto de consentimento aceito nos formulários. */
 const VERSAO_DO_ACEITE = "2026-09-22";
 
 /** As duas páginas. Vocabulário fechado: o banco tem o mesmo `check`. */
 const LANDINGS = ["crm", "api-oficial"];
 
-const IDS_DAS_FAIXAS = ["so-eu", "2-5", "6-15", "16-40", "40+"];
-const IDS_DE_BLOQUEIO = ["sim", "quase", "nao"];
+/** Como cada página se chama por extenso, no assunto do e-mail. */
+const NOME_DA_LANDING = {
+  crm: "CRM",
+  "api-oficial": "API Oficial",
+};
+
+/* Id e rótulo juntos: o formulário grava o id, e o e-mail mostra o rótulo.
+   Guardar só o id faria o aviso chegar com "so-eu" e "quase" escritos, que é
+   vocabulário de banco de dados e não diz nada para quem vai ligar. */
+
+const FAIXAS_DE_ATENDENTES = [
+  { id: "so-eu", rotulo: "Só eu" },
+  { id: "2-5", rotulo: "2 a 5" },
+  { id: "6-15", rotulo: "6 a 15" },
+  { id: "16-40", rotulo: "16 a 40" },
+  { id: "40+", rotulo: "Mais de 40" },
+];
+
+const RESPOSTAS_DE_BLOQUEIO = [
+  { id: "sim", rotulo: "Sim, já caiu" },
+  { id: "quase", rotulo: "Já levei aviso" },
+  { id: "nao", rotulo: "Nunca" },
+];
+
+const IDS_DAS_FAIXAS = FAIXAS_DE_ATENDENTES.map((f) => f.id);
+const IDS_DE_BLOQUEIO = RESPOSTAS_DE_BLOQUEIO.map((r) => r.id);
+
+const rotuloDe = (lista, id) => {
+  const achado = lista.filter((item) => item.id === id)[0];
+  return achado ? achado.rotulo : null;
+};
+
+const rotuloDaFaixa = (id) => rotuloDe(FAIXAS_DE_ATENDENTES, id);
+const rotuloDoBloqueio = (id) => rotuloDe(RESPOSTAS_DE_BLOQUEIO, id);
 
 const LIMITES = { nome: 120, email: 160, empresa: 120 };
 
@@ -256,12 +291,65 @@ function enderecoDoWhatsApp(lead, numero) {
   return "https://wa.me/" + (numero || WHATSAPP_DAS_LANDINGS) + "?text=" + texto;
 }
 
+/* ─── O caminho de volta: da ChatClean para o lead ───────────────────────── */
+
+/** O telefone como gente lê: (84) 99890-0718. */
+function telefoneVisivel(bruto) {
+  const d = somenteDigitos(bruto).slice(0, 11);
+  if (d.length <= 2) return d;
+  if (d.length <= 6) return "(" + d.slice(0, 2) + ") " + d.slice(2);
+  if (d.length <= 10)
+    return "(" + d.slice(0, 2) + ") " + d.slice(2, 6) + "-" + d.slice(6);
+  return "(" + d.slice(0, 2) + ") " + d.slice(2, 7) + "-" + d.slice(7);
+}
+
+/**
+ * A mensagem que a ChatClean manda para o lead.
+ *
+ * O contrário de `mensagemDoWhatsApp`: aquela é a pessoa se apresentando, esta
+ * é o atendimento respondendo. Diz de onde veio o contato, porque um "oi" sem
+ * contexto chegando de número desconhecido parece spam.
+ */
+function mensagemParaOLead(lead) {
+  const dados = lead || {};
+  const quem = limpar(dados.nome).split(" ")[0];
+  const pedido =
+    dados.landing === "api-oficial"
+      ? "vi que você pediu a API Oficial do WhatsApp pelo nosso site"
+      : "vi que você pediu uma demonstração do CRM pelo nosso site";
+  return (
+    "Oi" +
+    (quem === "" ? "" : ", " + quem) +
+    "! Aqui é da ChatClean, " +
+    pedido +
+    ". Posso te mostrar como funciona?"
+  );
+}
+
+/**
+ * O link do botão do e-mail: abre a conversa COM O LEAD.
+ *
+ * O telefone é gravado sem código de país, porque é assim que a pessoa digita.
+ * O `55` entra aqui, e só aqui: guardar o número já com o prefixo faria a
+ * máscara da página e o dado do banco discordarem.
+ */
+function whatsappDoLead(telefone, lead) {
+  const d = somenteDigitos(telefone);
+  if (d.length !== 10 && d.length !== 11) return null;
+  const texto = encodeURIComponent(mensagemParaOLead(lead));
+  return "https://wa.me/55" + d + "?text=" + texto;
+}
+
 module.exports = {
   CAMPO_ISCA,
+  EMAIL_DO_ATENDIMENTO,
+  FAIXAS_DE_ATENDENTES,
   LANDINGS,
   LIMITES,
   LIMITE_DE_ENVIOS,
+  NOME_DA_LANDING,
   PARAMETROS_DE_CAMPANHA,
+  RESPOSTAS_DE_BLOQUEIO,
   VERSAO_DO_ACEITE,
   WHATSAPP_DAS_LANDINGS,
   campanhaDaBusca,
@@ -270,7 +358,12 @@ module.exports = {
   erroDoCampo,
   limpar,
   mensagemDoWhatsApp,
+  mensagemParaOLead,
+  rotuloDaFaixa,
+  rotuloDoBloqueio,
   somenteDigitos,
   telefoneEhValido,
+  telefoneVisivel,
   validarLeadDaLanding,
+  whatsappDoLead,
 };

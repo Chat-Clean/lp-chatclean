@@ -46,6 +46,7 @@ const {
 } = require("./_regras-do-lead.js");
 
 const { TIPOS, bancoDoAmbiente } = require("./_banco-de-leads.js");
+const { avisarLeadNovo } = require("./_aviso-por-email.js");
 
 /** Um corpo maior que isto não é formulário, é tentativa. */
 const TETO_DO_CORPO_BYTES = 8 * 1024;
@@ -185,6 +186,10 @@ module.exports = async function handler(req, res) {
     });
   }
 
+  // Calculados uma vez: vão para o banco e, iguais, para o aviso por e-mail.
+  const origem = origemDoPedido(corpo);
+  const campanha = campanhaDaBusca(corpo.campanha);
+
   const gravado = await banco.banco.inserir({
     landing: lead.landing,
     nome: lead.nome,
@@ -193,8 +198,8 @@ module.exports = async function handler(req, res) {
     empresa: lead.empresa,
     atendentes: lead.atendentes,
     bloqueio: lead.bloqueio,
-    origem: origemDoPedido(corpo),
-    campanha: campanhaDaBusca(corpo.campanha),
+    origem: origem,
+    campanha: campanha,
     aceite_versao: lead.aceiteVersao,
     aceite_ip: ip,
   });
@@ -208,6 +213,26 @@ module.exports = async function handler(req, res) {
   }
 
   console.log("[lead-landing] gravado " + gravado.id + " (" + lead.landing + ")");
+
+  /* O aviso para o atendimento.
+     Esperado antes de responder porque função serverless pode ser congelada
+     assim que a resposta sai, e trabalho deixado para depois às vezes não
+     acontece. E NUNCA muda o código da resposta: o lead já está gravado, e
+     aviso perdido não é lead perdido. */
+  const aviso = await avisarLeadNovo(
+    lead,
+    { origem: origem, campanha: campanha, criadoEm: gravado.criadoEm },
+    process.env,
+  );
+
+  if (!aviso.ok) {
+    console.error(
+      "[lead-landing] aviso por e-mail falhou (" +
+        gravado.id +
+        "): " +
+        aviso.motivo,
+    );
+  }
 
   return res.status(201).json({
     leadId: gravado.id,
