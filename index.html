@@ -404,15 +404,19 @@
               <p>Sua equipe para de trocar de aplicativo no meio do atendimento</p>
 
               <!-- A caixa de entrada única, que é a tese deste cartão.
-                   Cada canal chama por vez, acende, e a conversa dele
-                   aparece na lista. No fim, quatro aplicativos numa tela só.
+                   Canais à esquerda, os fios acendendo, a caixa à direita
+                   recebendo, como no site: cada canal chama por vez, o fio
+                   dele acende e a conversa aparece na lista. No fim, quatro
+                   aplicativos numa tela só.
 
-                   OS CANAIS SÃO UMA FILEIRA EM CIMA, e a caixa vem embaixo.
-                   Já foi três colunas com fios curvos entre elas, como no
-                   site, e quebrou duas vezes seguidas: a coluna dos canais
-                   vazava por baixo do painel e o <svg> caía na altura
-                   intrínseca. Fileira que quebra linha não colide com nada,
-                   em largura nenhuma.
+                   AS CLASSES DESTA CENA TÊM PREFIXO PRÓPRIO, e isso não é
+                   estilo. A primeira versão usou `.canal`, e `.canal` já
+                   existe: é o pontinho de 0.62em do funil do hero. Cada
+                   azulejo daqui virou um ponto de 8px com o rótulo vazando
+                   por cima do vizinho, a coluna encolheu com eles, e três
+                   consertos seguidos erraram o alvo porque o alvo era o nome.
+                   A cor vem de `data-canal`, que não é classe e não colide
+                   com ninguém.
 
                    A LISTA JÁ TEM AS QUATRO LINHAS no lugar final, a mais
                    nova em cima: cada chegada só revela a sua. Nada é
@@ -420,11 +424,27 @@
                    altura do cartão. Daí a ordem invertida na marcação. -->
               <div class="palco palco--caixa" aria-hidden="true" data-cena data-passos="900,900,900,900">
                 <ul class="caixa__canais">
-                  <li class="canal canal--whats"><span><svg><use href="#i-whatsapp" /></svg></span>WhatsApp</li>
-                  <li class="canal canal--insta"><span><svg><use href="#i-instagram" /></svg></span>Instagram</li>
-                  <li class="canal canal--face"><span><svg><use href="#i-facebook" /></svg></span>Facebook</li>
-                  <li class="canal canal--tele"><span><svg><use href="#i-telegram" /></svg></span>Telegram</li>
+                  <li class="caixa__canal" data-canal="whats"><span><svg><use href="#i-whatsapp" /></svg></span>WhatsApp</li>
+                  <li class="caixa__canal" data-canal="insta"><span><svg><use href="#i-instagram" /></svg></span>Instagram</li>
+                  <li class="caixa__canal" data-canal="face"><span><svg><use href="#i-facebook" /></svg></span>Facebook</li>
+                  <li class="caixa__canal" data-canal="tele"><span><svg><use href="#i-telegram" /></svg></span>Telegram</li>
                 </ul>
+
+                <!-- Os fios. `preserveAspectRatio="none"` deixa a curva
+                     esticar com a coluna, e `vector-effect` segura a
+                     espessura do traço, que senão esticaria junto. As
+                     alturas 12/38/62/88 são os centros dos quatro canais
+                     quando a coluna os espalha por `space-around`. -->
+                <svg class="caixa__fios" viewBox="0 0 100 100" preserveAspectRatio="none">
+                  <path class="caixa__fio" d="M0 12.5 C 55 12.5, 45 50, 100 50" />
+                  <path class="caixa__fio" d="M0 37.5 C 55 37.5, 45 50, 100 50" />
+                  <path class="caixa__fio" d="M0 62.5 C 55 62.5, 45 50, 100 50" />
+                  <path class="caixa__fio" d="M0 87.5 C 55 87.5, 45 50, 100 50" />
+                  <path class="caixa__fio caixa__fio--aceso" data-fio="1" d="M0 12.5 C 55 12.5, 45 50, 100 50" />
+                  <path class="caixa__fio caixa__fio--aceso" data-fio="2" d="M0 37.5 C 55 37.5, 45 50, 100 50" />
+                  <path class="caixa__fio caixa__fio--aceso" data-fio="3" d="M0 62.5 C 55 62.5, 45 50, 100 50" />
+                  <path class="caixa__fio caixa__fio--aceso" data-fio="4" d="M0 87.5 C 55 87.5, 45 50, 100 50" />
+                </svg>
 
                 <div class="caixa__painel">
                   <div class="caixa__topo">
@@ -432,22 +452,22 @@
                     <b class="caixa__conta"></b>
                   </div>
                   <ul class="caixa__conversas">
-                    <li class="canal--tele" data-surge-em="4">
+                    <li data-canal="tele" data-surge-em="4">
                       <span class="caixa__marca"><svg><use href="#i-telegram" /></svg></span>
                       <span class="caixa__quem"><b>Pedro Alves</b>Consigo trocar o horário?</span>
                       <i class="caixa__nova"></i>
                     </li>
-                    <li class="canal--face" data-surge-em="3">
+                    <li data-canal="face" data-surge-em="3">
                       <span class="caixa__marca"><svg><use href="#i-facebook" /></svg></span>
                       <span class="caixa__quem"><b>Ana Paula</b>Qual o valor do plano anual?</span>
                       <i class="caixa__nova"></i>
                     </li>
-                    <li class="canal--insta" data-surge-em="2">
+                    <li data-canal="insta" data-surge-em="2">
                       <span class="caixa__marca"><svg><use href="#i-instagram" /></svg></span>
                       <span class="caixa__quem"><b>Carlos Lima</b>Vi o post, tem no tamanho M?</span>
                       <i class="caixa__nova"></i>
                     </li>
-                    <li class="canal--whats" data-surge-em="1">
+                    <li data-canal="whats" data-surge-em="1">
                       <span class="caixa__marca"><svg><use href="#i-whatsapp" /></svg></span>
                       <span class="caixa__quem"><b>Marina Souza</b>Vocês entregam ainda hoje?</span>
                       <i class="caixa__nova"></i>

@@ -105,36 +105,52 @@ mostram.
 
 | cartão | o que a cena mostra |
 |---|---|
-| Todos os canais numa lista só | cada canal acende por vez na fileira, e a conversa dele cai na caixa de entrada logo abaixo |
+| Todos os canais numa lista só | cada canal chama por vez à esquerda, o fio dele acende e a conversa cai na caixa de entrada ao lado |
 | Funil em Kanban | a meta do mês enchendo, e um negócio fechando em verde |
 | ChatBot e Agente de IA | a pergunta, o robô digitando, a resposta, e a passagem para a Ana |
 | Campanhas | o funil do disparo: enviadas, entregues, lidas, responderam |
 | Dashboards | tempo de resposta, CSAT e as colunas por atendente subindo |
 
-### A caixa de entrada: fileira em cima, caixa embaixo
+### A caixa de entrada: canais à esquerda, caixa à direita
 
-É a tese do cartão largo. Os quatro canais ficam numa fileira de pílulas em
-cima; cada um acende por vez, e a conversa dele entra na lista logo abaixo com
-o mesmo ícone. No fim, quatro aplicativos numa tela só.
+É a tese do cartão largo, e por isso ganhou o tratamento completo do site:
+canais numa coluna à esquerda, fios curvos acendendo, e a caixa à direita
+recebendo. Cada canal chama por vez, o fio dele acende e a conversa entra na
+lista com o mesmo ícone. No fim, quatro aplicativos numa tela só.
 
-**Já foi três colunas com fios curvos entre elas, igual ao site, e quebrou duas
-vezes seguidas.** A coluna dos canais vazava por baixo do painel branco, e o
-`<svg>` dos fios caía na altura intrínseca de 150px. Os consertos foram feitos
-sem ver a página renderizada, e erraram de novo. A lição que ficou escrita no
-CSS: layout que depende de três larguras se acertarem quebra onde ninguém
-olhou. Uma fileira que quebra linha (`flex-wrap: wrap`) não colide com nada em
-largura nenhuma: no bento largo os quatro cabem numa linha, e no carrossel do
-celular viram duas. Há asserções impedindo que as colunas voltem.
+**Toda classe desta cena leva o prefixo `caixa__`, e isso não é estilo.** A
+primeira versão usou `.canal`, e `.canal` já existia em `estilo-crm.css`: é o
+pontinho de 0.62em do funil do hero. Cada azulejo virou um ponto de 8px com o
+rótulo vazando por cima do vizinho, a coluna encolheu junto, e três consertos
+seguidos (colunas, altura do `<svg>`, container query) erraram o alvo porque o
+alvo era o nome. A cor do canal vem de `data-canal`, que não é classe e não
+colide com regra nenhuma. Há uma asserção que recusa qualquer classe da cena
+sem o prefixo, e outra que recusa `canal` e `canal--*` ali dentro.
+
+Três decisões que fazem as colunas se acertarem:
+
+- a primeira coluna é `max-content`, porque `auto` encolhe até min-content
+  quando a terceira aperta;
+- a coluna dos canais e o `<svg>` dos fios esticam na altura da linha por
+  `align-self: stretch`, nunca por porcentagem, que contra altura indefinida
+  faz o `<svg>` cair nos 150px intrínsecos;
+- os quatro canais são espalhados por `space-around`, cujos centros caem em
+  12,5 / 37,5 / 62,5 / 87,5 por cento: é onde os fios começam. Coluna e fios
+  medem a mesma altura, então se alinham sem conta nenhuma no JavaScript.
+
+O corte para cartão estreito é **container query**, não media query: no
+carrossel do celular este cartão tem 330px com a janela em 600px. Abaixo de
+30rem os fios e os rótulos somem, e a coluna de azulejos continua dizendo de
+onde a conversa veio.
 
 **A lista está escrita na ordem invertida**, a mais nova em cima. As quatro
 conversas já estão no HTML, no lugar final: cada passo só revela a sua. Nada é
-inserido, nada empurra vizinho, o cartão não muda de altura. É o tipo de coisa
-que alguém "arruma" numa edição distraída, então há uma asserção exigindo que
-os passos apareçam em ordem decrescente.
+inserido, nada empurra vizinho, o cartão não muda de altura. Há uma asserção
+exigindo que os passos apareçam em ordem decrescente.
 
-O azulejo do canal é um círculo cheio na cor do aplicativo com o glifo em
-branco, na fileira e na lista: é o que deixa o olho ligar a conversa ao canal
-sem ler o nome.
+**O fio é duas camadas, não uma que troca de cor.** Cor de traço não transita
+de graça: mudar `stroke` repinta. Há um fio apagado sempre no lugar e um aceso
+por cima, e o que transita é a opacidade do de cima.
 
 ### Uma cena é marcação, não JavaScript
 
