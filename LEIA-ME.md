@@ -18,6 +18,7 @@ base.css                 identidade compartilhada pelas duas
 formulario.js            máscara, validação e envio, compartilhado pelas duas
 video.js                 troca a capa pelo player do YouTube, só na de CRM
 carrossel.js             os pontinhos do carrossel do celular, nas duas
+cenas.js                 o laço das cenas dos cartões, só na de CRM
 ativos/                  logotipos e as marcas dos clientes
 ativos/chatclean-email.png   o logotipo do e-mail, em PNG (ver abaixo)
 ativos/video-crm.jpg     a capa do vídeo da demonstração
@@ -91,6 +92,68 @@ Sem framework e quase sem JavaScript, tudo em CSS:
 - na landing de API, o fio tracejado corre do WhatsApp para a ChatClean, o
   pulso verde bate no perfil verificado e a linha da tabela acende no hover;
 - tudo respeita `prefers-reduced-motion`.
+
+## Os cartões de recurso têm cena, como no site
+
+Na landing de CRM, cada cartão de recurso tem um **palco** onde a
+funcionalidade acontece, em laço enquanto o cartão está na tela. É o modelo do
+site institucional (`src/components/funcionalidades/useCena.js` lá), reescrito
+sem React em `cenas.js`.
+
+Antes eram ícone, título, uma linha e dois chips. Descreviam o recurso; agora
+mostram.
+
+| cartão | o que a cena mostra |
+|---|---|
+| Funil em Kanban | a meta do mês enchendo, e um negócio fechando em verde |
+| ChatBot e Agente de IA | a pergunta, o robô digitando, a resposta, e a passagem para a Ana |
+| Campanhas | o funil do disparo: enviadas, entregues, lidas, responderam |
+| Dashboards | tempo de resposta, CSAT e as colunas por atendente subindo |
+
+### Uma cena é marcação, não JavaScript
+
+```html
+<div class="palco palco--meta" aria-hidden="true" data-cena data-passos="600,750,750">
+  <div data-surge-em="1">…</div>
+  <div data-surge-em="2" data-some-em="3">…</div>
+</div>
+```
+
+`data-passos` são as durações de cada passo. Cada peça diz em que passo entra,
+e `data-some-em` diz em qual ela sai — existe por causa do balão "digitando",
+que sem isso ficaria na tela junto com a resposta.
+
+O motor só liga e desliga `data-visivel`. **Quem desenha o movimento é o CSS**,
+então uma cena nova não pede uma linha de JavaScript.
+
+### As duas regras que fazem cinco cenas rodarem juntas
+
+São do site, e valem copiar em qualquer cena nova:
+
+1. **Só `transform` e `opacity` transitam.** O navegador compõe as duas na
+   placa de vídeo, sem refazer layout nem pintura. Animar `width`, `height` ou
+   `top` obriga a medir a página inteira a cada quadro. Há uma asserção em
+   `prova-paginas` que recusa qualquer outra propriedade aqui.
+2. **As peças já nascem no lugar final.** A animação revela e move; nada entra
+   ou sai do DOM no meio, então nenhuma peça empurra vizinho nem faz o cartão
+   pular de altura.
+
+Some daí o uso de `scaleX` e `scaleY` nas barras, com a largura ou a altura
+real vindo de `--parte` e `--altura` escritas no HTML: o dado é da cena, não da
+folha de estilo.
+
+### O que o motor faz sozinho
+
+- **para fora da tela.** Cinco cartões animando numa página que a pessoa nem
+  rolou até lá é bateria de celular queimada à toa;
+- **recomeça invisível.** Entre uma volta e outra o palco apaga e as transições
+  são desligadas por dois quadros, senão as peças voltariam ao início animando
+  para trás e a cena pareceria dar ré;
+- **respeita `prefers-reduced-motion`**: a cena vai direto ao último passo e
+  fica lá, com o conteúdo inteiro e sem movimento nenhum.
+
+O palco é `aria-hidden`: é ilustração, e o que ele mostra já está dito no
+título e na linha de apoio do cartão.
 
 ## No celular os cartões viram carrossel
 

@@ -399,13 +399,33 @@
               </ul>
             </article>
 
+            <!-- Os quatro palcos abaixo seguem o modelo do site: a
+                 funcionalidade ACONTECE ali, em laço enquanto o cartão está na
+                 tela. `data-passos` são as durações de cada passo, e cada peça
+                 diz em que passo entra. Quem move é o CSS; `cenas.js` só liga
+                 e desliga `data-visivel`.
+
+                 Tudo é `aria-hidden`: o palco é ilustração, e o que ele mostra
+                 já está dito no título e na linha de apoio. -->
+
             <article class="cartao">
               <span class="selo-de-icone"><svg aria-hidden="true"><use href="#i-funil" /></svg></span>
               <h3>Funil em Kanban</h3>
               <p>Cada negócio é um cartão com valor e dono</p>
-              <div class="chips">
-                <span class="chip">vários funis</span>
-                <span class="chip">metas</span>
+
+              <div class="palco palco--meta" aria-hidden="true" data-cena data-passos="600,750,750,750">
+                <div class="meta__topo">
+                  <span>Meta do mês</span>
+                  <b>R$ 24 mil</b>
+                </div>
+                <div class="meta__trilho">
+                  <i class="meta__enche" data-surge-em="1"></i>
+                </div>
+                <ul class="meta__negocios">
+                  <li data-surge-em="2"><span>Marina Souza</span><b>R$ 2.400</b></li>
+                  <li data-surge-em="3"><span>Loja Aurora</span><b>R$ 5.600</b></li>
+                  <li class="meta__ganhou" data-surge-em="4"><span>Bruno C.</span><b>R$ 3.100</b></li>
+                </ul>
               </div>
             </article>
 
@@ -413,9 +433,19 @@
               <span class="selo-de-icone"><svg aria-hidden="true"><use href="#i-robo" /></svg></span>
               <h3>ChatBot e Agente de IA</h3>
               <p>Responde no seu tom e chama uma pessoa quando precisa</p>
-              <div class="chips">
-                <span class="chip">24 horas</span>
-                <span class="chip">sem programar</span>
+
+              <div class="palco palco--conversa" aria-hidden="true" data-cena data-passos="700,850,950,850">
+                <div class="fala fala--deles" data-surge-em="1">Vocês entregam em Natal?</div>
+                <!-- Some no passo 3, quando a resposta chega: sem isso o bot
+                     apareceria digitando e respondendo ao mesmo tempo. -->
+                <div class="fala fala--nossa fala--digitando" data-surge-em="2" data-some-em="3">
+                  <i></i><i></i><i></i>
+                </div>
+                <div class="fala fala--nossa" data-surge-em="3">Entregamos sim, em até 2 dias úteis</div>
+                <div class="passagem" data-surge-em="4">
+                  <span class="passagem__rosto">A</span>
+                  Chamando a Ana
+                </div>
               </div>
             </article>
 
@@ -423,9 +453,18 @@
               <span class="selo-de-icone"><svg aria-hidden="true"><use href="#i-megafone" /></svg></span>
               <h3>Campanhas</h3>
               <p>Modelos aprovados pela Meta, disparo por lista</p>
-              <div class="chips">
-                <span class="chip">agendadas</span>
-                <span class="chip">funil de envio</span>
+
+              <div class="palco palco--disparo" aria-hidden="true" data-cena data-passos="650,700,700,700">
+                <div class="disparo__topo">
+                  <span>Clientes ativos</span>
+                  <b>1.240</b>
+                </div>
+                <ul class="disparo__etapas">
+                  <li data-surge-em="1" style="--parte: 100%"><span>Enviadas</span><b>1.240</b><i></i></li>
+                  <li data-surge-em="2" style="--parte: 97%"><span>Entregues</span><b>1.198</b><i></i></li>
+                  <li data-surge-em="3" style="--parte: 73%"><span>Lidas</span><b>903</b><i></i></li>
+                  <li data-surge-em="4" style="--parte: 15%"><span>Responderam</span><b>187</b><i></i></li>
+                </ul>
               </div>
             </article>
 
@@ -433,9 +472,18 @@
               <span class="selo-de-icone"><svg aria-hidden="true"><use href="#i-grafico" /></svg></span>
               <h3>Dashboards</h3>
               <p>Tempo de resposta, atendente e etapa do funil</p>
-              <div class="chips">
-                <span class="chip">CSAT</span>
-                <span class="chip">por colaborador</span>
+
+              <div class="palco palco--painel" aria-hidden="true" data-cena data-passos="600,650,650,650">
+                <div class="painel__numeros">
+                  <div data-surge-em="1"><span>Resposta</span><b>1m 12s</b></div>
+                  <div data-surge-em="2"><span>CSAT</span><b>4,8</b></div>
+                </div>
+                <ul class="painel__colunas">
+                  <li data-surge-em="3" style="--altura: 52%"><i></i><span>Ana</span></li>
+                  <li data-surge-em="3" style="--altura: 78%"><i></i><span>Caio</span></li>
+                  <li data-surge-em="4" style="--altura: 96%"><i></i><span>Duda</span></li>
+                  <li data-surge-em="4" style="--altura: 64%"><i></i><span>Ivo</span></li>
+                </ul>
               </div>
             </article>
           </div>
@@ -779,6 +827,7 @@
 
     <!-- Máscara, validação e envio. Um arquivo só para as duas páginas. -->
     <script src="carrossel.js" defer></script>
+    <script src="cenas.js" defer></script>
     <script src="formulario.js" defer></script>
     <!-- Só nesta página: a landing de API Oficial não tem vídeo. -->
     <script src="video.js" defer></script>
