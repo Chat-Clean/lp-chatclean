@@ -741,6 +741,21 @@ strong {
   margin-top: 1.15rem;
 }
 
+/* O respiro mínimo antes do fio da resposta.
+
+   `.virada__resposta` usa `margin-top: auto` para o fio alinhar no pé dos
+   três cartões, e isso funciona enquanto sobra espaço. Quando os chips
+   quebram em duas linhas o cartão enche, o `auto` vira ZERO e o chip encosta
+   no fio.
+
+   `auto` não aceita mínimo, então o respiro vem do irmão de cima: as duas
+   margens se somam num contêiner flex, e o menor vão possível passa a ser
+   1.15rem. O `:has` é para não afetar os cartões onde os chips são a última
+   coisa, que são cinco dos sete na landing de API. */
+.chips:has(+ .virada__resposta) {
+  margin-bottom: 1.15rem;
+}
+
 .chip {
   font-family: var(--fonte-util);
   font-size: 0.6875rem;
