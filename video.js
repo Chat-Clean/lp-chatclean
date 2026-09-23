@@ -66,6 +66,15 @@
 
         quadro.replaceChild(player, capa);
 
+        /* Quem dá play está mais perto de pedir do que quem só rolou a
+           página. Quem escuta é `pixel.js`; este arquivo não sabe o que
+           ele faz com isso, e o vídeo funciona igual sem ele. */
+        document.dispatchEvent(
+          new CustomEvent("chatclean:video", {
+            detail: { id: id, titulo: capa.dataset.titulo || null },
+          }),
+        );
+
         /* Quem chegou aqui pelo teclado acabou de ter o botão arrancado
            debaixo do foco. Sem esta linha o foco volta para o <body> e a
            pessoa recomeça a navegação do topo da página. */

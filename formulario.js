@@ -35,6 +35,105 @@
 (() => {
   "use strict";
 
+  /* ─── O QUE O PIXEL DA META PRECISA ────────────────────────
+     Nada aqui chama `fbq`. Este arquivo só COLETA e, quando o
+     lead é gravado, anuncia num evento de documento. Quem fala
+     com o pixel é `pixel.js`, e quem fala com a Meta pelo
+     servidor é `api/_eventos-da-meta.js`.
+
+     Fica fora de `ligar` porque é de PÁGINA: os dois
+     formulários leem os mesmos cookies e a mesma URL. */
+
+  /**
+   * O respiro entre contar o evento e trocar de página.
+   *
+   * O `Lead` do navegador sai por uma requisição em segundo plano, e
+   * `location.href` na linha seguinte pode cancelá-la no meio. Um quarto
+   * de segundo depois de "Abrindo o WhatsApp…" ninguém percebe, e o
+   * evento sai. Se mesmo assim se perder, o gêmeo do servidor cobre.
+   */
+  const RESPIRO_DO_PIXEL_MS = 250;
+
+  /**
+   * O identificador desta conversão.
+   *
+   * Único por envio, de propósito: id repetido faz a Meta tratar duas
+   * conversões diferentes como a mesma e descartar uma.
+   */
+  function novoEventoId() {
+    try {
+      if (window.crypto && typeof window.crypto.randomUUID === "function") {
+        return "lead-" + window.crypto.randomUUID();
+      }
+    } catch (erro) {
+      /* Navegador antigo, ou contexto sem crypto: cai no de baixo. */
+    }
+    return (
+      "lead-" + Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 10)
+    );
+  }
+
+  /** O valor de um cookie deste domínio, ou vazio. */
+  function cookieDoNavegador(nome) {
+    const todos = String(document.cookie || "").split(";");
+    for (const pedaco of todos) {
+      const corte = pedaco.indexOf("=");
+      if (corte === -1) continue;
+      if (pedaco.slice(0, corte).trim() !== nome) continue;
+      return pedaco.slice(corte + 1).trim() || "";
+    }
+    return "";
+  }
+
+  /**
+   * O `fbclid` do anúncio, quando a pessoa chegou por um.
+   *
+   * Vai junto porque o cookie `_fbc` pode não existir: quem tem o pixel
+   * bloqueado nunca ganha o cookie, mas o parâmetro continua na URL. O
+   * servidor monta o `_fbc` a partir dele, e a atribuição do clique se
+   * salva justamente no caso em que o pixel não salvaria.
+   */
+  function fbclidDaUrl() {
+    try {
+      return (new URLSearchParams(window.location.search).get("fbclid") || "").slice(
+        0,
+        255,
+      );
+    } catch (erro) {
+      return "";
+    }
+  }
+
+  /**
+   * O telefone como a Meta casa: internacional, só dígitos.
+   *
+   * A MESMA regra de `api/_eventos-da-meta.js`, e ela não é o óbvio: DDD
+   * 55 existe (Santa Maria, RS), então um celular de lá tem onze dígitos
+   * começando com 55 e ainda assim precisa do código do país na frente.
+   * Só é código de país acima de onze dígitos. As duas pontas precisam
+   * gerar o mesmo texto, ou os dois hashes deixam de ser o mesmo dado.
+   */
+  function telefoneParaAMeta(bruto) {
+    const digitos = String(bruto == null ? "" : bruto).replace(/\D+/g, "");
+    if (digitos === "") return "";
+    const jaTemPais = digitos.length > 11 && digitos.indexOf("55") === 0;
+    return jaTemPais ? digitos : "55" + digitos;
+  }
+
+  /** O pacote que o servidor repassa para a Meta. */
+  function pacoteDaMeta(eventoId) {
+    return {
+      eventoId: eventoId,
+      fbp: cookieDoNavegador("_fbp"),
+      fbc: cookieDoNavegador("_fbc"),
+      fbclid: fbclidDaUrl(),
+      /* SEM a querystring, pela mesma razão de `campanha` ser uma lista
+         de permissão: URL compartilhada carrega o que alguém colou nela,
+         e isso não precisa sair desta página. */
+      url: window.location.origin + window.location.pathname,
+    };
+  }
+
   /* ─── UM FORMULÁRIO POR VEZ, E TODOS OS DA PÁGINA ───────────
      A landing de API tem dois: um no hero, para quem chega
      decidido, e um no fim, para quem precisa ler antes. Os dois
@@ -318,6 +417,12 @@
         botao.textContent = "Enviando…";
       }
 
+      /* O id desta conversão, criado ANTES do envio: ele vai no corpo,
+         para o servidor mandar o MESMO para a Meta, e vai no evento que
+         `pixel.js` escuta. Iguais nos dois lados é o que faz a Meta
+         contar uma conversão em vez de duas. */
+      const eventoId = novoEventoId();
+
       const corpo = {
         landing,
         nome: valorDoCampo("nome"),
@@ -331,6 +436,8 @@
         site: valorDoCampo("site"),
         origem: window.location.pathname,
         campanha: campanhaDaBusca(),
+        // Cookies e id do evento, para o servidor mandar a conversão.
+        meta: pacoteDaMeta(eventoId),
       };
       if (landing === "api-oficial") corpo.bloqueio = valorDoCampo("bloqueio");
 
@@ -393,7 +500,37 @@
       // pessoa está saindo da página, e reabilitar convidaria a um segundo envio.
       dizer("Pronto! Abrindo o WhatsApp…", "ok");
       if (botao) botao.textContent = "Abrindo o WhatsApp…";
-      window.location.href = dados.whatsappUrl;
+
+      /* O anúncio de que entrou um lead. Quem escuta é `pixel.js`, e
+         este arquivo não sabe o que ele faz com isso: no dia em que o
+         pixel sair, some um `<script>` e nada aqui muda.
+
+         Os dados da pessoa vão no anúncio porque a correspondência
+         avançada da Meta precisa deles. O hash é feito pelo próprio
+         `fbevents.js` antes de sair do navegador. */
+      const pedacosDoNome = limpar(valorDoCampo("nome"))
+        .toLowerCase()
+        .split(" ")
+        .filter((p) => p !== "");
+
+      document.dispatchEvent(
+        new CustomEvent("chatclean:lead", {
+          detail: {
+            eventoId: eventoId,
+            landing: landing,
+            pagina: document.title,
+            email: limpar(valorDoCampo("email")).toLowerCase(),
+            telefone: telefoneParaAMeta(valorDoCampo("telefone")),
+            primeiroNome: pedacosDoNome[0] || "",
+            ultimoNome:
+              pedacosDoNome.length > 1 ? pedacosDoNome[pedacosDoNome.length - 1] : "",
+          },
+        }),
+      );
+
+      setTimeout(() => {
+        window.location.href = dados.whatsappUrl;
+      }, RESPIRO_DO_PIXEL_MS);
     });
   }
 

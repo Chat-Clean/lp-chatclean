@@ -47,6 +47,7 @@ const {
 
 const { TIPOS, bancoDoAmbiente } = require("./_banco-de-leads.js");
 const { avisarLeadNovo } = require("./_aviso-por-email.js");
+const { avisarConversaoDaMeta } = require("./_eventos-da-meta.js");
 
 /** Um corpo maior que isto não é formulário, é tentativa. */
 const TETO_DO_CORPO_BYTES = 8 * 1024;
@@ -108,6 +109,33 @@ function origemDoPedido(corpo) {
   const bruto = (corpo || {}).origem;
   if (typeof bruto !== "string" || bruto.trim() === "") return null;
   return bruto.trim().split("?")[0].slice(0, 200) || null;
+}
+
+/**
+ * O que o navegador juntou para o pixel da Meta.
+ *
+ * Objeto solto no corpo, e nunca confiado: quem monta o corpo pode não ser a
+ * nossa página. Cada campo é conferido contra a forma que a Meta documenta em
+ * `_eventos-da-meta.js`, e o que não casa é descartado.
+ */
+function metaDoPedido(corpo, cabecalhos, leadId) {
+  const bruto = (corpo || {}).meta;
+  const pacote = bruto && typeof bruto === "object" && !Array.isArray(bruto) ? bruto : {};
+  const fonte = cabecalhos || {};
+  return {
+    eventoId: pacote.eventoId,
+    fbp: pacote.fbp,
+    fbc: pacote.fbc,
+    fbclid: pacote.fbclid,
+    url: pacote.url,
+    /* Estes três NÃO vêm do corpo: vêm de quem fez a requisição. É o que a
+       Meta usa para casar a conversão com a pessoa que viu o anúncio, e é
+       justamente o que não se deve deixar o chamador escolher. */
+    ip: ipDoPedido(fonte),
+    agente: fonte["user-agent"] || fonte["User-Agent"] || null,
+    cookies: fonte.cookie || fonte.Cookie || null,
+    leadId: leadId,
+  };
 }
 
 /** O campo-isca veio preenchido? Só robô chega nele. */
@@ -214,16 +242,41 @@ module.exports = async function handler(req, res) {
 
   console.log("[lead-landing] gravado " + gravado.id + " (" + lead.landing + ")");
 
-  /* O aviso para o atendimento.
-     Esperado antes de responder porque função serverless pode ser congelada
+  /* Os dois recados do lead gravado: o aviso para o atendimento e a conversão
+     para a Meta.
+
+     EM PARALELO, porque um não depende do outro e o formulário está esperando
+     os dois: em série seriam sete segundos de espera no pior caso, e agora é o
+     maior dos dois.
+
+     ESPERADOS antes de responder, porque função serverless pode ser congelada
      assim que a resposta sai, e trabalho deixado para depois às vezes não
-     acontece. E NUNCA muda o código da resposta: o lead já está gravado, e
-     aviso perdido não é lead perdido. */
-  const aviso = await avisarLeadNovo(
-    lead,
-    { origem: origem, campanha: campanha, criadoEm: gravado.criadoEm },
-    process.env,
-  );
+     acontece.
+
+     E NENHUM DOS DOIS muda o código da resposta: o lead já está gravado. Aviso
+     perdido não é lead perdido, e conversão não contada também não. */
+  const seguro = (promessa) =>
+    promessa.then(
+      (r) => r,
+      (erro) => ({ ok: false, motivo: (erro && erro.message) || "exceção" }),
+    );
+
+  const [aviso, conversao] = await Promise.all([
+    seguro(
+      avisarLeadNovo(
+        lead,
+        { origem: origem, campanha: campanha, criadoEm: gravado.criadoEm },
+        process.env,
+      ),
+    ),
+    seguro(
+      avisarConversaoDaMeta(
+        lead,
+        metaDoPedido(corpo, req.headers, gravado.id),
+        process.env,
+      ),
+    ),
+  ]);
 
   if (!aviso.ok) {
     console.error(
@@ -232,6 +285,17 @@ module.exports = async function handler(req, res) {
         "): " +
         aviso.motivo,
     );
+  }
+
+  /* Integração desligada não é falha: sem token, `ok` vem verdadeiro e
+     `enviado` falso. Vira log comum, para não encher o painel de erro
+     vermelho enquanto a chave não é criada. */
+  if (!conversao.ok) {
+    console.error(
+      "[lead-landing] conversão da Meta falhou (" + gravado.id + "): " + conversao.motivo,
+    );
+  } else if (!conversao.enviado) {
+    console.log("[lead-landing] conversão da Meta pulada: " + conversao.motivo);
   }
 
   return res.status(201).json({

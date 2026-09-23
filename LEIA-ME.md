@@ -18,6 +18,7 @@ base.css                 identidade compartilhada pelas duas
 cenas.css                o contrato do motor de cenas e as cenas, nas duas
 formulario.js            máscara, validação e envio, compartilhado pelas duas
 video.js                 troca a capa pelo player do YouTube, só na de CRM
+pixel.js                 os eventos do pixel da Meta, nas duas
 carrossel.js             os pontinhos do carrossel do celular, nas duas
 cenas.js                 o laço das cenas dos cartões, só na de CRM
 ativos/                  logotipos e as marcas dos clientes
@@ -27,6 +28,7 @@ api/lead-landing.js      a função que grava o lead (o endpoint do formulário)
 api/_regras-do-lead.js   o que é um lead válido, sem rede
 api/_banco-de-leads.js   a gravação no Supabase com a chave de serviço
 api/_aviso-por-email.js  o e-mail de lead novo para o atendimento
+api/_eventos-da-meta.js  a conversão que vai do servidor para a Meta
 vercel.json              o rewrite de /api e o cabeçalho noindex
 ```
 
@@ -506,6 +508,10 @@ tradução:
 | `RESEND_REMETENTE` | opcional: o padrão já é `lead@chatclean.com.br` | veja a seção do aviso |
 | `LANDINGS_EMAIL_DESTINO` | opcional: para onde o aviso vai | o padrão está no código |
 | `LANDINGS_BASE_PUBLICA` | opcional: o domínio que serve o logotipo do e-mail | o padrão é `lp.chatclean.com.br` |
+| `META_TOKEN_DE_CONVERSOES` | o token da API de Conversões | *Gerenciador de Eventos → Configurações → API de Conversões → Gerar token* |
+| `META_PIXEL_ID` | opcional: o padrão é o pixel que está no HTML | *Gerenciador de Eventos* |
+| `META_VERSAO_DA_API` | opcional: o padrão é `v26.0` | só para quando a Meta aposentar a versão |
+| `META_CODIGO_DE_TESTE` | opcional: joga os eventos na aba *Eventos de teste* | *Gerenciador de Eventos → Eventos de teste* |
 
 A chave de serviço **ignora RLS**: é por isso que ela funciona contra uma
 tabela que nega tudo, e é por isso que ela nunca pode levar prefixo `VITE_`,
@@ -602,6 +608,84 @@ domínio principal.
 > entrega SÓ para o e-mail dono da conta no Resend, e falha calado: a API
 > responde 200, o log não acusa nada e o aviso simplesmente não chega. Existe
 > uma asserção em `prova-email` só para impedir essa volta.
+
+## O pixel da Meta: o navegador E o servidor
+
+As duas páginas são de tráfego pago, então saber qual anúncio virou lead é o
+trabalho. Isso é feito por dois caminhos ao mesmo tempo, de propósito.
+
+**O pixel do navegador.** O código base fica inline no `<head>` das duas
+páginas, ANTES das folhas de estilo: script espera folha pendente para
+executar, e a visita de quem desiste em dois segundos precisa contar. Ele faz
+só o básico — cria o `fbq`, carrega o `fbevents.js` (assíncrono, não atrasa o
+desenho) e conta o `PageView`.
+
+O `<noscript>` com a imagem de 1px fica **depois do `<body>`**, e não no
+`<head>` como no trecho que a Meta entrega: dentro de `<head>` só valem
+`link`, `style` e `meta`, e o parser moveria a imagem para o corpo de
+qualquer jeito. Aqui ela já nasce onde vai parar.
+
+**Os eventos** estão em `pixel.js`, e são três, só:
+
+| Evento | Quando |
+|---|---|
+| `Lead` | o formulário foi enviado **e gravado** — clique que deu erro não é lead |
+| `ViewContent` | o vídeo da demonstração começou a tocar |
+| `Contact` | clique num link de conversa no WhatsApp, uma vez por visita |
+
+Evento inventado para a conta parecer movimentada estraga a campanha: a Meta
+passa a procurar gente que faz aquilo, e aquilo não é venda.
+
+### O mesmo Lead sai duas vezes, e conta uma
+
+O pixel sozinho perde de 20% a 30% dos eventos: bloqueador de anúncio, ITP do
+Safari, iOS com rastreamento negado, aba fechada antes de o beacon sair. Por
+isso o mesmo `Lead` sai também do servidor (`api/_eventos-da-meta.js`), depois
+de o lead estar gravado, por um caminho que o navegador não corta.
+
+Para a Meta contar **um**, os dois levam o mesmo `event_id`:
+`formulario.js` gera o identificador antes do envio, manda no corpo da
+requisição e anuncia no evento que `pixel.js` escuta. Quem chega primeiro
+conta; o gêmeo é descartado. Id repetido entre conversões DIFERENTES seria o
+erro inverso, e por isso ele é único por envio.
+
+### Correspondência: o que decide a atribuição
+
+Do servidor vai o conjunto inteiro, cada campo em SHA-256 depois de
+normalizado: e-mail, telefone, primeiro e último nome, país e o id da linha no
+banco. Vão crus, porque é o formato que a API espera e nenhum deles é dado de
+cadastro: `_fbp`, `_fbc`, o IP e o agente de quem enviou.
+
+**O telefone tem uma armadilha.** O banco guarda sem o código do país, e a
+Meta quer com. Não basta olhar se começa com 55: o DDD 55 existe (Santa Maria,
+RS), então um celular de lá tem onze dígitos começando com 55 e ainda assim
+precisa do 55 do país na frente. Só é código de país acima de onze dígitos. A
+regra está duplicada no navegador e no servidor, e a prova arranca a função de
+`formulario.js` e roda as duas lado a lado: hashes diferentes do mesmo número
+são dois dados diferentes para a Meta.
+
+**O `_fbc` quando não há cookie.** Quem tem o pixel bloqueado nunca ganha o
+cookie do clique, mas o `fbclid` continua na URL do anúncio. A página manda o
+parâmetro, o servidor monta o `_fbc` a partir dele, e a atribuição se salva
+justamente no caso em que o pixel não salvaria.
+
+### Nada disso pode derrubar um lead
+
+Mesma regra do aviso por e-mail: sem token, com a Meta fora do ar ou com a
+rede caindo, o lead continua gravado e a resposta continua 201 com o link do
+WhatsApp. A falha vai para o log. Os dois recados saem **em paralelo**, senão
+seriam sete segundos de espera no pior caso.
+
+Sem `META_TOKEN_DE_CONVERSOES` o servidor não manda nada e diz por quê no log,
+como aviso e não como erro — o pixel do navegador continua funcionando sozinho.
+
+### Consentimento: o que NÃO está feito
+
+Não há banner de cookies. O pixel dispara para todo mundo assim que a página
+abre, que é como a maioria das landings de anúncio no Brasil funciona, e é uma
+decisão de risco perante a LGPD, não um esquecimento. Se um dia for preciso,
+o caminho é `fbq('consent', 'revoke')` **antes** do `init`, liberando com
+`grant` quando a pessoa aceitar.
 
 ## A segurança do endpoint
 
@@ -712,8 +796,14 @@ três páginas.
   formulário responde erro no envio, que é o jeito mais caro de descobrir.
 - **`RESEND_API_KEY` também**, senão o lead é gravado e ninguém fica sabendo.
   Essa falha é silenciosa para quem preencheu: só aparece no log da Vercel.
-- Mande um lead de teste depois de publicar e confira as duas pontas: a linha
-  na tabela `leads_das_landings` e o e-mail na caixa do atendimento.
+- Mande um lead de teste depois de publicar e confira as **quatro** pontas: a
+  linha na tabela `leads_das_landings`, o e-mail na caixa do atendimento, o
+  `Lead` no Gerenciador de Eventos e, nele, o aviso de que o evento foi
+  recebido pelos dois caminhos e deduplicado.
+- **`META_TOKEN_DE_CONVERSOES`**: sem ele só o pixel do navegador funciona, e
+  um quinto dos leads não é atribuído a anúncio nenhum. Para conferir sem
+  sujar a otimização, ponha `META_CODIGO_DE_TESTE` e olhe a aba *Eventos de
+  teste*; tire depois.
 - As duas páginas estão com `noindex, nofollow`: são páginas de anúncio e não
   devem competir com o site no orgânico. Tirar só se a intenção mudar.
 - Os números dentro das ilustrações (funil, contagens do número bloqueado) são

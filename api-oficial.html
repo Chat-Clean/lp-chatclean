@@ -12,6 +12,34 @@
     <meta name="theme-color" content="#14231b" />
     <link rel="icon" type="image/svg+xml" href="ativos/marca-chatclean.svg" />
 
+    <!-- =====================================================
+         O PIXEL DA META
+         ---------------------------------------------------------
+         Inline e ANTES das folhas de estilo, de propósito: script
+         espera folha pendente para executar, e o PageView desta
+         página precisa contar mesmo para quem desiste em dois
+         segundos. O `fbevents.js` é assíncrono, então nada disto
+         atrasa o desenho da tela.
+
+         Aqui mora só o básico: criar o `fbq`, carregar o script e
+         contar a visita. Os eventos que valem dinheiro (Lead,
+         ViewContent, Contact) estão em `pixel.js`, no fim do
+         `<body>`, e o mesmo Lead sai também do servidor
+         (`api/_eventos-da-meta.js`) com o mesmo `event_id`.
+         ===================================================== -->
+    <script>
+      !function(f,b,e,v,n,t,s)
+      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+      n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t,s)}(window, document,'script',
+      'https://connect.facebook.net/en_US/fbevents.js');
+      fbq('init', '1773986837313693');
+      fbq('track', 'PageView');
+    </script>
+
     <!-- Identidade tipográfica do site: Playfair Display (display),
          Poppins (texto) e Montserrat (rótulos, botões e caixa alta). -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -27,6 +55,17 @@
   </head>
 
   <body>
+    <!-- A visita de quem está sem JavaScript. O trecho da Meta põe isto no
+         <head>, onde <img> não é válido; o parser o moveria para cá. -->
+    <noscript
+      ><img
+        height="1"
+        width="1"
+        style="display: none"
+        alt=""
+        src="https://www.facebook.com/tr?id=1773986837313693&amp;ev=PageView&amp;noscript=1"
+    /></noscript>
+
     <svg hidden aria-hidden="true">
       <defs>
         <!-- A marca do WhatsApp. Entra aqui porque o assunto DA PÁGINA é o
@@ -923,6 +962,11 @@
         </div>
       </div>
     </footer>
+
+    <!-- Os eventos do pixel: Lead, ViewContent e Contact. Primeiro da fila
+         para os ouvintes existirem antes de qualquer coisa ser anunciada. O
+         código base do pixel está no <head>. -->
+    <script src="pixel.js" data-pixel="1773986837313693" defer></script>
 
     <!-- Máscara, validação e envio. Um arquivo só para as duas páginas. -->
     <script src="carrossel.js" defer></script>
