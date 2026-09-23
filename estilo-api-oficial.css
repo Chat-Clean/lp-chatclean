@@ -74,9 +74,13 @@
 }
 
 @media (min-width: 520px) {
+  /* Atrás, de leve inclinada, entrando 2,5em por baixo da oficial:
+     é o que lê como "uma em cima da outra". Sem o translateY de
+     antes, porque com os dois cards na mesma altura ele deixava a
+     caída sobrando embaixo, e o conjunto parecia torto. */
   .tela--caida {
-    transform: rotate(-3deg) translateY(1.25em);
-    margin-right: -0.5em;
+    transform: rotate(-2deg);
+    margin-right: -2.5em;
   }
 }
 
@@ -86,17 +90,25 @@
   z-index: 2;
 }
 
+/* A borda é o verde do ícone do WhatsApp aceso, dentro do card, pela
+   mesma lógica da borda vermelha do print: a cor do sinal que o
+   card mostra. O verde da ChatClean fica no brilho de fundo. */
+.tela--oficial {
+  --verde-vivo: #25d366;
+}
+
 .tela--oficial .tela__corpo {
   background: var(--branco);
-  border: 1px solid rgba(255, 255, 255, 0.35);
+  border: 2px solid var(--verde-vivo);
   box-shadow:
     0 44px 80px -32px rgba(0, 0, 0, 0.72),
     0 0 64px -22px rgba(81, 188, 105, 0.38);
 }
 
 @media (min-width: 520px) {
+  /* Reta: é o card da frente, e o que está na frente não inclina. */
   .tela--oficial {
-    transform: rotate(1deg);
+    transform: none;
   }
 }
 

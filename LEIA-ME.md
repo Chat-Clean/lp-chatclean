@@ -326,7 +326,7 @@ cai no fundo branco das bordas). O card tem ~430px e o arquivo 880, então
 nunca é ampliado além de 1:1. A borda é o vermelho do próprio ícone de
 bloqueio, **amostrado do arquivo** pelo script e guardado no token
 `--vermelho-bloqueio`: dois vermelhos parecidos lado a lado é o que denuncia
-um tom chutado. Os dois cards da seção têm a mesma altura: a grade estica as
+um tom chutado. O card oficial tem a borda no verde do ícone aceso (`--verde-vivo`), pela mesma lógica. A copy da seção não aponta direção ("à esquerda / à direita"), porque no celular os cards empilham. Os dois cards da seção têm a mesma altura: a grade estica as
 figuras e o corpo de cada uma cresce para ocupar o que o rótulo deixa.
 
 ## A demonstração em vídeo, só na landing de CRM
