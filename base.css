@@ -674,17 +674,18 @@ strong {
   pointer-events: none;
 }
 
-/* No celular ela não some: muda de canto. Em cima à direita ela
-   sentaria atrás do próprio título, que no celular ocupa a largura
-   toda. Embaixo à direita só há o respiro da seção, e ali ela
-   assina a seção sem sujar texto nenhum. Menor e meio para fora da
-   borda, como carimbo de canto. */
+/* No celular ela fica onde fica no desktop: no alto, à direita, na
+   abertura da seção. O título ali ocupa a largura toda, então ela
+   é menor e vai meio para fora da borda: a maior parte cai na
+   margem e só um fio fica atrás do texto, que a 12% é tinta, não
+   mancha. Já foi escondida, e já foi para o canto de baixo; as duas
+   respostas erravam o que a marca d'água é: a assinatura da
+   abertura, não do rodapé. */
 @media (max-width: 760px) {
   .secao--marcada::before {
-    top: auto;
-    bottom: -1.25rem;
-    right: -1.5rem;
-    width: 10rem;
+    top: 1rem;
+    right: -2.75rem;
+    width: 11rem;
   }
 }
 
