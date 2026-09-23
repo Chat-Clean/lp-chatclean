@@ -364,6 +364,25 @@ formulario.js            máscara do telefone, validação por campo, envio
 **Todos os campos são obrigatórios**, inclusive as perguntas de pílula. O envio
 só sai depois que todos passam.
 
+### A landing de API tem o formulário duas vezes
+
+No hero, para quem chega decidido, e no fim (`#quero`), para quem precisa ler
+antes. É o mesmo `.formulario`, com a mesma marcação e o mesmo script, e os
+dois enviam para o mesmo lugar. A cena dos dois estados do número, que abria a
+página, desceu para a seção `#hoje-e-depois`, logo abaixo do hero, e ali é
+`.cena-dos-estados`.
+
+Duas coisas que dois formulários iguais na mesma página exigem, e que não
+avisam quando faltam:
+
+- **`formulario.js` liga todos os `.formulario`**, um por vez, cada um com o
+  próprio estado. Já foi `querySelector(".formulario")`, que pega só o
+  primeiro: o segundo ficava morto, sem erro nenhum no console;
+- **os ids do formulário do hero levam o prefixo `api-hero-`.** Id repete na
+  página inteira, e o do fim já usa `api-`. Id repetido faz o `label` do
+  segundo focar o input do primeiro, do outro lado da página. Há uma asserção
+  que recusa qualquer id repetido nas duas landings.
+
 ### O telefone aceita com e sem o 9
 
 Dez ou onze dígitos, os dois passam: `(84) 9890-0718` e `(84) 99890-0718`. Fixo

@@ -141,7 +141,126 @@
             </ul>
           </div>
 
-          <div class="hero__cena entra entra--4">
+          <!-- O formulário já na primeira dobra. A cena dos dois estados do
+               número, que morava aqui, desceu para a seção logo abaixo do
+               hero (`#hoje-e-depois`). O MESMO formulário continua no fim
+               da página (`#quero`): quem chega decidido pede aqui, quem
+               precisa ler antes pede lá. Os dois enviam para o mesmo lugar,
+               e `formulario.js` liga os dois.
+
+               OS IDS LEVAM O PREFIXO `api-hero-`: id repete na página
+               inteira, e o formulário do fim já usa `api-`. Dois campos com
+               o mesmo id fazem o `label` do segundo focar o input do
+               primeiro, do outro lado da página. -->
+          <div class="hero__pedido entra entra--4">
+            <form class="formulario formulario--hero" data-landing="api-oficial" novalidate>
+              <h3 class="formulario__titulo">Garantir minha API Oficial</h3>
+              <p class="formulario__nota">Cinco campos, resposta no mesmo dia útil</p>
+
+              <div class="campos campos--duplo">
+                <div class="campo">
+                  <label for="api-hero-nome">Seu nome</label>
+                  <input id="api-hero-nome" name="nome" type="text" autocomplete="name" placeholder="Ex.: Ana Ribeiro" maxlength="120" required aria-describedby="api-hero-erro-nome" />
+                  <span class="campo__erro" id="api-hero-erro-nome" data-erro="nome"></span>
+                </div>
+
+                <div class="campo">
+                  <label for="api-hero-empresa">Empresa</label>
+                  <input id="api-hero-empresa" name="empresa" type="text" autocomplete="organization" placeholder="Ex.: Ótica Central" maxlength="120" required aria-describedby="api-hero-erro-empresa" />
+                  <span class="campo__erro" id="api-hero-erro-empresa" data-erro="empresa"></span>
+                </div>
+
+                <div class="campo">
+                  <label for="api-hero-email">E-mail</label>
+                  <input id="api-hero-email" name="email" type="email" autocomplete="email" placeholder="voce@empresa.com" maxlength="160" required aria-describedby="api-hero-erro-email" />
+                  <span class="campo__erro" id="api-hero-erro-email" data-erro="email"></span>
+                </div>
+
+                <div class="campo">
+                  <label for="api-hero-whats">WhatsApp <span class="campo__dica">com DDD, com ou sem o 9</span></label>
+                  <input id="api-hero-whats" name="telefone" type="tel" inputmode="numeric" autocomplete="tel" placeholder="(84) 99890-0718" maxlength="16" required aria-describedby="api-hero-erro-telefone" />
+                  <span class="campo__erro" id="api-hero-erro-telefone" data-erro="telefone"></span>
+                </div>
+
+                <fieldset class="pilulas">
+                  <legend>Quantas pessoas atendem hoje?</legend>
+                  <div class="pilulas__opcoes">
+                    <label class="pilula"><input type="radio" name="atendentes" value="so-eu" required /><span>Só eu</span></label>
+                    <label class="pilula"><input type="radio" name="atendentes" value="2-5" required /><span>2 a 5</span></label>
+                    <label class="pilula"><input type="radio" name="atendentes" value="6-15" required /><span>6 a 15</span></label>
+                    <label class="pilula"><input type="radio" name="atendentes" value="16-40" required /><span>16 a 40</span></label>
+                    <label class="pilula"><input type="radio" name="atendentes" value="40+" required /><span>Mais de 40</span></label>
+                  </div>
+                  <span class="campo__erro" data-erro="atendentes"></span>
+                </fieldset>
+
+                <fieldset class="pilulas">
+                  <legend>Seu número já foi bloqueado?</legend>
+                  <div class="pilulas__opcoes">
+                    <label class="pilula"><input type="radio" name="bloqueio" value="sim" required /><span>Sim, já caiu</span></label>
+                    <label class="pilula"><input type="radio" name="bloqueio" value="quase" required /><span>Já levei aviso</span></label>
+                    <label class="pilula"><input type="radio" name="bloqueio" value="nao" required /><span>Nunca</span></label>
+                  </div>
+                  <span class="campo__erro" data-erro="bloqueio"></span>
+                </fieldset>
+
+                <label class="aceite" for="api-hero-aceite">
+                  <input id="api-hero-aceite" name="aceite" type="checkbox" required aria-describedby="api-hero-erro-aceite" />
+                  <span>
+                    Autorizo a ChatClean a entrar em contato comigo sobre a API
+                    Oficial. Meus dados são usados só para isso, como descrito na
+                    <a href="https://chatclean.com.br/politica-de-privacidade" target="_blank" rel="noopener noreferrer">política de privacidade</a>
+                    <span class="campo__erro" id="api-hero-erro-aceite" data-erro="aceite"></span>
+                  </span>
+                </label>
+
+                <!-- CAMPO-ISCA, igual ao do formulário do fim: fora da tela e
+                     fora da ordem de tabulação. Robô preenche, o servidor
+                     descarta sem dizer por quê. NÃO use `display: none`. -->
+                <div class="isca" aria-hidden="true">
+                  <label for="api-hero-site">Site</label>
+                  <input id="api-hero-site" name="site" type="text" tabindex="-1" autocomplete="off" />
+                </div>
+
+                <div class="campo-de-envio">
+                  <button class="botao botao--latao botao--largo" type="submit">
+                    Quero minha API Oficial
+                    <svg class="botao__seta" aria-hidden="true" width="17" height="17"><use href="#i-seta" /></svg>
+                  </button>
+                </div>
+              </div>
+
+              <p class="recado" data-recado role="status" hidden></p>
+
+              <p class="formulario__rodape">
+                Seus dados não são vendidos nem compartilhados para publicidade
+              </p>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================
+           O antes e o depois do número. Esta cena ABRIA a página,
+           no hero; desceu para cá quando o formulário subiu para a
+           primeira dobra. Continua sendo o argumento visual da
+           landing: a mesma marca apagada de um lado e acesa do
+           outro, e o fio correndo até a ChatClean. A seção é
+           verde-noite porque as duas telas foram desenhadas para
+           esse fundo, e trocá-lo seria redesenhar as duas.
+           ===================================================== -->
+      <section class="secao secao--noite" id="hoje-e-depois">
+        <div class="envelope">
+          <div class="titulo-de-secao centralizado">
+            <span class="etiqueta etiqueta--noite">O mesmo número, dois destinos</span>
+            <h2>Hoje, no chip comum. <span class="latao">Na API Oficial</span></h2>
+            <p class="linha-de-apoio">
+              O que muda não é o aplicativo: é de quem o número é, e quem
+              responde por ele
+            </p>
+          </div>
+
+          <div class="cena-dos-estados">
             <figure class="tela tela--caida">
               <figcaption class="tela__rotulo">Hoje, no chip comum</figcaption>
               <div class="tela__corpo" role="img"
