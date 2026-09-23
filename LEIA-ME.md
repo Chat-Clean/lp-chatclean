@@ -275,8 +275,9 @@ Duas coisas, as duas deliberadas:
   ancorado no quadro, não nas colunas, e com as três à mostra ele pousaria
   sobre a coluna errada. Devolver a coluna exige remontar a ilustração para o
   cartão viajar junto com o trilho;
-- **a marca d'água da seção** some abaixo de 760px, onde sentaria atrás do
-  próprio título.
+- **a marca d'água da seção** desce para o canto de baixo à direita, menor e
+  meio para fora da borda: em cima ela sentaria atrás do título, que no celular
+  ocupa a largura toda. Ela não some mais.
 
 A tabela comparativa da landing de API **não** é uma dessas: ela vira uma pilha
 de cartões e reinjeta o nome de cada coluna por `::before`, então nada se
@@ -287,8 +288,12 @@ perde.
 Cabeçalho, marca d'água de uma seção por página, cabeçalho do painel do funil
 (ali entra o logotipo horizontal branco, porque o painel é verde-escuro), topo
 do formulário, azulejo ao lado do WhatsApp na landing de API, rodapé e favicon.
-A marca d'água só vive em seção clara, e some abaixo de 760px, onde ela
-sentaria atrás do próprio título.
+A marca d'água só vive em seção clara, a 12% de opacidade: a 5%, como era, ela
+só existia para quem sabia que estava lá. Abaixo de 760px ela **não some, muda
+de canto**: em cima à direita sentaria atrás do próprio título, que no celular
+ocupa a largura toda; embaixo à direita só há o respiro da seção, e ali ela
+assina a seção sem sujar texto, menor e meio para fora da borda, como carimbo
+de canto.
 
 `ativos/marca-chatclean.svg` é o símbolo sozinho, e é cópia do `logo-cc.svg`
 do site, que já vem quadrado e completo.

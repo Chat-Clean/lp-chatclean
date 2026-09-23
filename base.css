@@ -668,15 +668,23 @@ strong {
   width: min(17rem, 30vw);
   aspect-ratio: 1;
   background: url("ativos/marca-chatclean.svg") center / contain no-repeat;
-  opacity: 0.05;
+  /* 0.12, e não os 0.05 de antes: a 5% ela só existia para quem
+     sabia que estava lá. Marca d'água que ninguém vê não marca. */
+  opacity: 0.12;
   pointer-events: none;
 }
 
-/* No celular ela sentaria atrás do próprio título: marca
-   d'água ali não marca nada, só suja o texto. */
+/* No celular ela não some: muda de canto. Em cima à direita ela
+   sentaria atrás do próprio título, que no celular ocupa a largura
+   toda. Embaixo à direita só há o respiro da seção, e ali ela
+   assina a seção sem sujar texto nenhum. Menor e meio para fora da
+   borda, como carimbo de canto. */
 @media (max-width: 760px) {
   .secao--marcada::before {
-    display: none;
+    top: auto;
+    bottom: -1.25rem;
+    right: -1.5rem;
+    width: 10rem;
   }
 }
 
