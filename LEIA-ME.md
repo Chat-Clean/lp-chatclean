@@ -304,11 +304,12 @@ Três detalhes que fazem a diferença entre elegante e tosco:
   `3rem` de respiro da grade virou o token `--respiro-da-grade` para essa conta
   não depender de um número solto.
 
-As duas telas de "Já recebeu esta tela?" (`.cena-dos-estados`) também são
-carrossel. Atenção à cascata ali: `estilo-api-oficial.css` carrega depois de
-`base.css`, então o `display: grid` e a `margin` do grupo ficam dentro de
-`@media (min-width: 640px)`, onde o carrossel acaba. Fora da media query eles
-venceriam o trilho e o celular voltaria a empilhar.
+As duas telas de "Já recebeu esta tela?" (`.cena-dos-estados`) NÃO são
+carrossel, de propósito: no celular a composição é a mesma do desktop (lado a
+lado, inclinadas, a oficial na frente), só que menor. A cena não tem media
+query; o que muda é o `font-size` (clamp com `vw`) e tudo dentro está em
+`em`. Os rótulos têm piso em `rem` para continuarem legíveis. Já foi
+empilhada e já foi carrossel; nenhum dos dois era a experiência do desktop.
 
 Para acrescentar um carrossel em outro grupo, basta pôr `data-carrossel` no
 contêiner. Os pontinhos são consequência, não conteúdo: a quantidade sai do

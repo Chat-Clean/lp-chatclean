@@ -18,39 +18,28 @@
    ============================================================ */
 
 /* ----- ASSINATURA: os dois estados do número ---------------
-   Escala tipográfica própria, como o quadro do funil da outra
-   landing: `font-size` com clamp aqui e tudo dentro em `em`. */
+   A MESMA composição em qualquer largura: as duas telas lado a
+   lado, a caída inclinada para um lado, a oficial para o outro e
+   na frente. A ordem de empilhamento conta a substituição.
+
+   Não há media query aqui de propósito. O que muda entre o
+   celular e o desktop é só a escala: `font-size` com clamp e tudo
+   dentro das telas em `em` (medidas, respiros, raios). No celular
+   a cena encolhe inteira, como uma foto, em vez de reorganizar.
+   Já foi empilhada, e depois carrossel; nenhum dos dois era a
+   experiência do desktop, que é o que se queria.
+
+   A curva: 14px de 600px para cima, ~9px num celular de 375px,
+   piso de 9px. Abaixo disso o número e a contagem da tela oficial
+   não cabem na coluna. */
 .cena-dos-estados {
   position: relative;
-  font-size: clamp(0.78rem, 1.45vw, 0.875rem);
-}
-
-/* No celular o grupo é carrossel (`data-carrossel`, em base.css):
-   as duas telas se arrastam, com pontinhos, como todo grupo de
-   cartões das duas landings. Esta folha carrega DEPOIS de base.css,
-   então tudo que ela diz sobre display e margem do grupo fica
-   acima do corte, senão venceria o trilho. Já foi `display: grid`
-   solto, e o celular empilhava as telas em vez de arrastar.
-
-   A partir de 640px, onde o carrossel acaba, os dois se sobrepõem:
-   o oficial passa na frente do bloqueado. A ordem de empilhamento
-   conta a substituição. O corte era mais baixo, e as telas
-   inclinadas ficavam DENTRO do trilho, tortas. */
-@media (min-width: 640px) {
-  .cena-dos-estados {
-    display: grid;
-    grid-template-columns: 0.94fr 1fr;
-    align-items: center;
-    gap: 0;
-  }
-}
-
-/* A tela oficial tem a sombra mais longa da página: a folga padrão do
-   trilho cortava o halo rente. */
-@media (max-width: 639px) {
-  .cena-dos-estados {
-    --folga-da-sombra: 2.5rem;
-  }
+  display: grid;
+  grid-template-columns: 0.94fr 1fr;
+  align-items: stretch;
+  max-width: 52rem;
+  margin: clamp(2.5rem, 5vw, 3.5rem) auto 0;
+  font-size: clamp(0.5625rem, 2.35vw, 0.875rem);
 }
 
 .tela {
@@ -65,7 +54,9 @@
   background: rgba(255, 255, 255, 0.07);
   border: 1px solid rgba(255, 255, 255, 0.16);
   font-family: var(--fonte-util);
-  font-size: 0.8em;
+  /* O rótulo é texto, não ilustração: quando a cena encolhe no
+     celular ele para em 10px em vez de acompanhar até 7px. */
+  font-size: max(0.8em, 0.625rem);
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -89,15 +80,14 @@
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 
-@media (min-width: 640px) {
-  /* A posição original: inclinada -3°, um pouco mais baixa, entrando
-     de leve por baixo da oficial. Já foi trocada por -2° reta e sem
-     descer, com a oficial reta na frente, e ficou pior: a assimetria
-     é o que faz o par ler como "uma em cima da outra". */
-  .tela--caida {
-    transform: rotate(-3deg) translateY(1.25em);
-    margin-right: -0.5em;
-  }
+/* A posição original: inclinada -3°, um pouco mais baixa, entrando
+   de leve por baixo da oficial. Já foi trocada por -2° reta e sem
+   descer, com a oficial reta na frente, e ficou pior: a assimetria
+   é o que faz o par ler como "uma em cima da outra". Em qualquer
+   largura: no celular a cena só encolhe. */
+.tela--caida {
+  transform: rotate(-3deg) translateY(1.25em);
+  margin-right: -0.5em;
 }
 
 /* O número oficial: branco, na frente, com o brilho verde. */
@@ -121,12 +111,10 @@
     0 0 64px -22px rgba(81, 188, 105, 0.38);
 }
 
-@media (min-width: 640px) {
-  /* A inclinação original de 1°, no sentido contrário da caída: é o
-     par de ângulos que lê como duas telas soltas, uma sobre a outra. */
-  .tela--oficial {
-    transform: rotate(1deg);
-  }
+/* A inclinação original de 1°, no sentido contrário da caída: é o
+   par de ângulos que lê como duas telas soltas, uma sobre a outra. */
+.tela--oficial {
+  transform: rotate(1deg);
 }
 
 .app__icone {
@@ -209,6 +197,9 @@
 
 .perfil__selo {
   flex: 0 0 auto;
+  /* O SVG traz 15px de atributo; em `em` ele encolhe com o nome. */
+  width: 1.1em;
+  height: 1.1em;
   color: var(--verde-medio);
 }
 
@@ -478,18 +469,9 @@
   max-width: 34rem;
 }
 
-/* ----- A cena, agora numa seção própria ---------------------
-   Saiu do hero quando o formulário subiu para a primeira dobra.
-   Centrada e com a largura da coluna de onde veio, para as duas
-   telas não esticarem numa seção de largura inteira. */
-@media (min-width: 640px) {
-  /* Só acima do corte: no celular quem dá margem é o trilho, e uma
-     margem aqui, vinda depois na cascata, anularia a sangria dele. */
-  .cena-dos-estados {
-    max-width: 52rem;
-    margin: clamp(2.5rem, 5vw, 3.5rem) auto 0;
-  }
-}
+/* A cena saiu do hero quando o formulário subiu para a primeira
+   dobra; a largura e a margem dela estão junto com a grade, no
+   começo desta folha. */
 
 /* ----- O formulário no hero --------------------------------
    Quem chega decidido não deveria rolar a página inteira para
@@ -583,11 +565,12 @@
 }
 
 /* ----- Os dois cards com a mesma altura ----------------------
-   A grade estica as duas figuras na altura da linha, e dentro de
-   cada figura o corpo cresce para ocupar o que o rótulo deixa.
-   O print fica centrado no corpo dele; o lado oficial ganha o
-   mesmo pé. Sem isso, um card terminava antes do outro e a
-   comparação parecia torta. */
+   A grade estica as duas figuras na altura da linha
+   (`align-items: stretch`, lá na grade), e dentro de cada figura
+   o corpo cresce para ocupar o que o rótulo deixa. O print fica
+   centrado no corpo dele; o lado oficial ganha o mesmo pé. Sem
+   isso, um card terminava antes do outro e a comparação parecia
+   torta. */
 .tela {
   display: flex;
   flex-direction: column;
@@ -595,12 +578,6 @@
 
 .tela__corpo {
   flex: 1;
-}
-
-@media (min-width: 640px) {
-  .cena-dos-estados {
-    align-items: stretch;
-  }
 }
 
 /* ----- O duelo: app comum contra API Oficial -----------------
