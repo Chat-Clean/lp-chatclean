@@ -308,11 +308,18 @@ arquivo de origem da marca, não derivada aqui.
 
 ## Sobre a marca do WhatsApp
 
-A landing de API usa o símbolo do WhatsApp, apagado com selo de bloqueio de um
-lado e aceso do outro, ao lado da marca da ChatClean. É referência ao produto de
-que a página fala, e o aviso de marca registrada da Meta está no rodapé. Nenhuma
-das duas cenas reproduz a interface do WhatsApp: são ilustrações da ChatClean,
-na paleta da ChatClean.
+Na seção `#hoje-e-depois` da landing de API, o lado "Hoje, no chip comum" é
+**um print real** da tela de bloqueio do WhatsApp ("Esta conta não tem
+permissão para usar o WhatsApp"), em `ativos/bloqueio-real.png`, dentro da
+moldura escura da cena. Já foi uma ilustração com o símbolo apagado e um selo
+de bloqueio; a tela verdadeira convence mais do que qualquer desenho, e é o
+único lugar da página que reproduz a interface do WhatsApp, por ser prova. O
+lado "Na API Oficial" continua desenhado: o símbolo aceso, no verde do próprio
+WhatsApp, ligado à marca da ChatClean por um fio. O aviso de marca registrada
+da Meta está no rodapé.
+
+O print é servido no tamanho em que foi tirado, sem esticar: `max-width` no
+valor da largura real, senão vira uma tela borrada, que é o oposto de prova.
 
 ## A demonstração em vídeo, só na landing de CRM
 

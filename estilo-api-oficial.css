@@ -100,17 +100,6 @@
   }
 }
 
-/* ----- A marca do WhatsApp nos dois estados ----------------
-   Acesa, ela vai no verde do PRÓPRIO WhatsApp (#25d366), e não
-   no verde da ChatClean: os dois são parecidos, e o ponto da
-   cena é justamente que são duas marcas diferentes, lado a
-   lado. Apagada, perde a cor e ganha o selo de bloqueio. */
-.app {
-  display: flex;
-  align-items: center;
-  gap: 0.9em;
-}
-
 .app__icone {
   position: relative;
   display: grid;
@@ -126,59 +115,10 @@
   height: 2em;
 }
 
-.app__icone--morto {
-  background: rgba(255, 255, 255, 0.1);
-  color: rgba(255, 255, 255, 0.45);
-}
-
 .app__icone--vivo {
   background: #25d366;
   color: var(--branco);
   box-shadow: 0 10px 22px -10px rgba(37, 211, 102, 0.85);
-}
-
-/* O selo de bloqueio morde o canto do ícone, como um aviso de
-   sistema. A borda na cor do cartão é o que o descola do
-   ícone. */
-.app__bloqueio {
-  position: absolute;
-  right: -0.35em;
-  bottom: -0.35em;
-  display: grid;
-  place-items: center;
-  width: 1.7em;
-  height: 1.7em;
-  border-radius: 50%;
-  background: #b3261e;
-  border: 2px solid #1b2b22;
-  color: var(--branco);
-}
-
-.app__bloqueio svg {
-  width: 0.9em;
-  height: 0.9em;
-}
-
-.app__nome {
-  font-family: var(--fonte-util);
-  font-size: 1.05em;
-  font-weight: 700;
-  letter-spacing: -0.01em;
-  color: rgba(255, 255, 255, 0.52);
-}
-
-.app__estado {
-  display: flex;
-  align-items: center;
-  gap: 0.4em;
-  margin-top: 0.15em;
-  font-family: var(--fonte-util);
-  font-size: 0.85em;
-  font-weight: 600;
-}
-
-.app__estado--morto {
-  color: #f0a9a3;
 }
 
 /* ----- O par WhatsApp + ChatClean --------------------------
@@ -783,4 +723,24 @@
   .hero__pedido {
     margin-top: 0.5rem;
   }
+}
+
+/* ----- O print real do bloqueio ------------------------------
+   A tela caída deixou de ser ilustração: é um print de verdade,
+   dentro da mesma moldura escura. No tamanho em que foi tirado,
+   183px, porque esticar borra, e o argumento desta seção é que
+   isto é real. Centrado na moldura, com o próprio raio e uma
+   sombra curta para se separar do fundo escuro. */
+.tela__corpo--print {
+  display: grid;
+  place-items: center;
+}
+
+.tela__print {
+  display: block;
+  width: 100%;
+  max-width: 183px;
+  height: auto;
+  border-radius: 1.2em;
+  box-shadow: 0 18px 36px -18px rgba(0, 0, 0, 0.7);
 }
