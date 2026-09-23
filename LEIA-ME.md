@@ -12,7 +12,7 @@ diferentes:
 ```
 index.html               a landing de CRM, na raiz do domínio
 api-oficial.html         a landing de API Oficial, servida em /api
-estilo-crm.css           só o que é da página de CRM (o quadro do funil)
+estilo-crm.css           só o que é da página de CRM (o quadro do funil, em #o-funil)
 estilo-api-oficial.css   só o que é da de API (os dois estados do WhatsApp)
 base.css                 identidade compartilhada pelas duas
 cenas.css                o contrato do motor de cenas e as cenas, nas duas
@@ -428,13 +428,19 @@ formulario.js            máscara do telefone, validação por campo, envio
 **Todos os campos são obrigatórios**, inclusive as perguntas de pílula. O envio
 só sai depois que todos passam.
 
-### A landing de API tem o formulário duas vezes
+### As duas landings têm o formulário duas vezes
 
-No hero, para quem chega decidido, e no fim (`#quero`), para quem precisa ler
-antes. É o mesmo `.formulario`, com a mesma marcação e o mesmo script, e os
-dois enviam para o mesmo lugar. A cena dos dois estados do número, que abria a
-página, desceu para a seção `#hoje-e-depois`, logo abaixo do hero, e ali é
-`.cena-dos-estados`.
+No hero, para quem chega decidido, e no fim (`#quero` na API, `#quero-ver` no
+CRM), para quem precisa ler antes. É o mesmo `.formulario`, com a mesma
+marcação e o mesmo script, e os dois enviam para o mesmo lugar. O CSS do
+formulário de hero (`.hero__pedido`, `.formulario--hero`) mora em `base.css`.
+
+A ilustração que abria cada página desceu para a seção logo abaixo do hero:
+na API, a cena dos dois estados do número (`#hoje-e-depois`,
+`.cena-dos-estados`); no CRM, o quadro do funil (`#o-funil`,
+`.quadro-do-funil`), com um título que responde ao do hero: o funil que
+morava no celular dos vendedores, agora numa tela, sem pedir print para
+ninguém.
 
 Duas coisas que dois formulários iguais na mesma página exigem, e que não
 avisam quando faltam:
@@ -442,8 +448,8 @@ avisam quando faltam:
 - **`formulario.js` liga todos os `.formulario`**, um por vez, cada um com o
   próprio estado. Já foi `querySelector(".formulario")`, que pega só o
   primeiro: o segundo ficava morto, sem erro nenhum no console;
-- **os ids do formulário do hero levam o prefixo `api-hero-`.** Id repete na
-  página inteira, e o do fim já usa `api-`. Id repetido faz o `label` do
+- **os ids do formulário do hero levam o prefixo `api-hero-` / `crm-hero-`.**
+  Id repete na página inteira, e o do fim já usa `api-` / `crm-`. Id repetido faz o `label` do
   segundo focar o input do primeiro, do outro lado da página. Há uma asserção
   que recusa qualquer id repetido nas duas landings.
 

@@ -107,9 +107,15 @@ svg {
 /* A regra acima é forte o bastante para atropelar o `display:
    none` que o navegador dá a `[hidden]` — e a folha de ícones
    do topo da página é um `<svg hidden>`. Sem esta linha ela
-   vira um bloco branco de 150px antes do cabeçalho. */
+   vira um bloco branco de 150px antes do cabeçalho.
+
+   Com `!important` de propósito: `hidden` no HTML é uma decisão,
+   e nenhuma regra de display desta folha pode desfazê-la. Sem
+   isso, `.recado { display: block }`, que vem depois com a mesma
+   força, ganhava do atributo, e o recado vazio dos formulários
+   aparecia como uma caixa creme embaixo do botão de envio. */
 [hidden] {
-  display: none;
+  display: none !important;
 }
 
 img {
@@ -480,6 +486,9 @@ strong {
   border: 1px solid rgba(255, 255, 255, 0.22);
   border-radius: var(--raio-pilula);
   padding: 0.55rem 1.1rem;
+  /* Pílula não quebra linha: em 375px o cabeçalho apertava o botão e
+     "Falar com a gente" virava duas linhas dentro da pílula. */
+  white-space: nowrap;
   transition: border-color 0.25s ease, color 0.25s ease;
 }
 
@@ -554,11 +563,12 @@ strong {
 }
 
 /* Item de grade nasce com `min-width: auto`, e isso é a largura
-   de min-content do conteúdo — no celular, a soma das colunas
-   do quadro do funil. Sem este zero o quadro empurrava a PÁGINA
-   INTEIRA para ~520px: o texto da hero saía cortado na direita
-   e o cabeçalho junto. Com ele, quem rola é só o quadro, que já
-   tem `overflow-x: auto`. */
+   de min-content do conteúdo. Quando o quadro do funil morava
+   aqui, no celular isso era a soma das colunas dele, e sem este
+   zero ele empurrava a PÁGINA INTEIRA para ~520px: o texto do
+   hero saía cortado na direita e o cabeçalho junto. O quadro
+   desceu para a seção seguinte, mas o zero fica: é o que impede
+   qualquer conteúdo largo de fazer o mesmo com o formulário. */
 .hero__interno > * {
   min-width: 0;
 }
@@ -614,6 +624,59 @@ strong {
   height: 5px;
   border-radius: 50%;
   background: var(--verde);
+}
+
+/* ----- O formulário no hero, nas duas landings ---------------
+   Quem chega decidido não deveria rolar a página inteira para
+   pedir. O cartão é o MESMO `.formulario` do fim, com a mesma
+   marcação e o mesmo script: o que muda é a escala, apertada
+   para caber na primeira dobra ao lado do título.
+
+   A sombra é a da ilustração que morava nessa coluna: escura
+   embaixo, com o halo verde. É o que faz o cartão branco sentar
+   no verde-noite em vez de flutuar sobre ele. */
+.hero__pedido {
+  position: relative;
+}
+
+.formulario--hero {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(1.35rem, 2.4vw, 1.85rem);
+  border-radius: 22px;
+  border-color: rgba(255, 255, 255, 0.28);
+  box-shadow:
+    0 44px 80px -32px rgba(0, 0, 0, 0.72),
+    0 0 64px -22px rgba(81, 188, 105, 0.38);
+}
+
+.formulario--hero .formulario__titulo {
+  font-size: 1.125rem;
+}
+
+.formulario--hero .formulario__nota {
+  margin-top: 0.3rem;
+  font-size: 0.8125rem;
+}
+
+/* Seis ou sete perguntas na primeira dobra pedem menos ar entre
+   elas do que o formulário do fim, que tem a página para si. */
+.formulario--hero .campos {
+  gap: 0.8rem;
+  margin-top: 1.2rem;
+}
+
+.formulario--hero .formulario__rodape {
+  margin-top: 0.9rem;
+  font-size: 0.75rem;
+}
+
+/* No celular o cartão vem depois do texto e antes de tudo: sem
+   este respiro ele encosta nas provas do hero. */
+@media (max-width: 999px) {
+  .hero__pedido {
+    margin-top: 0.5rem;
+  }
 }
 
 /* ----- Fecho: a promessa ao lado do formulário -------------

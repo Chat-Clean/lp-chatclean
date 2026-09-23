@@ -119,9 +119,11 @@
 
     <main>
       <!-- =====================================================
-           HERO — a tese da página é o funil. O que um CRM faz
-           não se explica: se mostra. O quadro da direita é o
-           produto, com o cartão no ar entre duas etapas.
+           HERO — o título nomeia a dor (o funil mora no celular
+           dos vendedores) e o formulário, do lado, é o caminho.
+           O quadro do funil, que morava aqui, desceu para a seção
+           logo abaixo (`#o-funil`): é a resposta ao título, e
+           ganhou a largura toda para isso.
            ===================================================== -->
       <section class="hero">
         <div class="envelope hero__interno">
@@ -154,16 +156,115 @@
             </ul>
           </div>
 
-          <!-- ELEMENTO DE ASSINATURA -------------------------
-               O quadro do funil, em HTML e CSS. Não é imagem:
-               as colunas, os cartões e o total são texto, e o
-               cartão no ar flutua em laço sobre a vaga
-               pontilhada em latão.
+          <!-- O formulário já na primeira dobra, como na landing de API.
+               O MESMO formulário continua no fim da página (`#quero-ver`):
+               quem chega decidido pede aqui, quem precisa ler antes pede
+               lá. Os dois enviam para o mesmo lugar, e `formulario.js`
+               liga os dois.
 
-               Os nomes e valores são de exemplo: é uma
-               ilustração da tela, não dado de cliente.
-               ------------------------------------------------ -->
-          <div class="hero__quadro entra entra--4" role="img"
+               OS IDS LEVAM O PREFIXO `crm-hero-`: id repete na página
+               inteira, e o formulário do fim já usa `crm-`. Dois campos com
+               o mesmo id fazem o `label` do segundo focar o input do
+               primeiro, do outro lado da página. -->
+          <div class="hero__pedido entra entra--4">
+            <form class="formulario formulario--hero" data-landing="crm" novalidate>
+              <h3 class="formulario__titulo">Agendar a demonstração</h3>
+              <p class="formulario__nota">Cinco campos, resposta no mesmo dia útil</p>
+
+              <div class="campos campos--duplo">
+                <div class="campo">
+                  <label for="crm-hero-nome">Seu nome</label>
+                  <input id="crm-hero-nome" name="nome" type="text" autocomplete="name" placeholder="Ex.: Ana Ribeiro" maxlength="120" required aria-describedby="crm-hero-erro-nome" />
+                  <span class="campo__erro" id="crm-hero-erro-nome" data-erro="nome"></span>
+                </div>
+
+                <div class="campo">
+                  <label for="crm-hero-empresa">Empresa</label>
+                  <input id="crm-hero-empresa" name="empresa" type="text" autocomplete="organization" placeholder="Ex.: Ótica Central" maxlength="120" required aria-describedby="crm-hero-erro-empresa" />
+                  <span class="campo__erro" id="crm-hero-erro-empresa" data-erro="empresa"></span>
+                </div>
+
+                <div class="campo">
+                  <label for="crm-hero-email">E-mail</label>
+                  <input id="crm-hero-email" name="email" type="email" autocomplete="email" placeholder="voce@empresa.com" maxlength="160" required aria-describedby="crm-hero-erro-email" />
+                  <span class="campo__erro" id="crm-hero-erro-email" data-erro="email"></span>
+                </div>
+
+                <div class="campo">
+                  <label for="crm-hero-whats">WhatsApp <span class="campo__dica">com DDD, com ou sem o 9</span></label>
+                  <input id="crm-hero-whats" name="telefone" type="tel" inputmode="numeric" autocomplete="tel" placeholder="(84) 99890-0718" maxlength="16" required aria-describedby="crm-hero-erro-telefone" />
+                  <span class="campo__erro" id="crm-hero-erro-telefone" data-erro="telefone"></span>
+                </div>
+
+                <fieldset class="pilulas">
+                  <legend>Quantas pessoas atendem hoje?</legend>
+                  <div class="pilulas__opcoes">
+                    <label class="pilula"><input type="radio" name="atendentes" value="so-eu" required /><span>Só eu</span></label>
+                    <label class="pilula"><input type="radio" name="atendentes" value="2-5" required /><span>2 a 5</span></label>
+                    <label class="pilula"><input type="radio" name="atendentes" value="6-15" required /><span>6 a 15</span></label>
+                    <label class="pilula"><input type="radio" name="atendentes" value="16-40" required /><span>16 a 40</span></label>
+                    <label class="pilula"><input type="radio" name="atendentes" value="40+" required /><span>Mais de 40</span></label>
+                  </div>
+                  <span class="campo__erro" data-erro="atendentes"></span>
+                </fieldset>
+
+                <label class="aceite" for="crm-hero-aceite">
+                  <input id="crm-hero-aceite" name="aceite" type="checkbox" required aria-describedby="crm-hero-erro-aceite" />
+                  <span>
+                    Autorizo a ChatClean a entrar em contato comigo sobre a
+                    plataforma. Meus dados são usados só para isso, como descrito na
+                    <a href="https://chatclean.com.br/politica-de-privacidade" target="_blank" rel="noopener noreferrer">política de privacidade</a>
+                    <span class="campo__erro" id="crm-hero-erro-aceite" data-erro="aceite"></span>
+                  </span>
+                </label>
+
+                <!-- CAMPO-ISCA, igual ao do formulário do fim: fora da tela e
+                     fora da ordem de tabulação. Robô preenche, o servidor
+                     descarta sem dizer por quê. NÃO use `display: none`. -->
+                <div class="isca" aria-hidden="true">
+                  <label for="crm-hero-site">Site</label>
+                  <input id="crm-hero-site" name="site" type="text" tabindex="-1" autocomplete="off" />
+                </div>
+
+                <div class="campo-de-envio">
+                  <button class="botao botao--latao botao--largo" type="submit">
+                    Quero ver funcionando
+                    <svg class="botao__seta" aria-hidden="true" width="17" height="17"><use href="#i-seta" /></svg>
+                  </button>
+                </div>
+              </div>
+
+              <p class="recado" data-recado role="status" hidden></p>
+
+              <p class="formulario__rodape">
+                Seus dados não são vendidos nem compartilhados para publicidade
+              </p>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================
+           O QUADRO DO FUNIL — a assinatura da página. Morava no
+           hero e desceu para cá quando o formulário subiu para a
+           primeira dobra, como na landing de API. É a resposta ao
+           título do hero: o funil que morava no celular, agora numa
+           tela que todo mundo vê. Fundo noite, o mesmo do hero, para
+           o quadro (desenhado para fundo escuro) continuar em casa.
+           ===================================================== -->
+      <section class="secao secao--noite" id="o-funil">
+        <div class="envelope">
+          <div class="titulo-de-secao centralizado">
+            <span class="etiqueta etiqueta--noite">O funil na tela</span>
+            <h2>O funil inteiro numa tela, <span class="latao">sem pedir print para ninguém</span></h2>
+            <p class="linha-de-apoio">
+              Cada conversa vira um cartão com valor, etapa e quem está cuidando.
+              Quando o cliente diz “fechado”, o cartão anda, e a equipe inteira
+              vê na hora
+            </p>
+          </div>
+
+          <div class="quadro-do-funil" role="img"
                aria-label="Ilustração do funil de vendas da ChatClean: colunas Novo lead, Qualificando e Proposta enviada, com cartões de negociação e o total de R$ 184.500 em aberto.">
             <div class="funil">
               <div class="funil__topo">

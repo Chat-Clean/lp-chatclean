@@ -473,59 +473,9 @@
    dobra; a largura e a margem dela estão junto com a grade, no
    começo desta folha. */
 
-/* ----- O formulário no hero --------------------------------
-   Quem chega decidido não deveria rolar a página inteira para
-   pedir. O cartão é o MESMO `.formulario` do fim, com a mesma
-   marcação e o mesmo script: o que muda é a escala, apertada
-   para caber na primeira dobra ao lado do título.
-
-   A sombra é a da tela oficial que morava aqui: escura embaixo,
-   com o halo verde. É o que faz o cartão branco sentar no
-   verde-noite em vez de flutuar sobre ele. */
-.hero__pedido {
-  position: relative;
-}
-
-.formulario--hero {
-  position: relative;
-  overflow: hidden;
-  padding: clamp(1.35rem, 2.4vw, 1.85rem);
-  border-radius: 22px;
-  border-color: rgba(255, 255, 255, 0.28);
-  box-shadow:
-    0 44px 80px -32px rgba(0, 0, 0, 0.72),
-    0 0 64px -22px rgba(81, 188, 105, 0.38);
-}
-
-
-.formulario--hero .formulario__titulo {
-  font-size: 1.125rem;
-}
-
-.formulario--hero .formulario__nota {
-  margin-top: 0.3rem;
-  font-size: 0.8125rem;
-}
-
-/* Sete perguntas na primeira dobra pedem menos ar entre elas do
-   que o formulário do fim, que tem a página inteira para si. */
-.formulario--hero .campos {
-  gap: 0.8rem;
-  margin-top: 1.2rem;
-}
-
-.formulario--hero .formulario__rodape {
-  margin-top: 0.9rem;
-  font-size: 0.75rem;
-}
-
-/* No celular o cartão vem depois do texto e antes de tudo: sem
-   este respiro ele encosta nas provas do hero. */
-@media (max-width: 999px) {
-  .hero__pedido {
-    margin-top: 0.5rem;
-  }
-}
+/* O formulário no hero (`.hero__pedido`, `.formulario--hero`) morou
+   aqui enquanto só esta página o tinha. Agora é das duas landings
+   e vive em base.css, junto com a casca do hero. */
 
 /* ----- O print real do bloqueio ------------------------------
    A tela caída deixou de ser ilustração: é um print de verdade,

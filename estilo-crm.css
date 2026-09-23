@@ -1,10 +1,11 @@
 /* ============================================================
    Landing page — CRM para WhatsApp
    ------------------------------------------------------------
-   A assinatura desta página é o QUADRO DO FUNIL na hero: um
-   Kanban de verdade em HTML e CSS, com um cartão no ar entre
-   duas etapas. O que um CRM faz não se explica em texto — se
-   mostra.
+   A assinatura desta página é o QUADRO DO FUNIL, na seção logo
+   abaixo do hero (`#o-funil`): um Kanban de verdade em HTML e
+   CSS, com um cartão no ar entre duas etapas. O que um CRM faz
+   não se explica em texto — se mostra. Ele morava no hero e
+   desceu quando o formulário subiu para a primeira dobra.
 
    A casca da hero e do fecho mora em `base.css`, compartilhada
    com a outra landing. Aqui fica só o que é desta página.
@@ -13,9 +14,15 @@
 /* ----- ASSINATURA: o quadro do funil -----------------------
    O quadro tem a própria escala tipográfica: `font-size` com
    clamp aqui, e tudo dentro em `em`. Assim ele encolhe como
-   uma peça só, sem uma dúzia de pontos de quebra. */
-.hero__quadro {
+   uma peça só, sem uma dúzia de pontos de quebra.
+
+   Centrado e com a largura da coluna de onde veio (o hero), para
+   as três colunas não esticarem numa seção de largura inteira:
+   ficha larga demais deixa de parecer cartão de Kanban. */
+.quadro-do-funil {
   position: relative;
+  max-width: 44rem;
+  margin: clamp(2.5rem, 5vw, 3.5rem) auto 0;
   font-size: clamp(0.7rem, 1.6vw, 0.8125rem);
 }
 
