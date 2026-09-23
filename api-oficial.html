@@ -555,8 +555,8 @@
                  cenas (cenas.js). Dois reaproveitam cenas da landing de CRM:
                  a caixa de entrada e a conversa do robô moram em cenas.css e
                  são as mesmas nas duas páginas. Duas são desta página: a
-                 equipe entrando no mesmo número, e os dados saindo do
-                 aparelho para a plataforma. Tudo aria-hidden: ilustração do
+                 equipe entrando no mesmo número, e os dados no celular E na
+                 plataforma (coexistência). Tudo aria-hidden: ilustração do
                  que o título e a linha de apoio já dizem. -->
             <article class="cartao">
               <span class="selo-de-icone"><svg aria-hidden="true"><use href="#i-mensagem" /></svg></span>
@@ -660,25 +660,27 @@
             <article class="cartao">
               <span class="selo-de-icone"><svg aria-hidden="true"><use href="#i-escudo" /></svg></span>
               <h3>Os dados ficam com você</h3>
-              <p>Contatos e conversas moram na plataforma, não em um aparelho</p>
+              <p>Contatos e conversas ficam na plataforma, e com a coexistência o número segue no celular também</p>
 
-              <!-- Cada item some do aparelho e aparece na plataforma no mesmo
-                   passo: a mudança de endereço é a cena. No aparelho os itens
-                   nascem visíveis (surge-em 0) e saem cada um no seu passo. -->
+              <!-- COEXISTÊNCIA: na API Oficial o número segue no celular E na
+                   plataforma. Por isso a cena não tira nada do aparelho: cada
+                   item acende nos dois lados no mesmo passo, e o fim é o elo
+                   entre os dois. Já foi "sai do aparelho, entra na plataforma",
+                   e estava errado. -->
               <div class="palco palco--cofre" aria-hidden="true" data-cena data-passos="700,700,700,700">
                 <div class="cofre__lado cofre__lado--aparelho">
-                  <span class="cofre__titulo">No aparelho</span>
-                  <span class="cofre__item" data-surge-em="0" data-some-em="1">612 contatos</span>
-                  <span class="cofre__item" data-surge-em="0" data-some-em="2">1.847 conversas</span>
-                  <span class="cofre__item" data-surge-em="0" data-some-em="3">Histórico</span>
+                  <span class="cofre__titulo">No celular</span>
+                  <span class="cofre__item" data-surge-em="1">612 contatos</span>
+                  <span class="cofre__item" data-surge-em="2">1.847 conversas</span>
+                  <span class="cofre__item" data-surge-em="3">Histórico</span>
                 </div>
                 <div class="cofre__lado cofre__lado--plataforma">
                   <span class="cofre__titulo">Na plataforma</span>
                   <span class="cofre__item" data-surge-em="1">612 contatos</span>
                   <span class="cofre__item" data-surge-em="2">1.847 conversas</span>
                   <span class="cofre__item" data-surge-em="3">Histórico</span>
-                  <span class="cofre__cadeado" data-surge-em="4"><svg aria-hidden="true"><use href="#i-escudo" /></svg>Acesso por perfil</span>
                 </div>
+                <span class="cofre__coexistencia" data-surge-em="4"><svg aria-hidden="true"><use href="#i-escudo" /></svg>Coexistência: os dois, ao mesmo tempo, com acesso por perfil</span>
               </div>
             </article>
           </div>

@@ -213,9 +213,11 @@ que a contenha. Duas cenas são desta página:
 - **a equipe no mesmo número**: os atendentes entram um a um, cada um com o
   próprio acesso, e o contador sobe. É a resposta a "até 4 aparelhos": aqui é
   gente, não aparelho;
-- **os dados ficam com você**: cada item some do aparelho (`data-some-em`) e
-  aparece na plataforma (`data-surge-em`) no mesmo passo. A mudança de
-  endereço é a cena; no fim, o cadeado.
+- **os dados ficam com você**: cada item acende no celular **e** na plataforma
+  no mesmo passo, e o fim é o elo entre os dois. Já foi "some do aparelho,
+  entra na plataforma", e contava a história errada: com a **coexistência** da
+  API Oficial o número segue no celular também. A linha de apoio do card diz
+  isso por extenso.
 
 ### Uma cena é marcação, não JavaScript
 

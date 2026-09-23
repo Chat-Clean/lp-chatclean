@@ -931,10 +931,11 @@
 }
 
 /* ----- Cena: os dados ficam com você ---------------------------
-   Duas colunas: o aparelho, de onde os dados saem; a plataforma,
-   para onde vão. Cada item some de um lado (`data-some-em`) e
-   aparece do outro (`data-surge-em`) no mesmo passo: a mudança de
-   endereço É a cena. No fim, o cadeado. */
+   Duas colunas, o celular e a plataforma, e cada item acende NAS
+   DUAS no mesmo passo: com a coexistência da API Oficial o número
+   segue no celular e na plataforma. Já foi "sai de um, entra no
+   outro", e contava a história errada. No fim, o elo entre os
+   dois. */
 .palco--cofre {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -951,8 +952,8 @@
 }
 
 .cofre__lado--aparelho {
-  background: rgba(20, 35, 27, 0.06);
-  border: 1px dashed rgba(20, 35, 27, 0.25);
+  background: var(--branco);
+  box-shadow: 0 1px 2px rgba(20, 35, 27, 0.06);
 }
 
 .cofre__lado--plataforma {
@@ -978,36 +979,43 @@
   background: var(--creme);
 }
 
-.cofre__lado--plataforma .cofre__item {
+.cofre__lado .cofre__item {
   background: var(--verde-lavado);
   color: var(--verde-texto);
 }
 
-/* No aparelho os itens começam visíveis e SOMEM (o motor só liga
-   `data-visivel` entre `surge-em` e `some-em`): nascem no passo 0
-   e saem cada um no seu passo. Na plataforma, entram vindos da
-   esquerda, de onde saíram. */
-.palco--cofre .cofre__lado--plataforma .cofre__item[data-surge-em] {
-  transform: translateX(-12px);
+/* Os dois lados entram um para o outro: o celular vindo da direita,
+   a plataforma vindo da esquerda. Encontro, e não mudança. */
+.palco--cofre .cofre__lado--aparelho .cofre__item[data-surge-em] {
+  transform: translateX(8px);
 }
 
-.palco--cofre .cofre__lado--plataforma .cofre__item[data-visivel] {
+.palco--cofre .cofre__lado--plataforma .cofre__item[data-surge-em] {
+  transform: translateX(-8px);
+}
+
+.palco--cofre .cofre__item[data-visivel] {
   transform: none;
 }
 
-/* O cadeado fecha no último passo: o resultado da cena. */
-.cofre__cadeado {
+/* O elo entre os dois, no último passo: o resultado da cena. Ocupa
+   as duas colunas porque é sobre as duas. */
+.cofre__coexistencia {
+  grid-column: 1 / -1;
   display: flex;
   align-items: center;
-  gap: 0.4rem;
-  margin-top: 0.15rem;
+  gap: 0.45rem;
+  padding: 0.5rem 0.7rem;
+  border-radius: var(--raio-pilula);
+  background: var(--verde-noite);
   font-family: var(--fonte-util);
   font-size: 0.625rem;
   font-weight: 700;
-  color: var(--verde-medio);
+  color: var(--verde-claro);
 }
 
-.cofre__cadeado svg {
+.cofre__coexistencia svg {
+  flex: 0 0 auto;
   width: 0.85rem;
   height: 0.85rem;
 }
