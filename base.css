@@ -1592,6 +1592,25 @@ strong {
     0 22px 50px rgba(0, 0, 0, 0.55);
 }
 
+/* A duração no canto de baixo, como todo player mostra: pílula
+   escura sobre a capa, latão claro no texto para casar com o selo
+   de play. Some junto com a capa quando o player entra. */
+.video__duracao {
+  position: absolute;
+  right: 0.9rem;
+  bottom: 0.9rem;
+  padding: 0.35rem 0.7rem;
+  border-radius: var(--raio-pilula);
+  background: rgba(20, 35, 27, 0.78);
+  border: 1px solid rgba(210, 181, 106, 0.35);
+  font-family: var(--fonte-util);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--latao-claro);
+  backdrop-filter: blur(4px);
+}
+
 /* O player que entra no lugar da capa. */
 .video__quadro iframe {
   display: block;
