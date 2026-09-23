@@ -122,8 +122,8 @@
            HERO — o título nomeia a dor (o funil mora no celular
            dos vendedores) e o formulário, do lado, é o caminho.
            O quadro do funil, que morava aqui, desceu para a seção
-           logo abaixo (`#o-funil`): é a resposta ao título, e
-           ganhou a largura toda para isso.
+           `#o-funil`, depois do vídeo e da faixa de clientes: é a
+           resposta ao título, e ganhou a largura toda para isso.
            ===================================================== -->
       <section class="hero">
         <div class="envelope hero__interno">
@@ -245,12 +245,92 @@
       </section>
 
       <!-- =====================================================
+           A demonstração em vídeo, na pegada da VSL: rótulo,
+           promessa curta, o vídeo grande e a chamada embaixo.
+           Logo abaixo do hero: quem acabou de ver o formulário
+           vê a tela rodando antes de qualquer argumento.
+
+           A CAPA NÃO É O VÍDEO. O que carrega com a página é uma
+           imagem de 96 KB. O <iframe> do YouTube só nasce no
+           clique, montado por `video.js`: embutir de largada
+           traria mais de um mega de script de terceiro para
+           dentro de uma página de anúncio, e o tempo de carga de
+           landing de tráfego pago se paga em dinheiro.
+           ===================================================== -->
+      <section class="secao secao--noite" id="ver-rodando">
+        <div class="envelope video">
+          <div class="titulo-de-secao video__dizer">
+            <span class="etiqueta etiqueta--noite">
+              <svg aria-hidden="true" width="12" height="12"><use href="#i-play" /></svg>
+              Demonstração
+            </span>
+            <h2>Veja a tela <span class="latao">antes de falar com a gente</span></h2>
+            <p class="linha-de-apoio">
+              O atendimento, o funil e o histórico do mesmo cliente, na tela que
+              a sua equipe abre todo dia
+            </p>
+          </div>
+
+          <!-- `data-video` é o id no YouTube, e `data-titulo` vira o `title`
+               do <iframe>, que é o que leitor de tela anuncia. -->
+          <div class="video__quadro">
+            <button
+              class="video__capa"
+              type="button"
+              data-video="Odu25S1tcZc"
+              data-titulo="Conheça nossa ferramenta de CRM"
+              aria-label="Tocar o vídeo: conheça nossa ferramenta de CRM"
+            >
+              <img
+                src="ativos/video-crm.jpg"
+                alt=""
+                width="1280"
+                height="720"
+                loading="lazy"
+                decoding="async"
+              />
+              <span class="video__play" aria-hidden="true">
+                <svg width="30" height="30"><use href="#i-play" /></svg>
+              </span>
+            </button>
+          </div>
+
+          <div class="video__abaixo">
+            <p>Fez sentido para o seu atendimento?</p>
+            <a class="botao botao--claro" href="#quero-ver">
+              Quero ver com os meus números
+              <svg class="botao__seta" aria-hidden="true" width="17" height="17"><use href="#i-seta" /></svg>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================
+           Prova social: quem já atende assim.
+           ===================================================== -->
+      <section class="secao secao--estreita secao--creme">
+        <div class="envelope">
+          <p class="faixa__titulo">Empresas que já atendem dentro da ChatClean</p>
+          <ul class="faixa-de-clientes">
+            <li><img src="ativos/clientes/lauto-cargo.png" alt="L'auto Cargo" loading="lazy" /></li>
+            <li><img src="ativos/clientes/imobee.svg" alt="Imobee" loading="lazy" /></li>
+            <li><img src="ativos/clientes/avelloz.svg" alt="Avelloz" loading="lazy" /></li>
+            <li><img src="ativos/clientes/liv.svg" alt="Liv" loading="lazy" /></li>
+            <li><img src="ativos/clientes/simplo.png" alt="Simplo" loading="lazy" /></li>
+            <li><img src="ativos/clientes/bom-todo.png" alt="Bom Todo" loading="lazy" /></li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- =====================================================
            O QUADRO DO FUNIL — a assinatura da página. Morava no
-           hero e desceu para cá quando o formulário subiu para a
-           primeira dobra, como na landing de API. É a resposta ao
-           título do hero: o funil que morava no celular, agora numa
-           tela que todo mundo vê. Fundo noite, o mesmo do hero, para
-           o quadro (desenhado para fundo escuro) continuar em casa.
+           hero e desceu quando o formulário subiu para a primeira
+           dobra, como na landing de API. Fica depois do vídeo e da
+           faixa de clientes: primeiro a tela rodando, depois a peça
+           que a página existe para mostrar. É a resposta ao título
+           do hero: o funil que morava no celular, agora numa tela
+           que todo mundo vê. Fundo noite (o quadro é desenhado para
+           fundo escuro).
            ===================================================== -->
       <section class="secao secao--noite" id="o-funil">
         <div class="envelope">
@@ -346,82 +426,6 @@
               <p class="ficha__fala">“Fechado, manda o contrato”</p>
               <footer><span class="ficha__valor">R$ 74.900</span><span class="ficha__tempo">agora</span></footer>
             </article>
-          </div>
-        </div>
-      </section>
-
-      <!-- =====================================================
-           Prova social: quem já atende assim.
-           ===================================================== -->
-      <section class="secao secao--estreita secao--creme">
-        <div class="envelope">
-          <p class="faixa__titulo">Empresas que já atendem dentro da ChatClean</p>
-          <ul class="faixa-de-clientes">
-            <li><img src="ativos/clientes/lauto-cargo.png" alt="L'auto Cargo" loading="lazy" /></li>
-            <li><img src="ativos/clientes/imobee.svg" alt="Imobee" loading="lazy" /></li>
-            <li><img src="ativos/clientes/avelloz.svg" alt="Avelloz" loading="lazy" /></li>
-            <li><img src="ativos/clientes/liv.svg" alt="Liv" loading="lazy" /></li>
-            <li><img src="ativos/clientes/simplo.png" alt="Simplo" loading="lazy" /></li>
-            <li><img src="ativos/clientes/bom-todo.png" alt="Bom Todo" loading="lazy" /></li>
-          </ul>
-        </div>
-      </section>
-
-      <!-- =====================================================
-           A demonstração em vídeo, na pegada da VSL: rótulo,
-           promessa curta, o vídeo grande e a chamada embaixo.
-
-           A CAPA NÃO É O VÍDEO. O que carrega com a página é uma
-           imagem de 96 KB. O <iframe> do YouTube só nasce no
-           clique, montado por `video.js`: embutir de largada
-           traria mais de um mega de script de terceiro para
-           dentro de uma página de anúncio, e o tempo de carga de
-           landing de tráfego pago se paga em dinheiro.
-           ===================================================== -->
-      <section class="secao secao--noite" id="ver-rodando">
-        <div class="envelope video">
-          <div class="titulo-de-secao video__dizer">
-            <span class="etiqueta etiqueta--noite">
-              <svg aria-hidden="true" width="12" height="12"><use href="#i-play" /></svg>
-              Demonstração
-            </span>
-            <h2>Veja a tela <span class="latao">antes de falar com a gente</span></h2>
-            <p class="linha-de-apoio">
-              O atendimento, o funil e o histórico do mesmo cliente, na tela que
-              a sua equipe abre todo dia
-            </p>
-          </div>
-
-          <!-- `data-video` é o id no YouTube, e `data-titulo` vira o `title`
-               do <iframe>, que é o que leitor de tela anuncia. -->
-          <div class="video__quadro">
-            <button
-              class="video__capa"
-              type="button"
-              data-video="Odu25S1tcZc"
-              data-titulo="Conheça nossa ferramenta de CRM"
-              aria-label="Tocar o vídeo: conheça nossa ferramenta de CRM"
-            >
-              <img
-                src="ativos/video-crm.jpg"
-                alt=""
-                width="1280"
-                height="720"
-                loading="lazy"
-                decoding="async"
-              />
-              <span class="video__play" aria-hidden="true">
-                <svg width="30" height="30"><use href="#i-play" /></svg>
-              </span>
-            </button>
-          </div>
-
-          <div class="video__abaixo">
-            <p>Fez sentido para o seu atendimento?</p>
-            <a class="botao botao--claro" href="#quero-ver">
-              Quero ver com os meus números
-              <svg class="botao__seta" aria-hidden="true" width="17" height="17"><use href="#i-seta" /></svg>
-            </a>
           </div>
         </div>
       </section>

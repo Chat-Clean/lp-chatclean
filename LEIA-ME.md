@@ -435,12 +435,13 @@ CRM), para quem precisa ler antes. É o mesmo `.formulario`, com a mesma
 marcação e o mesmo script, e os dois enviam para o mesmo lugar. O CSS do
 formulário de hero (`.hero__pedido`, `.formulario--hero`) mora em `base.css`.
 
-A ilustração que abria cada página desceu para a seção logo abaixo do hero:
-na API, a cena dos dois estados do número (`#hoje-e-depois`,
-`.cena-dos-estados`); no CRM, o quadro do funil (`#o-funil`,
-`.quadro-do-funil`), com um título que responde ao do hero: o funil que
-morava no celular dos vendedores, agora numa tela, sem pedir print para
-ninguém.
+A ilustração que abria cada página desceu para uma seção própria. Na API, a
+cena dos dois estados do número (`#hoje-e-depois`, `.cena-dos-estados`),
+logo abaixo do hero. No CRM, o quadro do funil (`#o-funil`,
+`.quadro-do-funil`) fica depois do vídeo e da faixa de clientes: a ordem é
+hero → vídeo (`#ver-rodando`) → clientes → funil. O título do funil responde
+ao do hero: o funil que morava no celular dos vendedores, agora numa tela,
+sem pedir print para ninguém.
 
 Duas coisas que dois formulários iguais na mesma página exigem, e que não
 avisam quando faltam:
