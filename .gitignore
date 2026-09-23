@@ -5,3 +5,8 @@ desktop.ini
 
 # Saída local da Vercel
 .vercel
+
+# Skills instaladas por `npx skills add`: ferramenta de quem edita, não parte do site
+.agents/
+.claude/skills/
+skills-lock.json
