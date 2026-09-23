@@ -74,13 +74,13 @@
 }
 
 @media (min-width: 520px) {
-  /* Atrás, de leve inclinada, entrando 2,5em por baixo da oficial:
-     é o que lê como "uma em cima da outra". Sem o translateY de
-     antes, porque com os dois cards na mesma altura ele deixava a
-     caída sobrando embaixo, e o conjunto parecia torto. */
+  /* A posição original: inclinada -3°, um pouco mais baixa, entrando
+     de leve por baixo da oficial. Já foi trocada por -2° reta e sem
+     descer, com a oficial reta na frente, e ficou pior: a assimetria
+     é o que faz o par ler como "uma em cima da outra". */
   .tela--caida {
-    transform: rotate(-2deg);
-    margin-right: -2.5em;
+    transform: rotate(-3deg) translateY(1.25em);
+    margin-right: -0.5em;
   }
 }
 
@@ -106,9 +106,10 @@
 }
 
 @media (min-width: 520px) {
-  /* Reta: é o card da frente, e o que está na frente não inclina. */
+  /* A inclinação original de 1°, no sentido contrário da caída: é o
+     par de ângulos que lê como duas telas soltas, uma sobre a outra. */
   .tela--oficial {
-    transform: none;
+    transform: rotate(1deg);
   }
 }
 
