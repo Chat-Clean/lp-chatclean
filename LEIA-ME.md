@@ -66,6 +66,26 @@ O latão recortado no texto (`.latao`) só aparece sobre fundo escuro, que é on
 ele tem contraste e é como o site usa. Em seção clara a palavra destacada vai no
 verde escuro (`.destaque`).
 
+### O fundo do hero: balões de mensagem, bem sutis
+
+O hero das duas landings tem duas camadas de fundo, nenhuma com caixa menor que
+o hero. O `::before` é um mosaico de balões de mensagem, brancos a 4,5%: o
+assunto da página como textura, que some para quem não procura. Cada balão tem
+três cantos redondos e um quadrado, que é o rabo e diz de que lado a mensagem
+veio. O `::after` é o brilho verde, que passa por cima e suaviza os balões onde
+ele é mais forte.
+
+**A linha diagonal que aparecia no celular** vinha do brilho antigo: um radial
+numa caixa de 60% de largura. No celular a caixa fica alta e estreita, o
+gradiente ainda está verde quando chega na borda esquerda dela, e a borda vira
+uma linha reta atravessando o hero. Agora o brilho cobre o hero inteiro e
+desvanece antes de qualquer borda. Há uma asserção que recusa camada de hero
+com caixa menor que ele.
+
+O azulejo é SVG embutido em `data:` (sem requisição extra) e é gerado por
+script, com a prévia renderizada sobre o verde-noite antes de entrar. Para
+mudar densidade ou opacidade, regere; não edite o URI à mão.
+
 ## As regras de escrita destas páginas
 
 Valem para qualquer texto novo que entrar aqui:

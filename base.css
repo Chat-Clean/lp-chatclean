@@ -501,19 +501,49 @@ strong {
   padding-block: clamp(3.5rem, 7vw, 6rem) clamp(4rem, 8vw, 7rem);
 }
 
-.hero::before {
+/* Duas camadas de fundo, e nenhuma com caixa menor que o hero.
+
+   ─── A LINHA DIAGONAL QUE APARECIA NO CELULAR ──────────────
+   O brilho verde era um radial numa caixa de 60% de largura. No
+   celular a caixa fica alta e estreita, o gradiente ainda está
+   verde quando chega na borda esquerda dela, e a borda vira uma
+   linha reta atravessando o hero. Agora o brilho cobre o hero
+   inteiro e desvanece antes de qualquer borda.
+
+   ─── OS BALÕES ──────────────────────────────────────────────
+   Balões de mensagem em mosaico, brancos a 4,5%: o assunto da
+   página como textura, que some para quem não procura. Cada
+   balão tem três cantos redondos e um quadrado, que é o rabo e
+   diz de que lado a mensagem veio. É SVG embutido em `data:`
+   para não custar uma requisição. Fica no `::before` para a
+   camada de brilho passar por cima e suavizar onde ele é mais
+   forte. O azulejo é gerado por script; não edite o URI à mão. */
+.hero::before,
+.hero::after {
   content: "";
   position: absolute;
-  top: -20%;
-  right: -10%;
-  width: 60%;
-  height: 120%;
-  background: radial-gradient(circle at center, rgba(81, 188, 105, 0.22), transparent 62%);
+  inset: 0;
+  z-index: 0;
   pointer-events: none;
 }
 
+.hero::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='360' height='240' viewBox='0 0 360 240'%3E%3Cg fill='%23ffffff' fill-opacity='0.045'%3E%3Cpath d='M36 26 H130 a14 14 0 0 1 14 14 V66 a14 14 0 0 1 -14 14 H22 V40 a14 14 0 0 1 14 -14 Z'/%3E%3Cpath d='M218 62 H326 a14 14 0 0 1 14 14 V112 H218 a14 14 0 0 1 -14 -14 V76 a14 14 0 0 1 14 -14 Z'/%3E%3Cpath d='M72 142 H136 a14 14 0 0 1 14 14 V172 a14 14 0 0 1 -14 14 H58 V156 a14 14 0 0 1 14 -14 Z'/%3E%3Cpath d='M246 172 H326 a14 14 0 0 1 14 14 V220 H246 a14 14 0 0 1 -14 -14 V186 a14 14 0 0 1 14 -14 Z'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 360px 240px;
+  background-position: -40px -30px;
+}
+
+.hero::after {
+  background:
+    radial-gradient(ellipse 70% 80% at 88% 22%, rgba(81, 188, 105, 0.2), transparent 70%),
+    linear-gradient(180deg, rgba(20, 35, 27, 0) 0%, rgba(20, 35, 27, 0) 72%, var(--verde-noite) 100%);
+}
+
+/* O conteúdo acima das duas camadas: os pseudoelementos são
+   posicionados, e sem isto o `::after` pintaria por cima do texto. */
 .hero__interno {
   position: relative;
+  z-index: 1;
   display: grid;
   gap: clamp(3rem, 5vw, 4.5rem);
   align-items: center;
