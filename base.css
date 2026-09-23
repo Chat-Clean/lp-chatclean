@@ -42,6 +42,10 @@
   --branco: #ffffff;
   --cinza: #5e6560;
   --cinza-fio: #e4e1d4;
+  /* A borda do cartão. Mais escura que o --cinza-fio: sobre o creme
+     das seções, #e4e1d4 quase não existia, e o cartão parecia
+     flutuar sem contorno. Este tom ainda é papel, não risco. */
+  --cartao-fio: #cdc7b3;
   --tinta: #14231b;
 
   --alerta: #b3261e;

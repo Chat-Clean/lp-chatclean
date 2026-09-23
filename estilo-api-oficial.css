@@ -672,8 +672,7 @@
    Quem chega decidido não deveria rolar a página inteira para
    pedir. O cartão é o MESMO `.formulario` do fim, com a mesma
    marcação e o mesmo script: o que muda é a escala, apertada
-   para caber na primeira dobra ao lado do título, e o fio de
-   latão no topo, que o liga ao `.latao` do h1 ao lado.
+   para caber na primeira dobra ao lado do título.
 
    A sombra é a da tela oficial que morava aqui: escura embaixo,
    com o halo verde. É o que faz o cartão branco sentar no
@@ -693,22 +692,6 @@
     0 0 64px -22px rgba(81, 188, 105, 0.38);
 }
 
-/* O fio de latão: o mesmo metal do título ao lado, com a faixa
-   clara no meio. */
-.formulario--hero::before {
-  content: "";
-  position: absolute;
-  inset: 0 0 auto 0;
-  height: 3px;
-  background-image: linear-gradient(
-    90deg,
-    #a07e35 0%,
-    var(--latao) 30%,
-    #e7d6a8 50%,
-    var(--latao) 70%,
-    #a07e35 100%
-  );
-}
 
 .formulario--hero .formulario__titulo {
   font-size: 1.125rem;
