@@ -187,6 +187,12 @@ card oficial sobe até 8 de 8. Diferente dos palcos dos cartões de recurso,
 opacidade continua legível para leitor de tela, e com "reduzir movimento" o
 motor mostra tudo de uma vez.
 
+**O duelo não roda em laço.** O laço serve para ilustração, que ninguém lê;
+para oito critérios em texto ele é hostil: a pessoa está no quinto e o palco
+apaga. O atributo `data-uma-vez` faz a cena ir até o fim, ficar montada e não
+zerar nem se a seção sair da tela e voltar. Os palcos dos cartões de recurso
+continuam em laço, como no site.
+
 Por causa disso, o **contrato do motor** (revelação por `data-visivel`, apagar
 entre voltas, recomeço sem transição) mora em `base.css`, e não mais em
 `estilo-crm.css`: contrato compartilhado, arquivo compartilhado. O duelo é

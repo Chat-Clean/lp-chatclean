@@ -70,6 +70,16 @@
     const relogios = [];
     let quadro = null;
 
+    /* ─── `data-uma-vez`: toca uma vez e fica ───────────────────
+       O laço serve para ilustração, que ninguém lê. Para conteúdo
+       (o duelo da landing de API, oito critérios em texto) o laço é
+       hostil: a pessoa está no quinto critério e o palco apaga.
+       Com este atributo a cena vai até o fim, fica montada, e não
+       zera nem se o cartão sair da tela e voltar. */
+    const umaVez = palco.hasAttribute("data-uma-vez");
+    let comecou = false;
+    let terminou = false;
+
     function mostrarPasso(passo) {
       palco.dataset.passo = String(passo);
       for (const peca of pecas) {
@@ -113,6 +123,12 @@
         relogios.push(setTimeout(() => mostrarPasso(i + 1), t));
       });
 
+      if (umaVez) {
+        // Chegou ao resultado: fica. Sem apagar, sem recomeçar.
+        relogios.push(setTimeout(() => { terminou = true; limpar(); }, t));
+        return;
+      }
+
       t += PAUSA_NO_RESULTADO;
       relogios.push(setTimeout(() => palco.setAttribute("data-saindo", ""), t));
 
@@ -144,6 +160,14 @@
     const olho = new IntersectionObserver(
       (entradas) => {
         for (const entrada of entradas) {
+          if (umaVez) {
+            // Toca uma vez: entrou, começa; saiu, continua até o fim e fica.
+            if (entrada.isIntersecting && !comecou) {
+              comecou = true;
+              correr();
+            }
+            continue;
+          }
           if (entrada.isIntersecting) correr();
           else parar();
         }
