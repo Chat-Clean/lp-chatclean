@@ -15,6 +15,7 @@ api-oficial.html         a landing de API Oficial, servida em /api
 estilo-crm.css           só o que é da página de CRM (o quadro do funil)
 estilo-api-oficial.css   só o que é da de API (os dois estados do WhatsApp)
 base.css                 identidade compartilhada pelas duas
+cenas.css                o contrato do motor de cenas e as cenas, nas duas
 formulario.js            máscara, validação e envio, compartilhado pelas duas
 video.js                 troca a capa pelo player do YouTube, só na de CRM
 carrossel.js             os pontinhos do carrossel do celular, nas duas
@@ -194,10 +195,27 @@ zerar nem se a seção sair da tela e voltar. Os palcos dos cartões de recurso
 continuam em laço, como no site.
 
 Por causa disso, o **contrato do motor** (revelação por `data-visivel`, apagar
-entre voltas, recomeço sem transição) mora em `base.css`, e não mais em
-`estilo-crm.css`: contrato compartilhado, arquivo compartilhado. O duelo é
-`.palco` para herdar esse contrato, mas sem o creme pontilhado, sem padding e
-sem `contain: paint`, que cortaria a sombra do card oficial.
+entre voltas, recomeço sem transição) e **as cenas** moram em `cenas.css`,
+carregado pelas duas landings entre `base.css` e a folha própria de cada uma:
+contrato compartilhado, arquivo compartilhado. O duelo é `.palco` para herdar
+esse contrato, mas sem o creme pontilhado, sem padding e sem `contain: paint`,
+que cortaria a sombra do card oficial.
+
+### "Vem junto", na landing de API: quatro palcos, dois emprestados
+
+Os quatro cartões de "Vem junto" têm palco. Dois **reaproveitam** cenas da
+landing de CRM, porque o assunto é o mesmo: a caixa de entrada única (no card
+dos canais) e a conversa do robô (no de IA). São a mesma marcação e o mesmo
+CSS, em `cenas.css`; o contêiner da caixa passou de `.bento__largo` para
+`.cartao:has(> .palco--caixa)`, então ela responde à largura de qualquer cartão
+que a contenha. Duas cenas são desta página:
+
+- **a equipe no mesmo número**: os atendentes entram um a um, cada um com o
+  próprio acesso, e o contador sobe. É a resposta a "até 4 aparelhos": aqui é
+  gente, não aparelho;
+- **os dados ficam com você**: cada item some do aparelho (`data-some-em`) e
+  aparece na plataforma (`data-surge-em`) no mesmo passo. A mudança de
+  endereço é a cena; no fim, o cadeado.
 
 ### Uma cena é marcação, não JavaScript
 

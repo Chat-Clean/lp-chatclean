@@ -22,6 +22,7 @@
     />
 
     <link rel="stylesheet" href="base.css" />
+    <link rel="stylesheet" href="cenas.css" />
     <link rel="stylesheet" href="estilo-api-oficial.css" />
   </head>
 
@@ -73,6 +74,15 @@
         </symbol>
         <symbol id="i-robo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M12 8V4H8" /><rect width="16" height="12" x="4" y="8" rx="2" /><path d="M2 14h2m16 0h2M15 13v2m-6-2v2" />
+        </symbol>
+        <symbol id="i-instagram" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41-.56-.22-.96-.48-1.38-.9a3.7 3.7 0 0 1-.9-1.38c-.16-.42-.36-1.06-.41-2.23-.06-1.27-.07-1.65-.07-4.85s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41 1.27-.06 1.65-.07 4.85-.07M12 0C8.74 0 8.33.01 7.05.07c-1.28.06-2.15.26-2.91.56-.79.31-1.46.72-2.13 1.38A5.9 5.9 0 0 0 .63 4.14c-.3.76-.5 1.63-.56 2.91C.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.06 1.28.26 2.15.56 2.91.31.79.72 1.46 1.38 2.13a5.9 5.9 0 0 0 2.13 1.38c.76.3 1.63.5 2.91.56C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c1.28-.06 2.15-.26 2.91-.56a5.9 5.9 0 0 0 2.13-1.38 5.9 5.9 0 0 0 1.38-2.13c.3-.76.5-1.63.56-2.91.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.06-1.28-.26-2.15-.56-2.91a5.9 5.9 0 0 0-1.38-2.13A5.9 5.9 0 0 0 19.86.63c-.76-.3-1.63-.5-2.91-.56C15.67.01 15.26 0 12 0Zm0 5.84a6.16 6.16 0 1 0 0 12.32 6.16 6.16 0 0 0 0-12.32ZM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm7.85-10.4a1.44 1.44 0 1 1-2.88 0 1.44 1.44 0 0 1 2.88 0Z" />
+        </symbol>
+        <symbol id="i-facebook" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.05V9.41c0-3.02 1.79-4.69 4.53-4.69 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.96.93-1.96 1.89v2.25h3.33l-.53 3.49h-2.8V24C19.61 23.1 24 18.1 24 12.07Z" />
+        </symbol>
+        <symbol id="i-telegram" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M23.91 3.79 20.3 20.84c-.25 1.21-.98 1.5-1.99.94l-5.5-4.07-2.66 2.57c-.3.3-.55.55-1.1.55l.38-5.58 10.16-9.18c.44-.39-.1-.61-.68-.22L6.24 13.28.5 11.49c-1.25-.39-1.27-1.25.26-1.85l22.42-8.64c1.04-.38 1.95.24 1.73 2.79Z" />
         </symbol>
       </defs>
     </svg>
@@ -393,7 +403,7 @@
         <div class="envelope">
           <div class="titulo-de-secao">
             <span class="etiqueta">Lado a lado</span>
-            <h2>Para quem escreve, é o mesmo WhatsApp. <span class="destaque">Para quem atende, não</span></h2>
+            <h2>Para quem escreve, é o mesmo WhatsApp <span class="destaque">Para quem atende, não</span></h2>
             <p>São dois produtos da Meta. O aplicativo foi feito para uma pessoa; a API Oficial, para uma empresa</p>
           </div>
 
@@ -541,14 +551,70 @@
           </div>
 
           <div class="grade grade--2" data-carrossel>
+            <!-- Cada cartão tem um palco onde o recurso ACONTECE, no motor de
+                 cenas (cenas.js). Dois reaproveitam cenas da landing de CRM:
+                 a caixa de entrada e a conversa do robô moram em cenas.css e
+                 são as mesmas nas duas páginas. Duas são desta página: a
+                 equipe entrando no mesmo número, e os dados saindo do
+                 aparelho para a plataforma. Tudo aria-hidden: ilustração do
+                 que o título e a linha de apoio já dizem. -->
             <article class="cartao">
               <span class="selo-de-icone"><svg aria-hidden="true"><use href="#i-mensagem" /></svg></span>
               <h3>Uma caixa de entrada para todos os canais</h3>
               <p>WhatsApp Oficial, Instagram, Facebook, Telegram e webchat na mesma lista</p>
-              <div class="chips">
-                <span class="chip">departamentos</span>
-                <span class="chip">filas</span>
-                <span class="chip">transferência</span>
+
+              <div class="palco palco--caixa" aria-hidden="true" data-cena data-passos="900,900,900,900">
+              <ul class="caixa__canais">
+              <li class="caixa__canal" data-canal="whats"><span><svg><use href="#i-whatsapp" /></svg></span>WhatsApp</li>
+              <li class="caixa__canal" data-canal="insta"><span><svg><use href="#i-instagram" /></svg></span>Instagram</li>
+              <li class="caixa__canal" data-canal="face"><span><svg><use href="#i-facebook" /></svg></span>Facebook</li>
+              <li class="caixa__canal" data-canal="tele"><span><svg><use href="#i-telegram" /></svg></span>Telegram</li>
+              </ul>
+
+              <!-- Os fios. `preserveAspectRatio="none"` deixa a curva
+              esticar com a coluna, e `vector-effect` segura a
+              espessura do traço, que senão esticaria junto. As
+              alturas 12/38/62/88 são os centros dos quatro canais
+              quando a coluna os espalha por `space-around`. -->
+              <svg class="caixa__fios" viewBox="0 0 100 100" preserveAspectRatio="none">
+              <path class="caixa__fio" d="M0 12.5 C 55 12.5, 45 50, 100 50" />
+              <path class="caixa__fio" d="M0 37.5 C 55 37.5, 45 50, 100 50" />
+              <path class="caixa__fio" d="M0 62.5 C 55 62.5, 45 50, 100 50" />
+              <path class="caixa__fio" d="M0 87.5 C 55 87.5, 45 50, 100 50" />
+              <path class="caixa__fio caixa__fio--aceso" data-fio="1" d="M0 12.5 C 55 12.5, 45 50, 100 50" />
+              <path class="caixa__fio caixa__fio--aceso" data-fio="2" d="M0 37.5 C 55 37.5, 45 50, 100 50" />
+              <path class="caixa__fio caixa__fio--aceso" data-fio="3" d="M0 62.5 C 55 62.5, 45 50, 100 50" />
+              <path class="caixa__fio caixa__fio--aceso" data-fio="4" d="M0 87.5 C 55 87.5, 45 50, 100 50" />
+              </svg>
+
+              <div class="caixa__painel">
+              <div class="caixa__topo">
+              <span>Caixa de entrada</span>
+              <b class="caixa__conta"></b>
+              </div>
+              <ul class="caixa__conversas">
+              <li data-canal="tele" data-surge-em="4">
+              <span class="caixa__marca"><svg><use href="#i-telegram" /></svg></span>
+              <span class="caixa__quem"><b>Pedro Alves</b>Consigo trocar o horário?</span>
+              <i class="caixa__nova"></i>
+              </li>
+              <li data-canal="face" data-surge-em="3">
+              <span class="caixa__marca"><svg><use href="#i-facebook" /></svg></span>
+              <span class="caixa__quem"><b>Ana Paula</b>Qual o valor do plano anual?</span>
+              <i class="caixa__nova"></i>
+              </li>
+              <li data-canal="insta" data-surge-em="2">
+              <span class="caixa__marca"><svg><use href="#i-instagram" /></svg></span>
+              <span class="caixa__quem"><b>Carlos Lima</b>Vi o post, tem no tamanho M?</span>
+              <i class="caixa__nova"></i>
+              </li>
+              <li data-canal="whats" data-surge-em="1">
+              <span class="caixa__marca"><svg><use href="#i-whatsapp" /></svg></span>
+              <span class="caixa__quem"><b>Marina Souza</b>Vocês entregam ainda hoje?</span>
+              <i class="caixa__nova"></i>
+              </li>
+              </ul>
+              </div>
               </div>
             </article>
 
@@ -556,9 +622,19 @@
               <span class="selo-de-icone"><svg aria-hidden="true"><use href="#i-robo" /></svg></span>
               <h3>Robô, IA e funil de vendas</h3>
               <p>Fluxos automáticos e cada negociação virando cartão com valor e dono</p>
-              <div class="chips">
-                <span class="chip">Kanban</span>
-                <span class="chip">agente de IA</span>
+
+              <div class="palco palco--conversa" aria-hidden="true" data-cena data-passos="700,850,950,850">
+              <div class="fala fala--deles" data-surge-em="1">Vocês entregam em Natal?</div>
+              <!-- Some no passo 3, quando a resposta chega: sem isso o bot
+              apareceria digitando e respondendo ao mesmo tempo. -->
+              <div class="fala fala--nossa fala--digitando" data-surge-em="2" data-some-em="3">
+              <i></i><i></i><i></i>
+              </div>
+              <div class="fala fala--nossa" data-surge-em="3">Entregamos sim, em até 2 dias úteis</div>
+              <div class="passagem" data-surge-em="4">
+              <span class="passagem__rosto">A</span>
+              Chamando a Ana
+              </div>
               </div>
             </article>
 
@@ -566,9 +642,18 @@
               <span class="selo-de-icone"><svg aria-hidden="true"><use href="#i-pessoas" /></svg></span>
               <h3>Sua equipe atendendo junto</h3>
               <p>Cada atendente com login próprio no mesmo número</p>
-              <div class="chips">
-                <span class="chip">chat interno</span>
-                <span class="chip">horário de atendimento</span>
+
+              <div class="palco palco--equipe" aria-hidden="true" data-cena data-passos="600,600,600,600">
+                <div class="equipe__numero">
+                  <span>+55 84 99100-0000 <small>um número</small></span>
+                  <b class="equipe__conta"></b>
+                </div>
+                <ul class="equipe__gente">
+                  <li data-surge-em="1"><span class="equipe__rosto">AN</span>Ana</li>
+                  <li data-surge-em="2"><span class="equipe__rosto">CA</span>Caio</li>
+                  <li data-surge-em="3"><span class="equipe__rosto">DU</span>Duda</li>
+                  <li data-surge-em="4"><span class="equipe__rosto">IV</span>Ivo</li>
+                </ul>
               </div>
             </article>
 
@@ -576,10 +661,24 @@
               <span class="selo-de-icone"><svg aria-hidden="true"><use href="#i-escudo" /></svg></span>
               <h3>Os dados ficam com você</h3>
               <p>Contatos e conversas moram na plataforma, não em um aparelho</p>
-              <div class="chips">
-                <span class="chip">LGPD</span>
-                <span class="chip">acesso por perfil</span>
-                <span class="chip">dois fatores</span>
+
+              <!-- Cada item some do aparelho e aparece na plataforma no mesmo
+                   passo: a mudança de endereço é a cena. No aparelho os itens
+                   nascem visíveis (surge-em 0) e saem cada um no seu passo. -->
+              <div class="palco palco--cofre" aria-hidden="true" data-cena data-passos="700,700,700,700">
+                <div class="cofre__lado cofre__lado--aparelho">
+                  <span class="cofre__titulo">No aparelho</span>
+                  <span class="cofre__item" data-surge-em="0" data-some-em="1">612 contatos</span>
+                  <span class="cofre__item" data-surge-em="0" data-some-em="2">1.847 conversas</span>
+                  <span class="cofre__item" data-surge-em="0" data-some-em="3">Histórico</span>
+                </div>
+                <div class="cofre__lado cofre__lado--plataforma">
+                  <span class="cofre__titulo">Na plataforma</span>
+                  <span class="cofre__item" data-surge-em="1">612 contatos</span>
+                  <span class="cofre__item" data-surge-em="2">1.847 conversas</span>
+                  <span class="cofre__item" data-surge-em="3">Histórico</span>
+                  <span class="cofre__cadeado" data-surge-em="4"><svg aria-hidden="true"><use href="#i-escudo" /></svg>Acesso por perfil</span>
+                </div>
               </div>
             </article>
           </div>
