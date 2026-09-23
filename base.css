@@ -706,7 +706,7 @@ strong {
   display: flex;
   flex-direction: column;
   background: var(--branco);
-  border: 1px solid var(--cinza-fio);
+  border: 1px solid var(--cartao-fio);
   border-radius: var(--raio-cartao);
   padding: clamp(1.5rem, 2.5vw, 2rem);
   transition:
