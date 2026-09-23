@@ -55,6 +55,12 @@
      precisa do mesmo valor para sangrar ate a borda e voltar a alinhar. */
   --respiro-lateral: clamp(1.25rem, 4vw, 2.5rem);
 
+  /* O respiro entre o título da seção e a grade de cartões. É token
+     porque o carrossel do celular precisa DESCONTAR dele a folga que
+     abre para o cartão subir no toque, e conta contra número solto
+     é conta que desanda na primeira mudança. */
+  --respiro-da-grade: 3rem;
+
   --raio-cartao: 20px;
   --raio-controle: 12px;
   --raio-pilula: 999px;
@@ -820,7 +826,7 @@ strong {
 .grade {
   display: grid;
   gap: 1.25rem;
-  margin-top: 3rem;
+  margin-top: var(--respiro-da-grade);
 }
 
 @media (min-width: 640px) {
@@ -841,7 +847,7 @@ strong {
 .bento {
   display: grid;
   gap: 1.25rem;
-  margin-top: 3rem;
+  margin-top: var(--respiro-da-grade);
 }
 
 @media (min-width: 720px) {
@@ -1548,6 +1554,18 @@ strong {
     padding-inline: var(--respiro-lateral);
     scroll-padding-inline: var(--respiro-lateral);
     overscroll-behavior-x: contain;
+    /* O cartão sobe 4px no toque, e `overflow-x: auto` obriga o eixo
+       vertical a recortar junto: sem folga em cima, a borda superior
+       saía do trilho e sumia. A folga entra como padding e sai como
+       margem negativa, para os cartões e o que vem depois ficarem no
+       mesmo lugar. Embaixo é maior, para a sombra do cartão erguido
+       não ser cortada rente. */
+    --folga-do-toque: 0.75rem;
+    --folga-da-sombra: 1.5rem;
+    padding-top: var(--folga-do-toque);
+    padding-bottom: var(--folga-da-sombra);
+    margin-top: calc(var(--respiro-da-grade) - var(--folga-do-toque));
+    margin-bottom: calc(-1 * var(--folga-da-sombra));
     /* A barra de rolagem some: quem manda o recado é o pontinho. */
     scrollbar-width: none;
     -ms-overflow-style: none;

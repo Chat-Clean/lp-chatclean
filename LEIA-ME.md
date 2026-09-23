@@ -234,7 +234,13 @@ Três detalhes que fazem a diferença entre elegante e tosco:
   vez e a pessoa perde o lugar;
 - o pontinho tem 8px de desenho e **44px de área de toque**, por um
   `::after` invisível. Alvo pequeno em tela de celular é o jeito mais barato de
-  parecer quebrado.
+  parecer quebrado;
+- o trilho tem **folga vertical**. O cartão sobe 4px no toque, e `overflow-x:
+  auto` obriga o eixo vertical a recortar junto: sem folga em cima, a borda
+  superior saía do trilho e sumia. A folga entra como padding e sai como margem
+  negativa, então os cartões e os pontinhos ficam exatamente onde estavam. O
+  `3rem` de respiro da grade virou o token `--respiro-da-grade` para essa conta
+  não depender de um número solto.
 
 Para acrescentar um carrossel em outro grupo, basta pôr `data-carrossel` no
 contêiner. Os pontinhos são consequência, não conteúdo: a quantidade sai do
