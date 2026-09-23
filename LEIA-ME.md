@@ -319,10 +319,15 @@ WhatsApp, ligado à marca da ChatClean por um fio. O aviso de marca registrada
 da Meta está no rodapé.
 
 O print original tem 1451×1084 e 902 KB; entra reduzido para 880px de largura,
-por média de área em Node puro, e é exibido até 440px: metade do arquivo, então
-nunca é ampliado além de 1:1 e fica nítido em retina. Os dois cards da seção
-têm a mesma altura: a grade estica as figuras e o corpo de cada uma cresce
-para ocupar o que o rótulo deixa.
+por média de área em Node puro. O print **é** o card: preenche o corpo sem
+respiro, com os cantos recortados pela moldura e `object-fit: cover` para
+cobrir o corpo inteiro quando o card oficial é mais alto (o corte, se houver,
+cai no fundo branco das bordas). O card tem ~430px e o arquivo 880, então
+nunca é ampliado além de 1:1. A borda é o vermelho do próprio ícone de
+bloqueio, **amostrado do arquivo** pelo script e guardado no token
+`--vermelho-bloqueio`: dois vermelhos parecidos lado a lado é o que denuncia
+um tom chutado. Os dois cards da seção têm a mesma altura: a grade estica as
+figuras e o corpo de cada uma cresce para ocupar o que o rótulo deixa.
 
 ## A demonstração em vídeo, só na landing de CRM
 

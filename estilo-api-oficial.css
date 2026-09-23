@@ -731,21 +731,35 @@
    183px, porque esticar borra, e o argumento desta seção é que
    isto é real. Centrado na moldura, com o próprio raio e uma
    sombra curta para se separar do fundo escuro. */
-.tela__corpo--print {
-  display: grid;
-  place-items: center;
+/* O print É o card: sem respiro entre a imagem e a borda, com os
+   cantos recortados pela moldura. A borda é o vermelho do próprio
+   ícone de bloqueio, amostrado do arquivo e não escolhido de
+   memória: dois vermelhos parecidos lado a lado é o que denuncia
+   que um deles foi chutado. */
+.tela--caida {
+  --vermelho-bloqueio: #e1052e;
 }
 
-/* Preenche o card. O teto de 440px é a metade da largura do
-   arquivo (880px): na tela comum o print nunca é ampliado além
-   de 1:1, e em retina fica nítido. */
+.tela--caida .tela__corpo--print {
+  display: block;
+  padding: 0;
+  overflow: hidden;
+  background: var(--branco);
+  border: 2px solid var(--vermelho-bloqueio);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.35), 0 24px 48px -24px rgba(0, 0, 0, 0.7);
+}
+
+/* `cover` e não `contain`: os dois cards têm a mesma altura, e
+   quando o oficial é mais alto o print precisa cobrir o corpo
+   inteiro, senão sobra uma faixa. O corte, se houver, é nas
+   bordas do print, que são fundo branco. O arquivo tem 880px e o
+   card ~430px: nunca é ampliado além de 1:1. */
 .tela__print {
   display: block;
   width: 100%;
-  max-width: 440px;
-  height: auto;
-  border-radius: 1.2em;
-  box-shadow: 0 18px 36px -18px rgba(0, 0, 0, 0.7);
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
 }
 
 /* ----- Os dois cards com a mesma altura ----------------------
