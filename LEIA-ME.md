@@ -318,8 +318,11 @@ lado "Na API Oficial" continua desenhado: o símbolo aceso, no verde do próprio
 WhatsApp, ligado à marca da ChatClean por um fio. O aviso de marca registrada
 da Meta está no rodapé.
 
-O print é servido no tamanho em que foi tirado, sem esticar: `max-width` no
-valor da largura real, senão vira uma tela borrada, que é o oposto de prova.
+O print original tem 1451×1084 e 902 KB; entra reduzido para 880px de largura,
+por média de área em Node puro, e é exibido até 440px: metade do arquivo, então
+nunca é ampliado além de 1:1 e fica nítido em retina. Os dois cards da seção
+têm a mesma altura: a grade estica as figuras e o corpo de cada uma cresce
+para ocupar o que o rótulo deixa.
 
 ## A demonstração em vídeo, só na landing de CRM
 

@@ -736,11 +736,35 @@
   place-items: center;
 }
 
+/* Preenche o card. O teto de 440px é a metade da largura do
+   arquivo (880px): na tela comum o print nunca é ampliado além
+   de 1:1, e em retina fica nítido. */
 .tela__print {
   display: block;
   width: 100%;
-  max-width: 183px;
+  max-width: 440px;
   height: auto;
   border-radius: 1.2em;
   box-shadow: 0 18px 36px -18px rgba(0, 0, 0, 0.7);
+}
+
+/* ----- Os dois cards com a mesma altura ----------------------
+   A grade estica as duas figuras na altura da linha, e dentro de
+   cada figura o corpo cresce para ocupar o que o rótulo deixa.
+   O print fica centrado no corpo dele; o lado oficial ganha o
+   mesmo pé. Sem isso, um card terminava antes do outro e a
+   comparação parecia torta. */
+.tela {
+  display: flex;
+  flex-direction: column;
+}
+
+.tela__corpo {
+  flex: 1;
+}
+
+@media (min-width: 520px) {
+  .cena-dos-estados {
+    align-items: stretch;
+  }
 }
