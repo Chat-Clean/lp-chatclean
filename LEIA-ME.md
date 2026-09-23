@@ -304,6 +304,12 @@ Três detalhes que fazem a diferença entre elegante e tosco:
   `3rem` de respiro da grade virou o token `--respiro-da-grade` para essa conta
   não depender de um número solto.
 
+As duas telas de "Já recebeu esta tela?" (`.cena-dos-estados`) também são
+carrossel. Atenção à cascata ali: `estilo-api-oficial.css` carrega depois de
+`base.css`, então o `display: grid` e a `margin` do grupo ficam dentro de
+`@media (min-width: 640px)`, onde o carrossel acaba. Fora da media query eles
+venceriam o trilho e o celular voltaria a empilhar.
+
 Para acrescentar um carrossel em outro grupo, basta pôr `data-carrossel` no
 contêiner. Os pontinhos são consequência, não conteúdo: a quantidade sai do
 número de cartões, e escrever à mão significa alguém acrescentar um cartão e

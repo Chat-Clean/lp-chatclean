@@ -22,19 +22,34 @@
    landing: `font-size` com clamp aqui e tudo dentro em `em`. */
 .cena-dos-estados {
   position: relative;
-  display: grid;
-  gap: 1.5rem;
   font-size: clamp(0.78rem, 1.45vw, 0.875rem);
 }
 
-/* A partir de 520px os dois se sobrepõem: o oficial passa na
-   frente do bloqueado. A ordem de empilhamento conta a
-   substituição. */
-@media (min-width: 520px) {
+/* No celular o grupo é carrossel (`data-carrossel`, em base.css):
+   as duas telas se arrastam, com pontinhos, como todo grupo de
+   cartões das duas landings. Esta folha carrega DEPOIS de base.css,
+   então tudo que ela diz sobre display e margem do grupo fica
+   acima do corte, senão venceria o trilho. Já foi `display: grid`
+   solto, e o celular empilhava as telas em vez de arrastar.
+
+   A partir de 640px, onde o carrossel acaba, os dois se sobrepõem:
+   o oficial passa na frente do bloqueado. A ordem de empilhamento
+   conta a substituição. O corte era mais baixo, e as telas
+   inclinadas ficavam DENTRO do trilho, tortas. */
+@media (min-width: 640px) {
   .cena-dos-estados {
+    display: grid;
     grid-template-columns: 0.94fr 1fr;
     align-items: center;
     gap: 0;
+  }
+}
+
+/* A tela oficial tem a sombra mais longa da página: a folga padrão do
+   trilho cortava o halo rente. */
+@media (max-width: 639px) {
+  .cena-dos-estados {
+    --folga-da-sombra: 2.5rem;
   }
 }
 
@@ -74,7 +89,7 @@
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 
-@media (min-width: 520px) {
+@media (min-width: 640px) {
   /* A posição original: inclinada -3°, um pouco mais baixa, entrando
      de leve por baixo da oficial. Já foi trocada por -2° reta e sem
      descer, com a oficial reta na frente, e ficou pior: a assimetria
@@ -106,7 +121,7 @@
     0 0 64px -22px rgba(81, 188, 105, 0.38);
 }
 
-@media (min-width: 520px) {
+@media (min-width: 640px) {
   /* A inclinação original de 1°, no sentido contrário da caída: é o
      par de ângulos que lê como duas telas soltas, uma sobre a outra. */
   .tela--oficial {
@@ -467,9 +482,13 @@
    Saiu do hero quando o formulário subiu para a primeira dobra.
    Centrada e com a largura da coluna de onde veio, para as duas
    telas não esticarem numa seção de largura inteira. */
-.cena-dos-estados {
-  max-width: 52rem;
-  margin: clamp(2.5rem, 5vw, 3.5rem) auto 0;
+@media (min-width: 640px) {
+  /* Só acima do corte: no celular quem dá margem é o trilho, e uma
+     margem aqui, vinda depois na cascata, anularia a sangria dele. */
+  .cena-dos-estados {
+    max-width: 52rem;
+    margin: clamp(2.5rem, 5vw, 3.5rem) auto 0;
+  }
 }
 
 /* ----- O formulário no hero --------------------------------
@@ -578,7 +597,7 @@
   flex: 1;
 }
 
-@media (min-width: 520px) {
+@media (min-width: 640px) {
   .cena-dos-estados {
     align-items: stretch;
   }
