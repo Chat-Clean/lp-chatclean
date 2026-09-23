@@ -41,9 +41,6 @@
         <symbol id="i-confere" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
           <path d="M20 6 9 17l-5-5" />
         </symbol>
-        <symbol id="i-xis" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M18 6 6 18M6 6l12 12" />
-        </symbol>
         <symbol id="i-fone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92Z" />
         </symbol>
@@ -379,73 +376,61 @@
       </section>
 
       <!-- =====================================================
-           A comparação. Tabela de verdade, porque é uma tabela
-           de verdade: duas colunas e um critério por linha.
+           O duelo: o aplicativo comum contra a API Oficial, nos
+           oito critérios que decidem. Já foi uma tabela; virou
+           dois cards lado a lado com os critérios entrando em
+           pares, no motor de cenas do site (`cenas.js`): o lado
+           do app apaga com um ✕, o lado oficial acende com um ✓,
+           e o placar do card oficial sobe até 8 de 8.
+
+           NÃO É `aria-hidden`: diferente dos palcos dos cartões
+           de recurso, isto é o conteúdo, não ilustração dele. As
+           peças escondidas por opacidade continuam legíveis para
+           leitor de tela, e com "reduzir movimento" o motor mostra
+           tudo de uma vez.
            ===================================================== -->
       <section class="secao secao--creme" id="diferenca">
         <div class="envelope">
           <div class="titulo-de-secao">
-            <span class="etiqueta">A diferença</span>
-            <h2>O aplicativo que você usa hoje <span class="destaque">e o canal oficial</span></h2>
-            <p>São dois produtos diferentes da Meta, e só um foi feito para uma equipe atender</p>
+            <span class="etiqueta">Lado a lado</span>
+            <h2>Para quem escreve, é o mesmo WhatsApp. <span class="destaque">Para quem atende, não</span></h2>
+            <p>São dois produtos da Meta. O aplicativo foi feito para uma pessoa; a API Oficial, para uma empresa</p>
           </div>
 
-          <div class="tabela-rolante">
-            <table class="comparativo">
-              <caption class="lido-por-leitor">
-                Comparação entre o aplicativo WhatsApp Business e a API Oficial do
-                WhatsApp com a ChatClean.
-              </caption>
-              <thead>
-                <tr>
-                  <th scope="col">O que você precisa</th>
-                  <th scope="col">App WhatsApp Business</th>
-                  <th scope="col" class="comparativo__nossa">API Oficial + ChatClean</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <th scope="row">Atendentes no mesmo número</th>
-                  <td><span class="marca marca--nao"><svg aria-hidden="true" width="12" height="12"><use href="#i-xis" /></svg></span> Até 4 aparelhos</td>
-                  <td><span class="marca marca--sim"><svg aria-hidden="true" width="12" height="12"><use href="#i-confere" /></svg></span> A equipe inteira, com acesso individual</td>
-                </tr>
-                <tr>
-                  <th scope="row">Risco de bloqueio</th>
-                  <td><span class="marca marca--nao"><svg aria-hidden="true" width="12" height="12"><use href="#i-xis" /></svg></span> Cresce com o volume</td>
-                  <td><span class="marca marca--sim"><svg aria-hidden="true" width="12" height="12"><use href="#i-confere" /></svg></span> Canal homologado pela Meta</td>
-                </tr>
-                <tr>
-                  <th scope="row">Dono do número</th>
-                  <td><span class="marca marca--nao"><svg aria-hidden="true" width="12" height="12"><use href="#i-xis" /></svg></span> Quem está com o celular</td>
-                  <td><span class="marca marca--sim"><svg aria-hidden="true" width="12" height="12"><use href="#i-confere" /></svg></span> O CNPJ, com perfil oficial</td>
-                </tr>
-                <tr>
-                  <th scope="row">Campanhas em escala</th>
-                  <td><span class="marca marca--nao"><svg aria-hidden="true" width="12" height="12"><use href="#i-xis" /></svg></span> Transmissão, com risco</td>
-                  <td><span class="marca marca--sim"><svg aria-hidden="true" width="12" height="12"><use href="#i-confere" /></svg></span> Modelos aprovados pela Meta</td>
-                </tr>
-                <tr>
-                  <th scope="row">Robô e Agente de IA</th>
-                  <td><span class="marca marca--nao"><svg aria-hidden="true" width="12" height="12"><use href="#i-xis" /></svg></span> Só aviso de ausência</td>
-                  <td><span class="marca marca--sim"><svg aria-hidden="true" width="12" height="12"><use href="#i-confere" /></svg></span> Fluxos e IA que transferem</td>
-                </tr>
-                <tr>
-                  <th scope="row">Conexão com CRM</th>
-                  <td><span class="marca marca--nao"><svg aria-hidden="true" width="12" height="12"><use href="#i-xis" /></svg></span> Nenhuma</td>
-                  <td><span class="marca marca--sim"><svg aria-hidden="true" width="12" height="12"><use href="#i-confere" /></svg></span> Funil, contatos e webhook nativos</td>
-                </tr>
-                <tr>
-                  <th scope="row">Relatórios</th>
-                  <td><span class="marca marca--nao"><svg aria-hidden="true" width="12" height="12"><use href="#i-xis" /></svg></span> Contagem de mensagens</td>
-                  <td><span class="marca marca--sim"><svg aria-hidden="true" width="12" height="12"><use href="#i-confere" /></svg></span> Tempo de resposta, atendente e etapa</td>
-                </tr>
-                <tr>
-                  <th scope="row">Quando dá problema</th>
-                  <td><span class="marca marca--nao"><svg aria-hidden="true" width="12" height="12"><use href="#i-xis" /></svg></span> Você descobre com o número fora</td>
-                  <td><span class="marca marca--sim"><svg aria-hidden="true" width="12" height="12"><use href="#i-confere" /></svg></span> Suporte em português</td>
-                </tr>
-              </tbody>
-            </table>
+          <div class="duelo palco" data-cena data-passos="700,600,600,600,600,600,600,600">
+            <article class="duelo__lado duelo__lado--app">
+              <header class="duelo__cabeca">
+                <span class="duelo__nome">App WhatsApp Business</span>
+                <span class="duelo__placar">feito para uma pessoa</span>
+              </header>
+              <ul class="duelo__lista">
+                <li data-surge-em="1"><b>Atendentes no mesmo número</b><span>Até 4 aparelhos</span></li>
+                <li data-surge-em="2"><b>Risco de bloqueio</b><span>Cresce com o volume</span></li>
+                <li data-surge-em="3"><b>Dono do número</b><span>Quem está com o celular</span></li>
+                <li data-surge-em="4"><b>Campanhas em escala</b><span>Lista de transmissão, com risco</span></li>
+                <li data-surge-em="5"><b>Robô e Agente de IA</b><span>Só aviso de ausência</span></li>
+                <li data-surge-em="6"><b>Conexão com CRM</b><span>Nenhuma</span></li>
+                <li data-surge-em="7"><b>Relatórios</b><span>Contagem de mensagens</span></li>
+                <li data-surge-em="8"><b>Quando dá problema</b><span>Você descobre com o número fora</span></li>
+              </ul>
+            </article>
+
+            <article class="duelo__lado duelo__lado--oficial">
+              <header class="duelo__cabeca">
+                <span class="duelo__nome">API Oficial + ChatClean</span>
+                <span class="duelo__placar duelo__placar--conta"><b class="duelo__numero"></b> de 8</span>
+              </header>
+              <ul class="duelo__lista">
+                <li data-surge-em="1"><b>Atendentes no mesmo número</b><span>A equipe inteira, cada um com o próprio acesso</span></li>
+                <li data-surge-em="2"><b>Risco de bloqueio</b><span>Canal homologado pela Meta</span></li>
+                <li data-surge-em="3"><b>Dono do número</b><span>O CNPJ, com perfil oficial</span></li>
+                <li data-surge-em="4"><b>Campanhas em escala</b><span>Modelos aprovados pela Meta</span></li>
+                <li data-surge-em="5"><b>Robô e Agente de IA</b><span>Fluxos e IA que passam para uma pessoa</span></li>
+                <li data-surge-em="6"><b>Conexão com CRM</b><span>Funil, contatos e webhook nativos</span></li>
+                <li data-surge-em="7"><b>Relatórios</b><span>Tempo de resposta, atendente e etapa</span></li>
+                <li data-surge-em="8"><b>Quando dá problema</b><span>Suporte em português, antes de o número cair</span></li>
+              </ul>
+            </article>
           </div>
         </div>
       </section>
@@ -838,6 +823,7 @@
 
     <!-- Máscara, validação e envio. Um arquivo só para as duas páginas. -->
     <script src="carrossel.js" defer></script>
+    <script src="cenas.js" defer></script>
     <script src="formulario.js" defer></script>
   </body>
 </html>

@@ -277,112 +277,6 @@
   color: var(--verde-texto);
 }
 
-/* ----- Comparativo ----------------------------------------
-   Tabela de verdade: um critério por linha, duas respostas. */
-.tabela-rolante {
-  margin-top: 3rem;
-  overflow-x: auto;
-  background: var(--branco);
-  border: 1px solid var(--creme-fio);
-  border-radius: var(--raio-cartao);
-}
-
-.comparativo {
-  width: 100%;
-  min-width: 42rem;
-  border-collapse: collapse;
-  font-size: 0.875rem;
-}
-
-.comparativo th,
-.comparativo td {
-  text-align: left;
-  vertical-align: top;
-  padding: 1rem 1.15rem;
-  border-bottom: 1px solid #f0eee4;
-}
-
-.comparativo thead th {
-  font-family: var(--fonte-util);
-  font-size: 0.6875rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--cinza);
-  background: var(--creme);
-  border-bottom: 1px solid var(--creme-fio);
-}
-
-.comparativo thead .comparativo__nossa {
-  color: var(--verde-texto);
-  background: var(--verde-lavado);
-}
-
-.comparativo tbody th {
-  width: 28%;
-  font-family: var(--fonte-util);
-  font-size: 0.8125rem;
-  font-weight: 700;
-  line-height: 1.45;
-  color: var(--tinta);
-}
-
-.comparativo tbody td {
-  line-height: 1.5;
-  color: var(--cinza);
-}
-
-/* A coluna da resposta certa fica levemente verde de ponta a
-   ponta: a tabela toda aponta para um lado. A linha inteira
-   acende no hover, para o olho não se perder atravessando. */
-.comparativo tbody td:last-child {
-  background: rgba(81, 188, 105, 0.055);
-  color: var(--tinta);
-}
-
-.comparativo tbody tr {
-  transition: background-color 0.2s ease;
-}
-
-.comparativo tbody tr:hover {
-  background: var(--creme);
-}
-
-.comparativo tbody tr:last-child th,
-.comparativo tbody tr:last-child td {
-  border-bottom: 0;
-}
-
-.marca {
-  display: inline-grid;
-  place-items: center;
-  width: 1.15rem;
-  height: 1.15rem;
-  border-radius: 50%;
-  margin-right: 0.45rem;
-  vertical-align: -0.2rem;
-}
-
-.marca--sim {
-  background: var(--verde-medio);
-  color: var(--branco);
-}
-
-.marca--nao {
-  background: #efe3e1;
-  color: #9d4640;
-}
-
-
-.lido-por-leitor {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
-}
-
 /* ----- Os cinco passos ------------------------------------
    O fio vertical liga um passo ao seguinte porque a
    dependência é real: não se cadastra o número antes de a
@@ -569,96 +463,6 @@
   max-width: 34rem;
 }
 
-/* ----- A comparação no celular ----------------------------
-   Três colunas não encolhem sem virar ilegível, e rolar de
-   lado escondia justamente a coluna da ChatClean: quem abria
-   no celular via só os "não" do aplicativo comum e precisava
-   descobrir sozinho que havia resposta do outro lado.
-
-   Abaixo de 760px cada linha vira um cartão com o critério em
-   cima e as duas respostas embaixo, rotuladas. Mesma
-   informação, mesma ordem, sem nada fora da tela. Os rótulos
-   saem do CSS porque são o cabeçalho da tabela, que some: não
-   há texto novo no HTML para manter em dois lugares. */
-@media (max-width: 759px) {
-  .tabela-rolante {
-    overflow: visible;
-    background: none;
-    border: 0;
-    border-radius: 0;
-  }
-
-  .comparativo {
-    min-width: 0;
-  }
-
-  .comparativo thead {
-    display: none;
-  }
-
-  .comparativo tbody,
-  .comparativo tbody tr,
-  .comparativo tbody th,
-  .comparativo tbody td {
-    display: block;
-    width: auto;
-  }
-
-  .comparativo tbody tr {
-    background: var(--branco);
-    border: 1px solid var(--creme-fio);
-    border-radius: var(--raio-cartao);
-    padding: 1.15rem 1.25rem;
-    margin-bottom: 0.75rem;
-  }
-
-  .comparativo tbody tr:hover {
-    background: var(--branco);
-  }
-
-  .comparativo tbody th,
-  .comparativo tbody tr:last-child th {
-    padding: 0 0 0.85rem;
-    font-size: 0.9375rem;
-    border-bottom: 1px solid #f0eee4;
-  }
-
-  .comparativo tbody td,
-  .comparativo tbody tr:last-child td {
-    padding: 0.85rem 0 0;
-    border-bottom: 0;
-  }
-
-  .comparativo tbody td::before {
-    display: block;
-    margin-bottom: 0.3rem;
-    font-family: var(--fonte-util);
-    font-size: 0.625rem;
-    font-weight: 700;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--cinza);
-  }
-
-  .comparativo tbody td:nth-of-type(1)::before {
-    content: "App WhatsApp Business";
-  }
-
-  .comparativo tbody td:nth-of-type(2)::before {
-    content: "API Oficial + ChatClean";
-    color: var(--verde-texto);
-  }
-
-  .comparativo tbody td:last-child,
-  .comparativo tbody tr:last-child td:last-child {
-    margin-top: 0.85rem;
-    padding: 0.8rem 0.9rem;
-    background: var(--verde-lavado);
-    border: 1px solid var(--verde-borda);
-    border-radius: 12px;
-  }
-}
-
 /* ----- A cena, agora numa seção própria ---------------------
    Saiu do hero quando o formulário subiu para a primeira dobra.
    Centrada e com a largura da coluna de onde veio, para as duas
@@ -777,5 +581,231 @@
 @media (min-width: 520px) {
   .cena-dos-estados {
     align-items: stretch;
+  }
+}
+
+/* ----- O duelo: app comum contra API Oficial -----------------
+   Dois cards lado a lado, os oito critérios entrando em pares
+   no motor de cenas (`cenas.js`, o mesmo dos cartões da landing
+   de CRM): o lado do app apaga com um ✕, o oficial acende com
+   um ✓, e o placar do card oficial sobe até 8 de 8.
+
+   É `.palco` para herdar o contrato do motor (revelação por
+   `data-visivel`, apagar entre voltas, recomeço sem transição),
+   mas não é um palco de cartão: sem o creme pontilhado, sem
+   padding, e sem `contain: paint`, que cortaria a sombra do card
+   oficial. Só `transform` e `opacity` transitam, como em toda
+   cena. */
+
+.duelo {
+  display: grid;
+  gap: 1.25rem;
+  margin-top: var(--respiro-da-grade);
+  padding: 0;
+  background: none;
+  contain: none;
+}
+
+@media (min-width: 760px) {
+  .duelo {
+    grid-template-columns: 1fr 1fr;
+    align-items: stretch;
+  }
+}
+
+.duelo__lado {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(1.25rem, 2.5vw, 1.75rem);
+  border-radius: var(--raio-cartao);
+}
+
+/* O app: branco, apagado. É o lado que perde. */
+.duelo__lado--app {
+  background: var(--branco);
+  border: 1px solid var(--cartao-fio);
+  color: var(--cinza);
+}
+
+/* O oficial: verde-noite, aceso. A sombra é a mesma dos cartões
+   erguidos, para ele parecer o que está na frente. */
+.duelo__lado--oficial {
+  background: var(--verde-noite);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--branco);
+  box-shadow: 0 32px 64px -32px rgba(20, 35, 27, 0.55);
+}
+
+/* O halo verde do fim: camada por opacidade, e não troca de
+   `box-shadow`, que repintaria a cada quadro. */
+.duelo__lado--oficial::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  box-shadow:
+    0 0 0 2px var(--verde),
+    0 0 48px -8px rgba(81, 188, 105, 0.55);
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  pointer-events: none;
+}
+
+.duelo[data-passo="8"] .duelo__lado--oficial::after {
+  opacity: 1;
+}
+
+.duelo__cabeca {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--creme-fio);
+}
+
+.duelo__lado--oficial .duelo__cabeca {
+  border-bottom-color: rgba(255, 255, 255, 0.14);
+}
+
+.duelo__nome {
+  font-family: var(--fonte-util);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--tinta);
+}
+
+.duelo__lado--oficial .duelo__nome {
+  color: var(--verde-claro);
+}
+
+.duelo__placar {
+  font-family: var(--fonte-util);
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+  color: var(--cinza);
+}
+
+.duelo__placar--conta {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* O placar sobe com a cena. Texto em `content` porque CSS não
+   soma: nove estados, escritos. */
+.duelo__numero {
+  color: var(--verde);
+  font-variant-numeric: tabular-nums;
+}
+
+.duelo__numero::after { content: "0"; }
+.duelo[data-passo="1"] .duelo__numero::after { content: "1"; }
+.duelo[data-passo="2"] .duelo__numero::after { content: "2"; }
+.duelo[data-passo="3"] .duelo__numero::after { content: "3"; }
+.duelo[data-passo="4"] .duelo__numero::after { content: "4"; }
+.duelo[data-passo="5"] .duelo__numero::after { content: "5"; }
+.duelo[data-passo="6"] .duelo__numero::after { content: "6"; }
+.duelo[data-passo="7"] .duelo__numero::after { content: "7"; }
+.duelo[data-passo="8"] .duelo__numero::after { content: "8"; }
+
+.duelo__lista {
+  list-style: none;
+  margin: 1rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.duelo__lista li {
+  display: grid;
+  grid-template-columns: 1.6rem minmax(0, 1fr);
+  column-gap: 0.75rem;
+  row-gap: 0.15rem;
+  align-items: start;
+  padding: 0.7rem 0.85rem;
+  border-radius: 12px;
+}
+
+.duelo__lado--app .duelo__lista li {
+  background: var(--creme);
+}
+
+.duelo__lado--oficial .duelo__lista li {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+/* A marca: ✕ no app, ✓ no oficial. Glifo em vez de ícone porque
+   são dezesseis marcas e o sprite não precisa de dois símbolos
+   que a fonte já tem. */
+.duelo__lista li::before {
+  grid-row: 1 / span 2;
+  display: grid;
+  place-items: center;
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 50%;
+  font-family: var(--fonte-util);
+  font-size: 0.8rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.duelo__lado--app .duelo__lista li::before {
+  content: "✕";
+  color: var(--alerta);
+  background: var(--alerta-lavado);
+}
+
+.duelo__lado--oficial .duelo__lista li::before {
+  content: "✓";
+  color: var(--verde-noite);
+  background: var(--verde);
+}
+
+/* O critério em cima, pequeno; a resposta embaixo, em corpo. */
+.duelo__lista b {
+  font-family: var(--fonte-util);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--cinza);
+}
+
+.duelo__lado--oficial .duelo__lista b {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.duelo__lista span {
+  font-size: 0.9375rem;
+  line-height: 1.45;
+  color: var(--tinta);
+}
+
+.duelo__lado--app .duelo__lista span {
+  color: var(--cinza);
+}
+
+.duelo__lado--oficial .duelo__lista span {
+  color: var(--branco);
+}
+
+/* Cada lado entra do próprio lado: a direção conta o duelo. A
+   especificidade (0,2,1) ganha da revelação padrão (0,2,0) só no
+   estado escondido; visível, a padrão zera o transform. */
+.duelo__lado--app li[data-surge-em] {
+  transform: translateX(-10px);
+}
+
+.duelo__lado--oficial li[data-surge-em] {
+  transform: translateX(10px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .duelo__lado--oficial::after {
+    transition: none;
   }
 }

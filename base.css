@@ -1701,3 +1701,75 @@ strong {
     transition: none;
   }
 }
+
+/* ===========================================================
+   OS PALCOS: O CONTRATO DO MOTOR DE CENAS (cenas.js)
+   -----------------------------------------------------------
+   O mesmo modelo do site institucional: o cartão não DESCREVE a
+   funcionalidade, ele deixa ela acontecer. `cenas.js` só marca
+   em que passo a cena está; quem desenha o movimento é daqui.
+
+   DUAS REGRAS QUE VALEM PARA TODAS AS CENAS, e são o motivo de
+   cinco cartões animarem juntos sem engasgar:
+
+   1. Só `transform` e `opacity` transitam. O navegador compõe as
+      duas na placa de vídeo, sem refazer layout nem pintura.
+      Animar `width`, `height` ou `top` obriga a medir a página
+      inteira a cada quadro.
+
+   2. As peças já nascem no lugar final. A animação revela e
+      move, e nada entra ou sai do DOM no meio: assim nenhuma
+      peça empurra vizinho nem faz o cartão pular de altura.
+   =========================================================== */
+
+.palco {
+  position: relative;
+  padding: 0.85rem 0.9rem;
+  border-radius: 14px;
+  background-color: var(--creme);
+  /* O pontilhado do site, que diz "isto é um palco, não conteúdo". */
+  background-image: radial-gradient(rgba(20, 35, 27, 0.07) 1px, transparent 1px);
+  background-size: 18px 18px;
+  /* Isola a pintura: o que muda dentro de um palco não obriga o
+     navegador a repintar os cartões vizinhos. */
+  contain: paint;
+  transition: opacity 0.35s ease;
+}
+
+/* O respiro entre a linha de apoio e o palco. Já foi `margin-top: auto`
+   para empurrar o palco ao pé do cartão, mas sem espaço livre o `auto`
+   vira zero e o texto encosta na cena. Distância fixa é o que garante o
+   respiro nos dois casos. */
+.cartao > .palco {
+  margin-top: 1.35rem;
+}
+
+/* Entre uma volta e outra o palco apaga, para o recomeço não ser um
+   corte seco. */
+.palco[data-saindo] {
+  opacity: 0;
+}
+
+/* No recomeço as transições são desligadas por dois quadros: sem
+   isso as peças voltariam ao início ANIMANDO para trás, e a cena
+   pareceria dar ré. */
+.palco[data-sem-transicao],
+.palco[data-sem-transicao] * {
+  transition: none !important;
+}
+
+/* A revelação padrão de qualquer peça, em qualquer cena. Uma cena
+   nova não precisa escrever isto de novo. */
+.palco [data-surge-em] {
+  opacity: 0;
+  transform: translateY(7px);
+  transition:
+    opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.palco [data-surge-em][data-visivel] {
+  opacity: 1;
+  transform: none;
+}
+

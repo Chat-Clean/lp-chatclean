@@ -177,6 +177,22 @@ exigindo que os passos apareçam em ordem decrescente.
 de graça: mudar `stroke` repinta. Há um fio apagado sempre no lugar e um aceso
 por cima, e o que transita é a opacidade do de cima.
 
+### A landing de API também tem cena: o duelo
+
+A seção "Lado a lado" (`#diferenca`) era uma tabela comparativa; virou dois
+cards lado a lado, os oito critérios entrando em pares no mesmo motor: o lado
+do app comum apaga com um ✕, o lado oficial acende com um ✓, e o placar do
+card oficial sobe até 8 de 8. Diferente dos palcos dos cartões de recurso,
+**não é `aria-hidden`**: é o conteúdo, não ilustração dele. Peça escondida por
+opacidade continua legível para leitor de tela, e com "reduzir movimento" o
+motor mostra tudo de uma vez.
+
+Por causa disso, o **contrato do motor** (revelação por `data-visivel`, apagar
+entre voltas, recomeço sem transição) mora em `base.css`, e não mais em
+`estilo-crm.css`: contrato compartilhado, arquivo compartilhado. O duelo é
+`.palco` para herdar esse contrato, mas sem o creme pontilhado, sem padding e
+sem `contain: paint`, que cortaria a sombra do card oficial.
+
 ### Uma cena é marcação, não JavaScript
 
 ```html
