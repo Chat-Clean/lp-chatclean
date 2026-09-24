@@ -506,7 +506,7 @@ tradução:
 | `SUPABASE_CHAVE_DE_SERVICO` | a `service_role` | *Project Settings → API Keys* |
 | `RESEND_API_KEY` | a chave do Resend, para o aviso de lead novo | *resend.com → API Keys* |
 | `RESEND_REMETENTE` | opcional: o padrão já é `lead@chatclean.com.br` | veja a seção do aviso |
-| `LANDINGS_EMAIL_DESTINO` | opcional: para onde o aviso vai | o padrão está no código |
+| `LANDINGS_EMAIL_DESTINO` | opcional: para onde o aviso vai (vários, separados por vírgula) | o padrão está no código |
 | `LANDINGS_BASE_PUBLICA` | opcional: o domínio que serve o logotipo do e-mail | o padrão é `lp.chatclean.com.br` |
 | `META_TOKEN_DE_CONVERSOES` | o token da API de Conversões | *Gerenciador de Eventos → Configurações → API de Conversões → Gerar token* |
 | `META_PIXEL_ID` | opcional: o padrão é o pixel que está no HTML | *Gerenciador de Eventos* |
@@ -526,8 +526,8 @@ deploy, porque é rewrite; localmente a página é `api-oficial.html`.
 
 ## O aviso de lead novo, por e-mail
 
-Gravou, avisa: cada lead dispara um e-mail para
-`chatcleanatendimento@gmail.com` com a ficha e um botão que abre a conversa no
+Gravou, avisa: cada lead dispara o mesmo e-mail para
+`lucas@chatclean.com.br` e `roni@chatclean.com.br` com a ficha e um botão que abre a conversa no
 WhatsApp **com o lead**. O número aparece uma vez só, na ficha, e clicável:
 repetir embaixo do botão era dizer a mesma coisa duas vezes na mesma tela.
 

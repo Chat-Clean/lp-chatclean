@@ -52,7 +52,7 @@ const ENDERECO_DO_RESEND = "https://api.resend.com/emails";
  *
  * `resend.dev` entrega SÓ para o e-mail dono da conta no Resend. Como padrão
  * ele era uma armadilha silenciosa: a API responde 200, o log não acusa nada,
- * e o aviso simplesmente não chega em `chatcleanatendimento@gmail.com`. Um
+ * e o aviso simplesmente não chega no atendimento. Um
  * padrão que falha calado é pior do que um que falha alto.
  *
  * O SPF da raiz continua sendo o da caixa normal
@@ -375,11 +375,12 @@ async function avisarLeadNovo(lead, extras, ambiente, buscar) {
     return { ok: false, motivo: "RESEND_API_KEY ausente" };
   }
 
-  const destino =
-    typeof env.LANDINGS_EMAIL_DESTINO === "string" &&
-    env.LANDINGS_EMAIL_DESTINO.trim() !== ""
-      ? env.LANDINGS_EMAIL_DESTINO.trim()
-      : EMAIL_DO_ATENDIMENTO;
+  // A variável aceita vários endereços separados por vírgula.
+  const daVariavel =
+    typeof env.LANDINGS_EMAIL_DESTINO === "string"
+      ? env.LANDINGS_EMAIL_DESTINO.split(",").map((e) => e.trim()).filter(Boolean)
+      : [];
+  const destino = daVariavel.length > 0 ? daVariavel : EMAIL_DO_ATENDIMENTO;
 
   const remetente =
     typeof env.RESEND_REMETENTE === "string" && env.RESEND_REMETENTE.trim() !== ""
@@ -414,7 +415,7 @@ async function avisarLeadNovo(lead, extras, ambiente, buscar) {
       },
       body: JSON.stringify({
         from: remetente,
-        to: [destino],
+        to: destino,
         // Responder o aviso responde para o lead, sem copiar e colar endereço.
         reply_to: lead.email,
         subject: assuntoDoAviso(lead),

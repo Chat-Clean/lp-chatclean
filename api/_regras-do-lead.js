@@ -32,8 +32,8 @@
 /** O WhatsApp para onde o lead segue depois de gravado. NÚMERO DE EXEMPLO. */
 const WHATSAPP_DAS_LANDINGS = "5584998900718";
 
-/** Para onde vai o aviso de lead novo. */
-const EMAIL_DO_ATENDIMENTO = "chatcleanatendimento@gmail.com";
+/** Para onde vai o aviso de lead novo: o mesmo e-mail, para todos da lista. */
+const EMAIL_DO_ATENDIMENTO = ["lucas@chatclean.com.br", "roni@chatclean.com.br"];
 
 /** A versão do texto de consentimento aceito nos formulários. */
 const VERSAO_DO_ACEITE = "2026-09-22";
