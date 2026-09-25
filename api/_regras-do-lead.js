@@ -29,7 +29,7 @@
  * como este módulo fica ao lado da função sem ganhar uma URL própria.
  */
 
-/** O WhatsApp para onde o lead segue depois de gravado. NÚMERO DE EXEMPLO. */
+/** O WhatsApp oficial para onde o lead segue depois de gravado: o canal WABA. */
 const WHATSAPP_DAS_LANDINGS = "5584998900718";
 
 /** Para onde vai o aviso de lead novo: o mesmo e-mail, para todos da lista. */

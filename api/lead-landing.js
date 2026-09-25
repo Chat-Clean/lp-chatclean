@@ -48,6 +48,7 @@ const {
 const { TIPOS, bancoDoAmbiente } = require("./_banco-de-leads.js");
 const { avisarLeadNovo } = require("./_aviso-por-email.js");
 const { avisarConversaoDaMeta } = require("./_eventos-da-meta.js");
+const { anotarNoChatClean } = require("./_nota-no-chatclean.js");
 
 /** Um corpo maior que isto não é formulário, é tentativa. */
 const TETO_DO_CORPO_BYTES = 8 * 1024;
@@ -242,18 +243,18 @@ module.exports = async function handler(req, res) {
 
   console.log("[lead-landing] gravado " + gravado.id + " (" + lead.landing + ")");
 
-  /* Os dois recados do lead gravado: o aviso para o atendimento e a conversão
-     para a Meta.
+  /* Os três recados do lead gravado: o aviso para o atendimento, a conversão
+     para a Meta e a ficha como nota interna no CRM da ChatClean.
 
      EM PARALELO, porque um não depende do outro e o formulário está esperando
-     os dois: em série seriam sete segundos de espera no pior caso, e agora é o
-     maior dos dois.
+     os três: em série os prazos se somariam, e assim a espera é a do mais
+     lento.
 
      ESPERADOS antes de responder, porque função serverless pode ser congelada
      assim que a resposta sai, e trabalho deixado para depois às vezes não
      acontece.
 
-     E NENHUM DOS DOIS muda o código da resposta: o lead já está gravado. Aviso
+     E NENHUM DELES muda o código da resposta: o lead já está gravado. Aviso
      perdido não é lead perdido, e conversão não contada também não. */
   const seguro = (promessa) =>
     promessa.then(
@@ -261,20 +262,19 @@ module.exports = async function handler(req, res) {
       (erro) => ({ ok: false, motivo: (erro && erro.message) || "exceção" }),
     );
 
-  const [aviso, conversao] = await Promise.all([
-    seguro(
-      avisarLeadNovo(
-        lead,
-        { origem: origem, campanha: campanha, criadoEm: gravado.criadoEm },
-        process.env,
-      ),
-    ),
+  const extras = { origem: origem, campanha: campanha, criadoEm: gravado.criadoEm };
+
+  const [aviso, conversao, nota] = await Promise.all([
+    seguro(avisarLeadNovo(lead, extras, process.env)),
     seguro(
       avisarConversaoDaMeta(
         lead,
         metaDoPedido(corpo, req.headers, gravado.id),
         process.env,
       ),
+    ),
+    seguro(
+      anotarNoChatClean(lead, Object.assign({ leadId: gravado.id }, extras), process.env),
     ),
   ]);
 
@@ -296,6 +296,14 @@ module.exports = async function handler(req, res) {
     );
   } else if (!conversao.enviado) {
     console.log("[lead-landing] conversão da Meta pulada: " + conversao.motivo);
+  }
+
+  if (!nota.ok) {
+    console.error(
+      "[lead-landing] nota no ChatClean falhou (" + gravado.id + "): " + nota.motivo,
+    );
+  } else if (!nota.enviado) {
+    console.log("[lead-landing] nota no ChatClean pulada: " + nota.motivo);
   }
 
   return res.status(201).json({

@@ -512,6 +512,9 @@ tradução:
 | `META_PIXEL_ID` | opcional: o padrão é o pixel que está no HTML | *Gerenciador de Eventos* |
 | `META_VERSAO_DA_API` | opcional: o padrão é `v26.0` | só para quando a Meta aposentar a versão |
 | `META_CODIGO_DE_TESTE` | opcional: joga os eventos na aba *Eventos de teste* | *Gerenciador de Eventos → Eventos de teste* |
+| `CHATCLEAN_PUSH_ID` | o UUID do Push do canal WABA, para a nota interna | *ChatClean → Configurações → API/Webhook* |
+| `CHATCLEAN_TOKEN` | o token (JWT) desse mesmo Push | idem, na URL autenticada do Push |
+| `CHATCLEAN_API_BASE` | opcional: o padrão é `https://betaapi.chatclean.com.br` | só se o servidor da API mudar |
 
 A chave de serviço **ignora RLS**: é por isso que ela funciona contra uma
 tabela que nega tudo, e é por isso que ela nunca pode levar prefixo `VITE_`,
@@ -608,6 +611,32 @@ domínio principal.
 > entrega SÓ para o e-mail dono da conta no Resend, e falha calado: a API
 > responde 200, o log não acusa nada e o aviso simplesmente não chega. Existe
 > uma asserção em `prova-email` só para impedir essa volta.
+
+## A ficha do lead como nota interna no ChatClean
+
+Gravou, anota: junto com o e-mail e a Meta, `api/_nota-no-chatclean.js`
+manda a ficha do formulário como **nota interna** para o número do lead, pela
+API Push do canal WABA com `onlyNote: true`. A nota não vai para o cliente, e
+cria contato e ticket se ainda não existem. Um segundo depois o lead chega no
+WhatsApp, e quem atende (a IA SDR ou o time) já vê, em amarelo, nome, empresa,
+e-mail, WhatsApp, atendentes, bloqueio (só na de API), página, campanha e hora.
+
+Depois da nota, o contato ganha uma **etiqueta** com a landing de origem, pela
+API de Contatos (busca pelo número, `PATCH` com `tags`, que acumula sem apagar
+as outras):
+
+| Landing | Etiqueta |
+|---|---|
+| CRM | `Landing CRM` |
+| API Oficial | `Landing API Oficial` |
+
+**As duas etiquetas precisam existir** em *Configurações → Etiquetas*, com
+esses nomes exatos. Etiqueta que não existe é recusada, e o log acusa
+`etiqueta: HTTP …`; a nota continua valendo.
+
+Sem `CHATCLEAN_PUSH_ID` e `CHATCLEAN_TOKEN` o módulo não faz nada e diz por
+quê no log. Falha da ChatClean não derruba o lead, como nas outras duas: o
+e-mail segue sendo a rede de segurança.
 
 ## O pixel da Meta: o navegador E o servidor
 
